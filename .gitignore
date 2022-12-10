@@ -59,6 +59,7 @@ tmp
 .build*
 builds
 build
+temp
 
 # tests coverage
 coverage.out
