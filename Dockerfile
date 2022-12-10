@@ -4,10 +4,10 @@
 FROM golang:1.19-alpine3.17 as builder
 WORKDIR /app
 
-ARG VERSION 0.0.0
+ARG BUILD_VERSION 0.0.0
 ARG BUILD_DATE 0000-00-00T00:00:00Z
 
-ENV VERSION $VERSION
+ENV BUILD_VERSION $BUILD_VERSION
 ENV BUILD_DATE $BUILD_DATE
 ENV GIN_MODE release
 ENV PKG_FLAGS_PREFIX = github.com/riipandi/gogon/pkg/constants
@@ -15,7 +15,7 @@ ENV PKG_FLAGS_PREFIX = github.com/riipandi/gogon/pkg/constants
 COPY . .
 RUN go mod download && go mod tidy \
   && CGO_ENABLED=0 go build -trimpath -ldflags="-w -s \
-  -X github.com/riipandi/gogon/pkg/constants.Version=${VERSION} \
+  -X github.com/riipandi/gogon/pkg/constants.Version=${BUILD_VERSION} \
   -X github.com/riipandi/gogon/pkg/constants.BuildDate=${BUILD_DATE} \
   -extldflags '-static'" -a -v -o gogon cmd/app/main.go
 

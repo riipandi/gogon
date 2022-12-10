@@ -33,8 +33,10 @@ release-publish:
 
 docker-build:
 	@echo Running Docker Build version $(BUILD_VERSION)
-	@DOCKER_BUILDKIT=1 docker build --build-arg VERSION=$(BUILD_VERSION) --build-arg BUILD_DATE=$(BUILD_DATE) \
-	-t $(IMAGE_NAME):latest -t $(IMAGE_NAME):$(BUILD_VERSION) .
+	@DOCKER_BUILDKIT=1 docker build --build-arg BUILD_VERSION=$(BUILD_VERSION) \
+	  	--build-arg BUILD_DATE=$(BUILD_DATE) \
+		-t $(IMAGE_NAME):$(BUILD_VERSION) \
+		-t $(IMAGE_NAME):latest .
 
 docker-run:
 	docker run --rm -it --name $(CONTAINER_NAME) -e PORT=8000 -p 8000:8000 $(IMAGE_NAME):latest

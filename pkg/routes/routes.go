@@ -34,6 +34,9 @@ func CallApiRoutes(bind string) {
 	r.StaticFile("/robots.txt", "./assets/robots.txt")
 	r.StaticFile("/favicon.ico", "./assets/favicon.ico")
 
+	// Health Check route
+	r.GET("/health", func(c *gin.Context) { c.String(http.StatusOK, "OK") })
+
 	// Prefixed routes (group)
 	apiRoute := r.Group("/api")
 	{

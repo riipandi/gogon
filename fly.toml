@@ -1,0 +1,67 @@
+# Created by Aris Ripandi (10 Dec 2022)
+
+app = "gogon"
+kill_signal = "SIGINT"
+kill_timeout = 5
+processes = []
+
+[experimental]
+  private_network = true
+  allowed_public_ports = []
+  auto_rollback = true
+
+[build]
+  # image = "riipandi/gogon:latest"
+  dockerfile = "Dockerfile"
+
+[build.args]
+  BUILD_DATE = "2022-12-10T20:29:41Z"
+  BUILD_VERSION = "0.0.1-fly"
+
+# [deploy]
+#   strategy = "canary"
+#   release_command = "gogon migrate"
+
+[env]
+  PORT = "8000"
+  FLY_REGION = "sjc"
+
+# [mounts]
+#   destination = "/appdata"
+#   source = "gogon_data"
+
+[[services]]
+  internal_port = 8000
+  processes = ["app"]
+  protocol = "tcp"
+  script_checks = []
+
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
+
+  [[services.ports]]
+    force_https = true
+    handlers = ["http"]
+    port = 80
+
+  [[services.ports]]
+    handlers = ["tls", "http"]
+    port = 443
+
+  [[services.tcp_checks]]
+    grace_period = "1s"
+    interval = "15s"
+    restart_limit = 0
+    timeout = "2s"
+
+  [[services.http_checks]]
+    interval = "10s"
+    grace_period = "5s"
+    method = "get"
+    path = "/health"
+    protocol = "http"
+    timeout = "2s"
+    tls_skip_verify = false
+    headers = {}
