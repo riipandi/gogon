@@ -18,7 +18,10 @@ build-prod: deps
 	@CGO_ENABLED=0 go build --ldflags="$(LD_FLAGS)" -a -o build/gogon cmd/app/main.go
 	@ls -lAh build
 
-release:
+release-single:
+	@goreleaser build --single-target
+
+release-snapshot:
 	@goreleaser release --snapshot --rm-dist
 
 # --------------------------------------------------------------------------------------------------
