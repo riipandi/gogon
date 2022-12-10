@@ -19,7 +19,7 @@ build-prod: deps
 	@ls -lAh build
 
 release-single:
-	@goreleaser build --single-target
+	@goreleaser build --single-target --snapshot --rm-dist
 
 release-snapshot:
 	@goreleaser release --snapshot --rm-dist --skip-publish
