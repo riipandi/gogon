@@ -14,14 +14,14 @@ permissions:
   contents: write
 
 jobs:
-  goreleaser:
+  create-release:
     runs-on: ubuntu-22.04
     timeout-minutes: 15
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 2
+          fetch-depth: 0
 
       # - name: Setup PNPM Package Manager
       #   uses: pnpm/action-setup@v2
@@ -49,15 +49,12 @@ jobs:
       # If the artificats differs, a "dirty error" is thrown - https://goreleaser.com/errors/dirty/
       # - name: Build Admin dashboard UI
       #   run: npm --prefix=./web ci && npm --prefix=./web run build
-
       # The prebuilt golangci-lint doesn't support go 1.18+ yet
       # https://github.com/golangci/golangci-lint/issues/2649
       # - name: Run linter
       #   uses: golangci/golangci-lint-action@v3
-
-      - name: Run tests
-        run: go test ./...
-
+      # - name: Run tests
+      #   run: go test ./...
       - name: Run GoReleaser
         uses: goreleaser/goreleaser-action@v3
         with:
