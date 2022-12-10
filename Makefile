@@ -20,7 +20,7 @@ docker-build:
 	DOCKER_BUILDKIT=1 docker build --build-arg VERSION=$(VERSION) -t $(IMAGE_NAME):latest -t $(IMAGE_NAME):$(VERSION) .
 
 docker-run:
-	docker run --rm -it --name ${CONTAINER_NAME} -e PORT=8090 -p 8000:8090 $(IMAGE_NAME):latest
+	docker run --rm -it --name ${CONTAINER_NAME} -e PORT=8090 -p 8090:8090 $(IMAGE_NAME):latest
 
 docker-shell:
 	docker run --rm -it --entrypoint sh $(IMAGE_NAME):latest
