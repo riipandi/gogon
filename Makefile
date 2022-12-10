@@ -1,29 +1,37 @@
-DEFAULT_VERSION=beta-`git rev-parse --short HEAD`
-VERSION := $(or $(VERSION),$(DEFAULT_VERSION))
-IMAGE_NAME="riipandi/gogon"
-CONTAINER_NAME="gogon"
+BUILD_VERSION := $(or $(BUILD_VERSION),git-`git rev-parse --short HEAD`)
+BUILD_DATE = $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
+IMAGE_NAME = riipandi/gogon
+CONTAINER_NAME = gogon
+
+# Golang build flags
+PKG_FLAGS_PREFIX = github.com/riipandi/gogon/pkg/constants
+LD_FLAGS = -w -s -extldflags '-static' -X $(PKG_FLAGS_PREFIX).Version=$(BUILD_VERSION) -X $(PKG_FLAGS_PREFIX).BuildDate=$(BUILD_DATE)
 
 deps:
-	go mod download && go mod tidy
+	@go mod download && go mod tidy
 
 dev:
-	air -c config/air.config.toml
+	@air -c config/air.config.toml
 
-build-all:
-	CGO_ENABLED=0 go build -v -ldflags='-w -s -extldflags "-static"' -a -o build/gogon cmd/app/main.go
+build-prod: deps
+	@echo Running Build version $(BUILD_VERSION)
+	@CGO_ENABLED=0 go build --ldflags="$(LD_FLAGS)" -a -o build/gogon cmd/app/main.go
+	@ls -lAh build
 
 # --------------------------------------------------------------------------------------------------
 # Docker scripts
 # --------------------------------------------------------------------------------------------------
 
 docker-build:
-	DOCKER_BUILDKIT=1 docker build --build-arg VERSION=$(VERSION) -t $(IMAGE_NAME):latest -t $(IMAGE_NAME):$(VERSION) .
+	@echo Running Docker Build version $(BUILD_VERSION)
+	@DOCKER_BUILDKIT=1 docker build --build-arg VERSION=$(BUILD_VERSION) --build-arg BUILD_DATE=$(BUILD_DATE) \
+	-t $(IMAGE_NAME):latest -t $(IMAGE_NAME):$(BUILD_VERSION) .
 
 docker-run:
-	docker run --rm -it --name ${CONTAINER_NAME} -e PORT=8090 -p 8090:8090 $(IMAGE_NAME):latest
+	docker run --rm -it --name $(CONTAINER_NAME) -e PORT=8000 -p 8000:8000 $(IMAGE_NAME):latest
 
 docker-shell:
 	docker run --rm -it --entrypoint sh $(IMAGE_NAME):latest
 
 docker-migrate:
-	docker exec --env-file=env.docker ${CONTAINER_NAME} /usr/bin/gogon migrate
+	docker exec --env-file=env.docker $(CONTAINER_NAME) /usr/bin/gogon migrate

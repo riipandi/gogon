@@ -5,6 +5,6 @@ import (
 	"github.com/riipandi/gogon/pkg/handler"
 )
 
-func InfoRoutes(g *gin.RouterGroup) {
-	g.GET("/", handler.RootHandler)
+func infoRoutes(g *gin.RouterGroup) {
+	g.GET("", handler.ApiInfoHandler)
 }

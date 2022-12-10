@@ -1,4 +1,4 @@
-# Go React Project Starter
+# Go Gin Project Starter
 
 [![License](https://img.shields.io/github/license/riipandi/gogon?style=flat-square)](https://github.com/riipandi/gogon/blob/master/LICENSE)
 [![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?style=flat-square)](./CODE_OF_CONDUCT.md)
@@ -8,7 +8,7 @@
 
 ---
 
-> WIP! Golang starter project template with Gin and Vite React.
+> WIP! Golang starter project template with Gin, Cobra, and Viper.
 
 ## License
 
