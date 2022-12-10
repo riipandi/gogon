@@ -50,7 +50,7 @@ env.*
 !env.example
 
 # compiled output
-dist
+dist/
 dist-ssr
 /out-tsc
 tmp

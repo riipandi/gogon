@@ -18,6 +18,9 @@ build-prod: deps
 	@CGO_ENABLED=0 go build --ldflags="$(LD_FLAGS)" -a -o build/gogon cmd/app/main.go
 	@ls -lAh build
 
+release:
+	@goreleaser release --snapshot --rm-dist
+
 # --------------------------------------------------------------------------------------------------
 # Docker scripts
 # --------------------------------------------------------------------------------------------------
