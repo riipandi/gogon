@@ -6,3 +6,6 @@ deps:
 
 dev:
 	air -c config/air.config.toml
+
+build-all:
+	CGO_ENABLED=0 go build -v -ldflags='-w -s -extldflags "-static"' -a -o build/gogon cmd/app/main.go

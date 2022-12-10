@@ -2,6 +2,7 @@ package command
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/riipandi/gogon/pkg/handler"
 	"github.com/spf13/cobra"
 )
 
@@ -13,12 +14,25 @@ var serveCmd = &cobra.Command{
 		fhost, _ := cmd.Flags().GetString("host")
 
 		r := gin.Default()
+		r.SetTrustedProxies([]string{"127.0.0.1"})
 
-		r.GET("/", func(c *gin.Context) {
-			c.JSON(200, gin.H{
-				"message": "Hello Gogon",
-			})
-		})
+		// Global middleware
+		// Logger middleware will write the logs to gin.DefaultWriter even if you set with GIN_MODE=release.
+		// By default gin.DefaultWriter = os.Stdout
+		r.Use(gin.Logger())
+
+		// Recovery middleware recovers from any panics and writes a 500 if there was one.
+		r.Use(gin.Recovery())
+
+		// Serve static favicon file from a location relative to main.go directory
+		r.StaticFile("/favicon.ico", "./assets/favicon.ico")
+
+		// Prefixed routes (group)
+		apiRoute := r.Group("/api")
+		{
+			apiRoute.GET("/", handler.RootHandler)
+			// routes.InfoRoutes(apiRoute.Group("/info"))
+		}
 
 		r.Run(fhost)
 	},
