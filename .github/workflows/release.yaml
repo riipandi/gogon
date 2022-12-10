@@ -15,34 +15,29 @@ permissions:
 
 jobs:
   goreleaser:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     timeout-minutes: 15
-    strategy:
-      matrix:
-        node-version: [16.x]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
 
-      - name: Setup PNPM Package Manager
-        uses: pnpm/action-setup@v2
-        with:
-          version: ^7.17
-          run_install: |
-            - args: [--global, prettier, husky, lint-staged, tailwindcss]
-            - args: [--no-frozen-lockfile]
+      # - name: Setup PNPM Package Manager
+      #   uses: pnpm/action-setup@v2
+      #   with:
+      #     version: ^7.17
+      #     run_install: |
+      #       - args: [--global, prettier, husky, lint-staged, tailwindcss]
+      #       - args: [--no-frozen-lockfile]
 
-      - name: Setup Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: "pnpm"
+      # - name: Setup Node.js
+      #   uses: actions/setup-node@v3
+      #   with:
+      #     cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install
+      # - name: Install dependencies
+      #   run: pnpm install
 
       - name: Set up Go
         uses: actions/setup-go@v3
