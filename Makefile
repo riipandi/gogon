@@ -22,7 +22,7 @@ release-single:
 	@goreleaser build --single-target
 
 release-snapshot:
-	@goreleaser release --snapshot --rm-dist
+	@goreleaser release --snapshot --rm-dist --skip-publish
 
 release-publish:
 	@goreleaser release --rm-dist
