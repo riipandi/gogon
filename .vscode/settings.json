@@ -1,0 +1,10 @@
+{
+    "search.exclude": {
+        "**/build/*/**": true,
+        "**/vendor/*/**": true
+    },
+    "editor.codeActionsOnSave": {
+        "source.fixAll": true
+    },
+    "editor.formatOnSave": true
+}
