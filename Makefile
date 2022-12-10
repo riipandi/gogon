@@ -24,6 +24,9 @@ release-single:
 release-snapshot:
 	@goreleaser release --snapshot --rm-dist
 
+release-publish:
+	@goreleaser release --rm-dist
+
 # --------------------------------------------------------------------------------------------------
 # Docker scripts
 # --------------------------------------------------------------------------------------------------
