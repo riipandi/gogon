@@ -48,6 +48,10 @@ fly ips allocate-v6 -a gogon
 fly certs create api.example.com -a gogon
 ```
 
+## References
+
+-   [Choosing the Right Go Web Framework](https://brunoscheufler.com/blog/2019-04-26-choosing-the-right-go-web-framework)
+
 ## License
 
 This project is open-sourced software licensed under the [MIT license](https://aris.mit-license.org).
