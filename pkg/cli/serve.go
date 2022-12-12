@@ -1,7 +1,7 @@
-package command
+package cli
 
 import (
-	"github.com/riipandi/gogon/pkg/routes"
+	"github.com/riipandi/gogon/pkg/api"
 	"github.com/spf13/cobra"
 )
 
@@ -10,7 +10,7 @@ var serveCmd = &cobra.Command{
 	Short: "Run the web client",
 	Run: func(cmd *cobra.Command, args []string) {
 		fhost, _ := cmd.Flags().GetString("host")
-		routes.CallApiRoutes(fhost)
+		api.CallApiRoutes(fhost)
 	},
 }
 

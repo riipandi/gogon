@@ -4,8 +4,15 @@ IMAGE_NAME = riipandi/gogon
 CONTAINER_NAME = gogon
 
 # Golang build flags
-PKG_FLAGS_PREFIX = github.com/riipandi/gogon/pkg/constants
+PKG_FLAGS_PREFIX = github.com/riipandi/gogon/pkg/config
 LD_FLAGS = -w -s -extldflags '-static' -X $(PKG_FLAGS_PREFIX).Version=$(BUILD_VERSION) -X $(PKG_FLAGS_PREFIX).BuildDate=$(BUILD_DATE)
+
+# --------------------------------------------------------------------------------------------------
+# Development scripts
+# --------------------------------------------------------------------------------------------------
+
+clean:
+	@find . -name *_gen.go -type f -delete
 
 deps:
 	@go mod download && go mod tidy
@@ -13,10 +20,18 @@ deps:
 dev:
 	@air -c config/air.config.toml
 
-build-prod: deps
+lint: gofmt
+	@golangci-lint run -c golangci.yml ./...
+	@gosec -quiet -no-fail ./...
+
+build-app: clean deps
 	@echo Running Build version $(BUILD_VERSION)
 	@CGO_ENABLED=0 go build --ldflags="$(LD_FLAGS)" -a -o build/gogon cmd/app/main.go
 	@ls -lAh build
+
+# --------------------------------------------------------------------------------------------------
+# Release scripts
+# --------------------------------------------------------------------------------------------------
 
 release-single:
 	@goreleaser build --single-target --snapshot --rm-dist
@@ -37,6 +52,9 @@ docker-build:
 	  	--build-arg BUILD_DATE=$(BUILD_DATE) \
 		-t $(IMAGE_NAME):$(BUILD_VERSION) \
 		-t $(IMAGE_NAME):latest .
+
+docker-push:
+	docker push $(IMAGE_NAME):latest && docker push $(IMAGE_NAME):0.1.0
 
 docker-run:
 	docker run --rm -it --name $(CONTAINER_NAME) -e PORT=8000 -p 8000:8000 $(IMAGE_NAME):latest

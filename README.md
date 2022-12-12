@@ -1,14 +1,34 @@
-# Go Gin Project Starter
+<img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="200" />
 
-[![License](https://img.shields.io/github/license/riipandi/gogon?style=flat-square)](https://github.com/riipandi/gogon/blob/master/LICENSE)
-[![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?style=flat-square)](./CODE_OF_CONDUCT.md)
-[![GitHub contributors](https://img.shields.io/github/contributors/riipandi/gogon?style=flat-square)](https://github.com/riipandi/gogon/graphs/contributors)
-[![Sponsors](https://img.shields.io/static/v1?color=26B643&label=Sponsor&message=%E2%9D%A4&logo=GitHub&style=flat-square)](https://github.com/sponsors/riipandi)
-[![Twitter](https://img.shields.io/twitter/follow/riipandi?style=social)](https://twitter.com/riipandi)
+Golang starter project template with [Cobra][cobra], [Viper][viper], and whatever router library you want to use.
+This aims to make you able to quickly create cool applications without having to bother with the
+initial setup.
 
----
+This repository contains a **Go** starter project template.
 
-> WIP! Golang starter project template with Gin, Cobra, and Viper.
+[![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?style=flat-square&color=blueviolet)](https://github.com/riipandi/gogon/graphs/contributors)
+[![Go Report Card](https://goreportcard.com/badge/github.com/riipandi/gogon?style=flat-square)](https://goreportcard.com/report/github.com/riipandi/gogon)
+[![License](https://img.shields.io/github/license/riipandi/gogon?style=flat-square&color=informational)](https://github.com/riipandi/gogon/blob/master/LICENSE)
+[![Twitter](https://img.shields.io/twitter/follow/riipandi?style=flat-square&color=00acee)](https://twitter.com/riipandi)
+
+```bash
+npx degit riipandi/gogon myapp-name
+```
+
+In this repo I'm using [Bunrouter][bunrouter] from [Uptrace][uptrace], but you can change it with whatever library you want.
+
+> **_Warning! This project still WIP!_**
+
+## Quick Start
+
+> TODO
+
+## Build Container
+
+```sh
+echo $GITHUB_TOKEN | docker login ghcr.io --username YOUR_USERNAME --password-stdin
+echo $DOCKER_TOKEN | docker login docker.io --username YOUR_USERNAME --password-stdin
+```
 
 ## Deployment to Fly.io
 
@@ -58,3 +78,12 @@ This project is open-sourced software licensed under the [MIT license](https://a
 
 Copyrights in this project are retained by their contributors.
 See the [license file](./LICENSE) for more information.
+
+---
+
+<sub>🤫 Psst! You can [support my work here](https://github.com/sponsors/riipandi).</sub>
+
+[cobra]: https://cobra.dev/
+[viper]: https://github.com/spf13/viper
+[bunrouter]: https://github.com/uptrace/bunrouter
+[uptrace]: https://uptrace.dev/
