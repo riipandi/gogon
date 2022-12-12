@@ -17,6 +17,7 @@ func CallApiRoutes(bind string) {
 	router.GET("/", indexHandler)
 
 	router.WithGroup("/api", func(g *bunrouter.Group) {
+		g.GET("", indexHandler)
 		g.GET("/users/:id", debugHandler)
 		g.GET("/users/current", debugHandler)
 		g.GET("/users/*path", debugHandler)
