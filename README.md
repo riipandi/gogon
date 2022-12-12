@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="200" />
+<img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="220" />
 
 Golang starter project template with [Cobra][cobra], [Viper][viper], and whatever router library you want to use.
 This aims to make you able to quickly create cool applications without having to bother with the
