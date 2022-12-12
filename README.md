@@ -1,7 +1,7 @@
 <img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="220" />
 
 Golang starter project template with [Cobra][cobra], [Viper][viper], and whatever router library you want to use.
-This aims to make you able to quickly create cool applications without having to bother with the
+This aims to make you able to quickly create awesome app without having to bother with the
 initial setup.
 
 This repository contains a **Go** starter project template.
@@ -17,11 +17,9 @@ npx degit riipandi/gogon myapp-name
 
 In this repo I'm using [Bunrouter][bunrouter] from [Uptrace][uptrace], but you can change it with whatever library you want.
 
-> **_Warning! This project still WIP!_**
-
 ## Quick Start
 
-> TODO
+> **_Warning! This project still WIP!_**
 
 ## Build Container
 
