@@ -15,9 +15,7 @@ var (
 		Use:   "gogon",
 		Short: "Golang starter project template with Gin, Cobra, and Viper.",
 		Long:  art.String("Gogon v1.0"),
-		Run: func(cmd *cobra.Command, args []string) {
-			cmd.Help()
-		},
+		Run:   func(cmd *cobra.Command, _ []string) { cmd.Help() },
 	}
 )
 
