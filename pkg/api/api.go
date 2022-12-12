@@ -7,6 +7,7 @@ import (
 	"os"
 	"runtime"
 
+	"github.com/riipandi/gogon/pkg/handler"
 	"github.com/uptrace/bunrouter"
 	"github.com/uptrace/bunrouter/extra/reqlog"
 )
@@ -18,9 +19,9 @@ type PanicHandler struct {
 func CallApiRoutes(bind string) {
 	router := bunrouter.New(
 		bunrouter.Use(reqlog.NewMiddleware()),
-		bunrouter.Use(reqlog.NewMiddleware(
-			reqlog.FromEnv("BUNDEBUG"),
-		)),
+		bunrouter.Use(reqlog.NewMiddleware(reqlog.FromEnv("BUNDEBUG"))),
+		bunrouter.WithNotFoundHandler(handler.NotFoundHandler),
+		bunrouter.WithMethodNotAllowedHandler(handler.MethodNotAllowedHandler),
 	)
 
 	// Register routes
