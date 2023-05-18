@@ -15,7 +15,7 @@ clean:
 	@find . -name *_gen.go -type f -delete
 
 deps:
-	@go mod download && go mod tidy
+	@go mod download && go mod tidy && mkdir -p build
 
 dev:
 	@air -c config/air.config.toml
