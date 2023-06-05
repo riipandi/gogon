@@ -24,7 +24,7 @@ lint: gofmt
 	@golangci-lint run -c golangci.yml ./...
 	@gosec -quiet -no-fail ./...
 
-build-app: clean deps
+build: clean deps
 	@echo Running Build version $(BUILD_VERSION)
 	@CGO_ENABLED=0 go build --ldflags="$(LD_FLAGS)" -a -o build/gogon cmd/app/main.go
 	@ls -lAh build
