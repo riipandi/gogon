@@ -58,7 +58,8 @@ tmp
 .output
 .build*
 builds
-build
+build/*
+!build/.gitkeep
 temp
 
 # tests coverage
