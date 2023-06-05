@@ -61,6 +61,7 @@ builds
 build/*
 !build/.gitkeep
 temp
+/gogon
 
 # tests coverage
 coverage.out
