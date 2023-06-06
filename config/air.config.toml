@@ -3,7 +3,7 @@ testdata_dir = "testdata"
 tmp_dir = "build/temp"
 
 [build]
-  args_bin = ["serve"]
+  args_bin = ["--address 127.0.0.1:9090"]
   bin = "./build/gogon"
   cmd = "go build -o ./build/gogon cmd/app/main.go"
   exclude_dir = ["static"]
