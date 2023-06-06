@@ -43,11 +43,9 @@ Thumbs.db
 *.db
 
 # env files
-.env.*
-!.env*.example
-env.*
-!env.docker
-!env.example
+.env*
+!.env.example
+!.env.docker
 
 # compiled output
 dist/

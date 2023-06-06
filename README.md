@@ -47,7 +47,7 @@ fly postgres create --org personal --name gogon-db --region sjc --password $(ope
 fly postgres attach gogon-db -a gogon
 
 # Load secrets from dotenv file then initialize deployment
-fly secrets set $(cat env.fly | xargs -I %s echo %s)
+fly secrets set $(cat .env | xargs -I %s echo %s)
 fly secrets list
 
 # Deploy the app

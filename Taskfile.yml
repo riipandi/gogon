@@ -95,4 +95,4 @@ tasks:
 
   docker-migrate:
     cmds:
-      - docker exec --env-file=env.docker $CONTAINER_NAME /usr/bin/gogon migrate
+      - docker exec --env-file .env.docker $CONTAINER_NAME /usr/bin/gogon migrate
