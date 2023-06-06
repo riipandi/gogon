@@ -1,0 +1,98 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+
+vars:
+  GIT_SHA:
+    sh: git rev-parse --short HEAD
+  BUILD_DATE:
+    sh: date -u +"%Y-%m-%dT%H:%M:%SZ"
+
+env:
+  BUILD_VERSION: git-{{.GIT_SHA}}
+  IMAGE_NAME: riipandi/gogon
+  CONTAINER_NAME: gogon
+  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/pkg/config
+
+tasks:
+  dev:
+    deps:
+      - deps
+    cmds:
+      - air -c config/air.config.toml
+
+  build:
+    env:
+      CGO_ENABLED: 0
+      LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/pkg/config.Version={{.GIT_SHA}} -X $PKG_FLAGS_PREFIX.BuildDate={{.BUILD_DATE}}"
+    deps:
+      - clean
+      - deps
+    cmds:
+      - go build --ldflags="$LD_FLAGS" -a -o build/gogon cmd/app/main.go
+      - ls -lAh build
+
+  start:
+    deps:
+      - build
+    cmds:
+      - ./build/gogon serve
+
+  format:
+    cmds:
+      - golangci-lint run -c golangci.yml ./...
+      - gosec -quiet -no-fail ./...
+
+  lint:
+    deps:
+      - format
+    cmds:
+      - echo 'Not yet implemented'
+
+  deps:
+    cmds:
+      - go mod download
+      - go mod tidy
+      - mkdir -p build
+
+  clean:
+    cmds:
+      - find . -name *_gen.go -type f -delete
+
+  release-single:
+    cmds:
+      - goreleaser build --single-target --snapshot --rm-dist
+
+  release-snapshot:
+    cmds:
+      - goreleaser release --snapshot --rm-dist --skip-publish
+
+  release-publih:
+    cmds:
+      - goreleaser release --rm-dist
+
+  docker-build:
+    env:
+      DOCKER_BUILDKIT: 1
+    cmds:
+      - |
+        docker build --build-arg BUILD_VERSION=$BUILD_VERSION \
+        --build-arg BUILD_DATE={{.BUILD_DATE}} \
+        -t $IMAGE_NAME:$BUILD_VERSION \
+        -t $IMAGE_NAME:latest .
+      - docker image list | grep $IMAGE_NAME
+
+  docker-push:
+    cmds:
+      - goreleaser release --rm-distdocker push $IMAGE_NAME:latest && docker push $IMAGE_NAME:0.1.0
+
+  docker-run:
+    cmds:
+      - docker run --rm -it --name $CONTAINER_NAME -e PORT=9090 -p 9090:9090 $IMAGE_NAME:latest
+
+  docker-shell:
+    cmds:
+      - docker run --rm -it --entrypoint sh $IMAGE_NAME:latest
+
+  docker-migrate:
+    cmds:
+      - docker exec --env-file=env.docker $CONTAINER_NAME /usr/bin/gogon migrate

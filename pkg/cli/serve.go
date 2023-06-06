@@ -18,5 +18,5 @@ func init() {
 	rootCmd.AddCommand(serveCmd)
 
 	// Local flags which will only run when this command is called directly.
-	serveCmd.Flags().StringP("host", "H", "127.0.0.1:8000", "Bind web client host and port")
+	serveCmd.Flags().StringP("host", "H", "127.0.0.1:9090", "Bind web client host and port")
 }

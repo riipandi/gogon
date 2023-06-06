@@ -23,7 +23,7 @@ processes = []
 #   release_command = "gogon migrate"
 
 [env]
-  PORT = "8000"
+  PORT = "9090"
   FLY_REGION = "sjc"
 
 # [mounts]
@@ -31,7 +31,7 @@ processes = []
 #   source = "gogon_data"
 
 [[services]]
-  internal_port = 8000
+  internal_port = 9090
   processes = ["app"]
   protocol = "tcp"
   script_checks = []
