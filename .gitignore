@@ -51,14 +51,15 @@ Thumbs.db
 dist/
 dist-ssr
 /out-tsc
-tmp
 .dist
 .output
 .build*
 builds
 build/*
 !build/.gitkeep
-temp
+tmp/
+temp/
+vendor/
 /gogon
 
 # tests coverage

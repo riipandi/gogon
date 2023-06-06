@@ -68,7 +68,9 @@ fly certs create api.example.com -a gogon
 
 ## References
 
--   [Choosing the Right Go Web Framework](https://brunoscheufler.com/blog/2019-04-26-choosing-the-right-go-web-framework)
+- [Choosing the Right Go Web Framework](https://brunoscheufler.com/blog/2019-04-26-choosing-the-right-go-web-framework)
+- [How To Structure A Golang Project](https://blog.boot.dev/golang/golang-project-structure)
+- [How to Structure Your Project in Golang](https://medium.com/geekculture/how-to-structure-your-project-in-golang-the-backend-developers-guide-31be05c6fdd9)
 
 ## License
 

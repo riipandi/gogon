@@ -2,6 +2,7 @@
 /tmp
 /build
 /dist
+/vendor
 .DS_Store
 .DS_Store?
 .dockerignore

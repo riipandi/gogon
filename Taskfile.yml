@@ -50,9 +50,10 @@ tasks:
 
   deps:
     cmds:
+      - mkdir -p build
       - go mod download
       - go mod tidy
-      - mkdir -p build
+      - go mod vendor
 
   clean:
     cmds:
