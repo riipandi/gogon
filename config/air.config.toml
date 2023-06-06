@@ -34,4 +34,4 @@ tmp_dir = "build/temp"
   clean_on_exit = false
 
 [screen]
-  clear_on_rebuild = false
+  clear_on_rebuild = true
