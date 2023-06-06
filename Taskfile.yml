@@ -23,7 +23,7 @@ tasks:
   build:
     env:
       CGO_ENABLED: 0
-      LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/pkg/config.Version={{.GIT_SHA}} -X $PKG_FLAGS_PREFIX.BuildDate={{.BUILD_DATE}}"
+      LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/pkg/config.Version={{.BUILD_VERSION}}"
     deps:
       - clean
       - deps
@@ -77,9 +77,7 @@ tasks:
     cmds:
       - |
         docker build --build-arg BUILD_VERSION=$BUILD_VERSION \
-        --build-arg BUILD_DATE={{.BUILD_DATE}} \
-        -t $IMAGE_NAME:$BUILD_VERSION \
-        -t $IMAGE_NAME:latest .
+        -t $IMAGE_NAME:$BUILD_VERSION -t $IMAGE_NAME:latest .
       - docker image list | grep $IMAGE_NAME
 
   docker-push:
@@ -88,7 +86,7 @@ tasks:
 
   docker-run:
     cmds:
-      - docker run --rm -it --name $CONTAINER_NAME -e PORT=9090 -p 9090:9090 $IMAGE_NAME:latest
+      - docker run --rm -it --name $CONTAINER_NAME --env-file .env.docker -p 9090:9090 $IMAGE_NAME:latest
 
   docker-shell:
     cmds:

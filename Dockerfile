@@ -1,24 +1,22 @@
+# syntax=docker/dockerfile:1.4
+
 # -----------------------------------------------------------------------------
 # Build the application binaries
 # -----------------------------------------------------------------------------
-FROM golang:1.19-alpine3.17 as builder
+FROM golang:1.20-alpine as builder
 WORKDIR /app
 
 ARG BUILD_VERSION 0.0.0
-ARG BUILD_DATE 0000-00-00T00:00:00Z
-ENV CGO_ENABLED 0
-
 ENV BUILD_VERSION $BUILD_VERSION
-ENV BUILD_DATE $BUILD_DATE
-ENV GIN_MODE release
-ENV PKG_FLAGS_PREFIX = github.com/riipandi/gogon/pkg/config
+ENV CGO_ENABLED 0
 
 COPY . .
 RUN go mod download && go mod tidy
-RUN go build -trimpath -ldflags="-w -s \
-  -X github.com/riipandi/gogon/pkg/config.Version=${BUILD_VERSION} \
-  -X github.com/riipandi/gogon/pkg/config.BuildDate=${BUILD_DATE} \
-  -extldflags '-static'" -a -v -o gogon cmd/app/main.go
+RUN export BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)" &&\
+  export PKG_PREFIX="github.com/riipandi/gogon/pkg/config" &&\
+  go build -trimpath -ldflags="-w -s -X ${PKG_PREFIX}.Version=${BUILD_VERSION} \
+  -X ${PKG_PREFIX}.BuildDate=${BUILD_DATE} -extldflags '-static'" \
+  -a -v -o gogon cmd/app/main.go
 
 # -----------------------------------------------------------------------------
 # Use the slim image for a lean production container.
@@ -26,22 +24,13 @@ RUN go build -trimpath -ldflags="-w -s \
 FROM alpine:3.17 as runner
 LABEL org.opencontainers.image.source="https://github.com/riipandi/gogon"
 
-ARG PORT 9090
-ENV PORT $PORT
-ENV GIN_MODE release
+RUN apk -U upgrade && apk add --no-cache dumb-init ca-certificates
+RUN addgroup -g 1001 -S groot && adduser -S groot -u 1001
+RUN mkdir -p /appdata && chown -R groot:groot /appdata
 
-COPY --from=builder --chown=groot:groot /app/init/entrypoint.sh /usr/bin
-RUN apk update && apk add --no-cache ca-certificates && rm -rf /var/cache/apk/* &&
-  addgroup -g 1001 -S groot && adduser -S groot -u 1001 &&
-  mkdir -p /appdata && chown -R groot:groot /appdata &&
-  chown groot:groot /usr/bin/entrypoint.sh &&
-  chmod +x /usr/bin/entrypoint.sh
-
-COPY --from=builder --chown=groot:groot /app/gogon /usr/bin
+COPY --from=builder --chown=groot:groot /app/gogon /usr/bin/gogon
 
 USER groot
-EXPOSE $PORT
+EXPOSE 9090
 
-# ENTRYPOINT [ "sh", "-c", "gogon serve --host 0.0.0.0:9090", "--" ]
-
-ENTRYPOINT [ "/usr/bin/entrypoint.sh", "--" ]
+ENTRYPOINT ["/usr/bin/gogon", "--address", "0.0.0.0:9090"]
