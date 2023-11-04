@@ -1,34 +1,33 @@
 root = "."
 testdata_dir = "testdata"
-tmp_dir = "build/temp"
+tmp_dir = "tmp"
 
 [build]
+  full_bin = "godotenv -f .env build/gogon"
+  cmd = "go build -o build/gogon cmd/app/main.go"
   args_bin = ["--address 127.0.0.1:3080"]
-  bin = "./build/gogon"
-  cmd = "go build -o ./build/gogon cmd/app/main.go"
   exclude_dir = ["static"]
   exclude_file = []
   exclude_regex = ["_test.go"]
   exclude_unchanged = false
   follow_symlink = false
-  delay = 1000
-  full_bin = ""
   include_dir = ["cmd", "pkg", "internal"]
   include_ext = ["go"]
   kill_delay = "0s"
-  log = "./build/build-errors.log"
+  delay = 500
+  log = "build/build-errors.log"
   send_interrupt = false
   stop_on_error = true
 
 [color]
-  app = ""
+  app = "blue"
   build = "yellow"
   main = "magenta"
   runner = "green"
   watcher = "cyan"
 
 [log]
-  time = true
+  time = false
 
 [misc]
   clean_on_exit = false

@@ -26,6 +26,7 @@ logs
 /coverage
 /libpeerconnection.log
 /typings
+build-errors.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
@@ -42,11 +43,6 @@ Thumbs.db
 *.sqlite3
 *.db
 
-# env files
-.env*
-!.env.example
-!.env.docker
-
 # compiled output
 dist/
 dist-ssr
@@ -54,9 +50,9 @@ dist-ssr
 .dist
 .output
 .build*
+.parcel-cache
 builds
-build/*
-!build/.gitkeep
+build/
 tmp/
 temp/
 vendor/
@@ -65,14 +61,14 @@ vendor/
 # tests coverage
 coverage.out
 
-# plaintask todo files
-*.todo
+# env files
+.env*
+!.env.example
+!.env.docker
+
+# fly.toml
+fly.*.toml*
+!fly.*example.toml
 
 # projects
-.parcel-cache
-build-errors.log
-
-public/*
-!public/.gitkeep
-!public/humans.txt
 web/dist/
