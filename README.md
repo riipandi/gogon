@@ -15,7 +15,7 @@ This repository contains a **Go** starter project template.
 npx degit riipandi/gogon myapp-name
 ```
 
-In this repo I'm using [Bunrouter][bunrouter] from [Uptrace][uptrace], but you can change it with whatever library you want.
+In this repo I'm using [go-chi][go-chi], but you can change it with whatever library you want.
 
 ## Quick Start
 
@@ -34,10 +34,10 @@ echo $DOCKER_TOKEN | docker login docker.io --username YOUR_USERNAME --password-
 
 ```sh
 # Create Fly.io app
-fly apps create gogon --org personal
+fly apps create gogon
 
 # Create volume for the data.
-fly postgres create --org personal --name gogon-db --region sjc --password $(openssl rand -hex 8)
+fly postgres create --name gogon-db --region sjc --password $(openssl rand -hex 8)
 ```
 
 ### Launch and deploy
@@ -85,5 +85,4 @@ See the [license file](./LICENSE) for more information.
 
 [cobra]: https://cobra.dev/
 [viper]: https://github.com/spf13/viper
-[bunrouter]: https://github.com/uptrace/bunrouter
-[uptrace]: https://uptrace.dev/
+[go-chi]: https://github.com/go-chi/chi

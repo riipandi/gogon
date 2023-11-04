@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"net/http"
 
-	"github.com/riipandi/gogon/pkg/config"
+	"github.com/riipandi/gogon/meta"
 	"github.com/uptrace/bunrouter"
 )
 
@@ -29,9 +29,9 @@ func ApiRootHandler(w http.ResponseWriter, req bunrouter.Request) error {
 
 func ApiInfoHandler(w http.ResponseWriter, req bunrouter.Request) error {
 	return bunrouter.JSON(w, bunrouter.H{
-		"version":    config.Version,
-		"platform":   config.Platform,
-		"build_date": config.BuildDate,
+		"version":    meta.Version,
+		"platform":   meta.Platform,
+		"build_date": meta.BuildDate,
 	})
 }
 

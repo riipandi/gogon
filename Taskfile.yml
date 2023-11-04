@@ -11,7 +11,7 @@ env:
   BUILD_VERSION: git-{{.GIT_SHA}}
   IMAGE_NAME: riipandi/gogon
   CONTAINER_NAME: gogon
-  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/pkg/config
+  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/meta
 
 tasks:
   dev:
@@ -23,7 +23,7 @@ tasks:
   build:
     env:
       CGO_ENABLED: 0
-      LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/pkg/config.Version={{.BUILD_VERSION}}"
+      LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/meta.Version={{.BUILD_VERSION}}"
     deps:
       - clean
       - deps
@@ -76,7 +76,7 @@ tasks:
       DOCKER_BUILDKIT: 1
     cmds:
       - |
-        docker build --build-arg BUILD_VERSION=$BUILD_VERSION \
+        docker build --build-arg BUILD_VERSION=$BUILD_VERSION --build-arg BUILD_DATE={{.BUILD_DATE}} \
         -t $IMAGE_NAME:$BUILD_VERSION -t $IMAGE_NAME:latest .
       - docker image list | grep $IMAGE_NAME
 
@@ -86,7 +86,7 @@ tasks:
 
   docker-run:
     cmds:
-      - docker run --rm -it --name $CONTAINER_NAME --env-file .env.docker -p 9090:9090 $IMAGE_NAME:latest
+      - docker run --rm -it --name $CONTAINER_NAME --env-file .env.docker -p 3080:3080 $IMAGE_NAME:latest
 
   docker-shell:
     cmds:

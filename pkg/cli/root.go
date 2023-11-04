@@ -17,10 +17,10 @@ var (
 		Short: "Golang starter project template.",
 		Long:  art.String("Gogon v1.0"),
 		// Run:   func(cmd *cobra.Command, _ []string) { cmd.Help() },
-        Run: func(cmd *cobra.Command, args []string) {
-            addr, _ := cmd.Flags().GetString("address")
-            api.CallApiRoutes(addr)
-        },
+		Run: func(cmd *cobra.Command, args []string) {
+			addr, _ := cmd.Flags().GetString("address")
+			api.CallApiRoutes(addr)
+		},
 	}
 )
 
@@ -42,7 +42,7 @@ func init() {
 	// Define flags and configuration settings. Cobra supports persistent
 	// flags, if defined here, will be global for your application.
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Config file (default is config.yaml)")
-    rootCmd.Flags().StringP("address", "a", "0.0.0.0:9090", "Bind web client host and port")
+	rootCmd.Flags().StringP("address", "a", "0.0.0.0:3080", "Bind web client host and port")
 }
 
 // initConfig reads in config file and ENV variables if set.

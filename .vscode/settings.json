@@ -6,8 +6,5 @@
     "editor.codeActionsOnSave": {
         "source.fixAll": true
     },
-    "editor.formatOnSave": true,
-    "yaml.schemas": {
-        "https://taskfile.dev/schema.json": ["**/Taskfile.yml"]
-    }
+    "editor.formatOnSave": true
 }
