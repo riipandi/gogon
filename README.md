@@ -17,62 +17,55 @@ npx degit riipandi/gogon myapp-name
 
 In this repo I'm using [go-chi][go-chi], but you can change it with whatever library you want.
 
-## Quick Start
+## 🏁 Quick Start
 
-> **_Warning! This project still WIP!_**
+You will need `Go >=1.21.3`, `Docker >= 20.10`, and `Taskfile` installed on your machine.
 
-## Build Container
+### Up and Running
+
+1. Install the required toolchain & SDK: [Go](https://go.dev/doc/install), [Docker][docker], and [Taskfile][taskfile].
+2. Install the required dependencies using this command: `go mod download && go mod vendor`
+3. Create `.env` file or copy from `.env.example`, then configure required variables.
+4. Run project in development mode: `task dev`
+
+Type `task --list-all` on your terminal and see the available commands.
+
+## 🐳 Docker Container
+
+### Build Container
 
 ```sh
+task docker-build
+```
+
+### Testing Container
+
+```sh
+docker run --rm -it -p 3080:3080 --name gogon --env-file .env gogon
+```
+
+### Push Images
+
+```sh
+# Sign in to container registry
 echo $GITHUB_TOKEN | docker login ghcr.io --username YOUR_USERNAME --password-stdin
 echo $DOCKER_TOKEN | docker login docker.io --username YOUR_USERNAME --password-stdin
+
+# Push docker image
+docker push riipandi/gogon:latest
 ```
 
-## Deployment to Fly.io
+## 🚀 Deployment
 
-### Create app instances
+Read [DEPLOY.md](./DEPLOY.md) for detailed documentation.
 
-```sh
-# Create Fly.io app
-fly apps create gogon
-
-# Create volume for the data.
-fly postgres create --name gogon-db --region sjc --password $(openssl rand -hex 8)
-```
-
-### Launch and deploy
-
-```sh
-# Attach Postgres database
-fly postgres attach gogon-db -a gogon
-
-# Load secrets from dotenv file then initialize deployment
-fly secrets set $(cat .env | xargs -I %s echo %s)
-fly secrets list
-
-# Deploy the app
-fly deploy --remote-only
-```
-
-### Setup custom domain
-
-Point DNS A Record to the assigned IP address.
-Or, if using subdomain you can point `gogon.fly.dev` CNAME record.
-
-```sh
-# Allocate IPs and setup custom domain (optional)
-fly ips allocate-v4 -a gogon
-fly ips allocate-v6 -a gogon
-fly certs create api.example.com -a gogon
-```
-
-## References
+## 📚 References
 
 - [Choosing the Right Go Web Framework](https://brunoscheufler.com/blog/2019-04-26-choosing-the-right-go-web-framework)
 - [How To Structure A Golang Project](https://blog.boot.dev/golang/golang-project-structure)
 - [How to Structure Your Project in Golang](https://medium.com/geekculture/how-to-structure-your-project-in-golang-the-backend-developers-guide-31be05c6fdd9)
 
-## License
+## 🪪 License
 
 This project is open-sourced software licensed under the [MIT license](https://aris.mit-license.org).
 
@@ -86,3 +79,5 @@ See the [license file](./LICENSE) for more information.
 [cobra]: https://cobra.dev/
 [viper]: https://github.com/spf13/viper
 [go-chi]: https://github.com/go-chi/chi
+[docker]: https://docs.docker.com/engine/install/
+[taskfile]: https://taskfile.dev/installation
