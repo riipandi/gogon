@@ -14,28 +14,39 @@ env:
   PKG_FLAGS_PREFIX: github.com/riipandi/gogon/meta
 
 tasks:
+  prepare:
+    cmd: docker-compose -f docker-compose.yml up -d
+
+  cleanup:
+    cmd: docker-compose -f docker-compose.yml down --remove-orphans
+
+  clean:
+    cmd: find . -name *_gen.go -type f -delete
+
+  install-deps:
+    aliases: ["deps"]
+    cmds: ["mkdir -p build", "go mod download", "go mod tidy", "go mod vendor"]
+
+  # -----------------------------------------------------------------------------------------------
+  # Tasks for Docker development
+  # -----------------------------------------------------------------------------------------------
+
   dev:
-    deps:
-      - deps
-    cmds:
-      - air -c air.toml
+    deps: ["install-deps"]
+    cmd: air -c air.toml
 
   build:
     env:
       CGO_ENABLED: 0
       LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/meta.Version={{.BUILD_VERSION}}"
-    deps:
-      - clean
-      - deps
+    deps: ["clean", "install-deps"]
     cmds:
       - go build --ldflags="$LD_FLAGS" -a -o build/gogon cmd/app/main.go
       - ls -lAh build
 
   start:
-    deps:
-      - build
-    cmds:
-      - ./build/gogon serve
+    deps: ["build"]
+    cmd: ./build/gogon serve
 
   format:
     cmds:
@@ -43,21 +54,12 @@ tasks:
       - gosec -quiet -no-fail ./...
 
   lint:
-    deps:
-      - format
-    cmds:
-      - echo 'Not yet implemented'
+    deps: ["format"]
+    cmd: echo 'Not yet implemented'
 
-  deps:
-    cmds:
-      - mkdir -p build
-      - go mod download
-      - go mod tidy
-      - go mod vendor
-
-  clean:
-    cmds:
-      - find . -name *_gen.go -type f -delete
+  # -----------------------------------------------------------------------------------------------
+  # Tasks for create release
+  # -----------------------------------------------------------------------------------------------
 
   release-single:
     cmds:
@@ -71,13 +73,19 @@ tasks:
     cmds:
       - goreleaser release --rm-dist
 
+  # -----------------------------------------------------------------------------------------------
+  # Tasks for Docker container
+  # -----------------------------------------------------------------------------------------------
+
   docker-build:
     env:
       DOCKER_BUILDKIT: 1
     cmds:
       - |
-        docker build --build-arg BUILD_VERSION=$BUILD_VERSION --build-arg BUILD_DATE={{.BUILD_DATE}} \
-        -t $IMAGE_NAME:$BUILD_VERSION -t $IMAGE_NAME:latest .
+        docker build . --build-arg BUILD_VERSION=$BUILD_VERSION \
+          --build-arg BUILD_DATE={{.BUILD_DATE}} \
+          -t $IMAGE_NAME:$BUILD_VERSION \
+          -t $IMAGE_NAME:latest
       - docker image list | grep $IMAGE_NAME
 
   docker-push:
