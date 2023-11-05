@@ -97,7 +97,7 @@ func loadEnvVariables() {
 	}
 
 	// Determine the paths to .env files in current and parent directories
-	envFiles := []string{".env", filepath.Join(".", ".env")}
+	envFiles := []string{".env", filepath.Join("..", ".env")}
 
 	// Attempt to load environment variables from .env files
 	for _, envFile := range envFiles {
