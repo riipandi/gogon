@@ -4,10 +4,11 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/riipandi/gogon/pkg/api"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	"github.com/zs5460/art"
+
+	"github.com/riipandi/gogon/internal/app"
 )
 
 var (
@@ -19,7 +20,7 @@ var (
 		// Run:   func(cmd *cobra.Command, _ []string) { cmd.Help() },
 		Run: func(cmd *cobra.Command, args []string) {
 			addr, _ := cmd.Flags().GetString("address")
-			api.CallApiRoutes(addr)
+			app.StartServer(addr)
 		},
 	}
 )
@@ -39,8 +40,8 @@ func init() {
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.CompletionOptions.DisableDefaultCmd = true
 
-	// Define flags and configuration settings. Cobra supports persistent
-	// flags, if defined here, will be global for your application.
+	// Define flags and configuration settings.
+	// Cobra supports persistent flags, if defined here, will be global for your application.
 	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "Config file (default is config.yaml)")
 	rootCmd.Flags().StringP("address", "a", "0.0.0.0:3080", "Bind web client host and port")
 }

@@ -6,12 +6,10 @@ vars:
     sh: git rev-parse --short HEAD
   BUILD_DATE:
     sh: date -u +"%Y-%m-%dT%H:%M:%SZ"
-
-env:
-  BUILD_VERSION: git-{{.GIT_SHA}}
+  BUILD_VERSION: '{{.BUILD_VERSION | default "unknown"}}'
+  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/meta
   IMAGE_NAME: riipandi/gogon
   CONTAINER_NAME: gogon
-  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/meta
 
 tasks:
   prepare:
@@ -22,10 +20,12 @@ tasks:
 
   clean:
     cmd: find . -name *_gen.go -type f -delete
+    silent: true
 
   install-deps:
     aliases: ["deps"]
     cmds: ["mkdir -p build", "go mod download", "go mod tidy", "go mod vendor"]
+    silent: true
 
   # -----------------------------------------------------------------------------------------------
   # Tasks for Docker development
@@ -38,7 +38,7 @@ tasks:
   build:
     env:
       CGO_ENABLED: 0
-      LD_FLAGS: "-w -s -extldflags '-static' -X github.com/riipandi/gogon/meta.Version={{.BUILD_VERSION}}"
+      LD_FLAGS: "-w -s -extldflags '-static' -X {{.PKG_FLAGS_PREFIX}}.Version={{.BUILD_VERSION}} -X {{.PKG_FLAGS_PREFIX}}.BuildDate={{.BUILD_DATE}}"
     deps: ["clean", "install-deps"]
     cmds:
       - go build --ldflags="$LD_FLAGS" -a -o build/gogon cmd/app/main.go
@@ -82,24 +82,24 @@ tasks:
       DOCKER_BUILDKIT: 1
     cmds:
       - |
-        docker build . --build-arg BUILD_VERSION=$BUILD_VERSION \
+        docker build . --build-arg BUILD_VERSION={{.BUILD_VERSION}} \
           --build-arg BUILD_DATE={{.BUILD_DATE}} \
-          -t $IMAGE_NAME:$BUILD_VERSION \
-          -t $IMAGE_NAME:latest
-      - docker image list | grep $IMAGE_NAME
+          -t {{.IMAGE_NAME}}:{{.BUILD_VERSION}} \
+          -t {{.IMAGE_NAME}}:latest
+      - docker image list | grep {{.IMAGE_NAME}}
 
   docker-push:
     cmds:
-      - goreleaser release --rm-distdocker push $IMAGE_NAME:latest && docker push $IMAGE_NAME:0.1.0
+      - goreleaser release --rm-distdocker push {{.IMAGE_NAME}}:latest && docker push {{.IMAGE_NAME}}:{{.BUILD_VERSION}}
 
   docker-run:
     cmds:
-      - docker run --rm -it --name $CONTAINER_NAME --env-file .env.docker -p 3080:3080 $IMAGE_NAME:latest
+      - docker run --rm -it --name {{.CONTAINER_NAME}} --env-file .env.docker -p 3080:3080 {{.IMAGE_NAME}}:latest
 
   docker-shell:
     cmds:
-      - docker run --rm -it --entrypoint sh $IMAGE_NAME:latest
+      - docker run --rm -it --entrypoint sh {{.IMAGE_NAME}}:latest
 
   docker-migrate:
     cmds:
-      - docker exec --env-file .env.docker $CONTAINER_NAME /usr/bin/gogon migrate
+      - docker exec --env-file .env.docker {{.CONTAINER_NAME}} /usr/bin/gogon migrate

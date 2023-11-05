@@ -30,6 +30,15 @@ You will need `Go >=1.21.3`, `Docker >= 20.10`, and `Taskfile` installed on your
 
 Type `task --list-all` on your terminal and see the available commands.
 
+### Generate Secret
+
+You need to set the `JWT secret key` with some random string.
+To generate a secret key, use the following command:
+
+```sh
+openssl rand -base64 500 | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1
+```
+
 ## 🐳 Docker Container
 
 ### Build Container
@@ -41,18 +50,23 @@ task docker-build
 ### Testing Container
 
 ```sh
-docker run --rm -it -p 3080:3080 --name gogon --env-file .env gogon
+task docker-run
 ```
 
 ### Push Images
 
-```sh
-# Sign in to container registry
-echo $GITHUB_TOKEN | docker login ghcr.io --username YOUR_USERNAME --password-stdin
-echo $DOCKER_TOKEN | docker login docker.io --username YOUR_USERNAME --password-stdin
+Sign in to container registry:
 
-# Push docker image
-docker push riipandi/gogon:latest
+```sh
+echo $REGISTRY_TOKEN | docker login REGISTRY_URL --username YOUR_USERNAME --password-stdin
+```
+
+Replace `REGISTRY_URL` with your container registry, ie: `ghcr.io` or `docker.io`
+
+Push docker image:
+
+```sh
+task docker-push
 ```
 
 ## 🚀 Deployment
