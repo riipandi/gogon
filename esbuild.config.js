@@ -6,11 +6,11 @@
  * @ref: https://esbuild.github.io/api/#target
  */
 
+import { unlink } from "node:fs/promises";
+import autoprefixer from "autoprefixer";
 import { build } from "esbuild";
 import postCssPlugin from "esbuild-style-plugin";
-import { unlink } from "node:fs/promises";
 import postcssImport from "postcss-import";
-import autoprefixer from "autoprefixer";
 import tailwindcss from "tailwindcss";
 
 await build({
