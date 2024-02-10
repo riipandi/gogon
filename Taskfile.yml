@@ -6,104 +6,60 @@ vars:
     sh: git rev-parse --short HEAD
   BUILD_DATE:
     sh: date -u +"%Y-%m-%dT%H:%M:%SZ"
-  BUILD_VERSION: '{{.BUILD_VERSION | default "unknown"}}'
-  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/meta
+  DEFAULT_BUILD_VERSION:
+    sh: cat package.json | jq -r .version
+  BUILD_VERSION: "{{.BUILD_VERSION | default .DEFAULT_BUILD_VERSION}}"
+  PKG_FLAGS_PREFIX: github.com/riipandi/gogon/pkg
   IMAGE_NAME: riipandi/gogon
   CONTAINER_NAME: gogon
 
+includes:
+  dev: tasks/development.yml
+  build: tasks/release.yml
+  docker: tasks/docker.yml
+
 tasks:
   default:
-    desc: "Print all available tasks"
+    silent: true
+    desc: Print all available tasks
     cmd: "task --list-all"
-
-  prepare:
-    cmd: docker-compose -f docker-compose.yml up -d
-
-  cleanup:
-    cmd: docker-compose -f docker-compose.yml down --remove-orphans
-
-  clean:
-    cmd: find . -name *_gen.go -type f -delete
-    silent: true
-
-  install-deps:
-    aliases: ["deps"]
-    cmds: ["mkdir -p build", "go mod download", "go mod tidy", "go mod vendor"]
-    silent: true
 
   # -----------------------------------------------------------------------------------------------
   # Tasks for Docker development
   # -----------------------------------------------------------------------------------------------
 
-  dev:
-    deps: ["install-deps"]
-    cmd: air -c air.toml
-
-  build:
-    env:
-      CGO_ENABLED: 0
-      LD_FLAGS: "-w -s -extldflags '-static' -X {{.PKG_FLAGS_PREFIX}}.Version={{.BUILD_VERSION}} -X {{.PKG_FLAGS_PREFIX}}.BuildDate={{.BUILD_DATE}}"
-    deps: ["clean", "install-deps"]
-    cmds:
-      - go build --ldflags="$LD_FLAGS" -a -o build/gogon cmd/app/main.go
-      - ls -lAh build
-
   start:
+    silent: true
+    desc: Run the compiled application
     deps: ["build"]
-    cmd: ./build/gogon serve
+    cmd: ./build/gogon --address 127.0.0.1:3080
 
-  format:
+  generate-key:
+    silent: true
+    desc: Generate a random secret key
+    cmd: openssl rand -base64 500 | tr -dc 'a-zA-Z0-9' | fold -w 40 | head -n 1
+
+  update-deps:
+    silent: true
+    desc: Update NPM dependencies
+    cmd: pnpm exec npm-check-updates --configFileName .ncurc.json
+
+  code:check:
+    silent: true
+    desc: Check code quality
     cmds:
-      - golangci-lint run -c golangci.yml ./...
+      - pnpm exec biome check --apply .
       - gosec -quiet -no-fail ./...
 
-  lint:
-    deps: ["format"]
-    cmd: echo 'Not yet implemented'
-
-  # -----------------------------------------------------------------------------------------------
-  # Tasks for create release
-  # -----------------------------------------------------------------------------------------------
-
-  release-single:
+  code:format:
+    silent: true
+    desc: Format code
     cmds:
-      - goreleaser build --single-target --snapshot --rm-dist
+      - pnpm exec biome format . --write
 
-  release-snapshot:
+  code:lint:
+    silent: true
+    desc: Lint code
     cmds:
-      - goreleaser release --snapshot --rm-dist --skip-publish
-
-  release-publih:
-    cmds:
-      - goreleaser release --rm-dist
-
-  # -----------------------------------------------------------------------------------------------
-  # Tasks for Docker container
-  # -----------------------------------------------------------------------------------------------
-
-  docker-build:
-    env:
-      DOCKER_BUILDKIT: 1
-    cmds:
-      - |
-        docker build . --build-arg BUILD_VERSION={{.BUILD_VERSION}} \
-          --build-arg BUILD_DATE={{.BUILD_DATE}} \
-          -t {{.IMAGE_NAME}}:{{.BUILD_VERSION}} \
-          -t {{.IMAGE_NAME}}:latest
-      - docker image list | grep {{.IMAGE_NAME}}
-
-  docker-push:
-    cmds:
-      - goreleaser release --rm-distdocker push {{.IMAGE_NAME}}:latest && docker push {{.IMAGE_NAME}}:{{.BUILD_VERSION}}
-
-  docker-run:
-    cmds:
-      - docker run --rm -it --name {{.CONTAINER_NAME}} --env-file .env.docker -p 3080:3080 {{.IMAGE_NAME}}:latest
-
-  docker-shell:
-    cmds:
-      - docker run --rm -it --entrypoint sh {{.IMAGE_NAME}}:latest
-
-  docker-migrate:
-    cmds:
-      - docker exec --env-file .env.docker {{.CONTAINER_NAME}} /usr/bin/gogon migrate
+     - pnpm exec biome lint --apply .
+     - golangci-lint run -c golangci.yml ./...

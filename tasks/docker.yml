@@ -1,0 +1,33 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+silent: true
+
+env:
+  DOCKER_BUILDKIT: 1
+
+tasks:
+  build:
+    desc: Build Docker image
+    cmds:
+      - |
+        docker build . --build-arg BUILD_VERSION={{.BUILD_VERSION}} \
+          --build-arg BUILD_DATE={{.BUILD_DATE}} \
+          -t {{.IMAGE_NAME}}:{{.BUILD_VERSION}} \
+          -t {{.IMAGE_NAME}}:latest
+      - docker image list | grep {{.IMAGE_NAME}}
+
+  push:
+    desc: Push Docker image to container registry
+    cmd: goreleaser release --rm-distdocker push {{.IMAGE_NAME}}:latest && docker push {{.IMAGE_NAME}}:{{.BUILD_VERSION}}
+
+  run:
+    desc: Run Docker container
+    cmd: docker run --rm -it --name {{.CONTAINER_NAME}} --env-file .env.docker -p 3080:3080 {{.IMAGE_NAME}}:latest
+
+  shell:
+    desc: Run Docker container shell
+    cmd: docker run --rm -it --entrypoint sh {{.IMAGE_NAME}}:latest
+
+  migrate:
+    desc: Run database migrations inside Docker container
+    cmd: docker exec --env-file .env.docker {{.CONTAINER_NAME}} /usr/bin/gogon migrate

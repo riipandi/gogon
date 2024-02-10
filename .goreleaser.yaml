@@ -11,8 +11,8 @@ builds:
     binary: gogon
     ldflags:
       - -w -s -extldflags '-static'
-      - -X github.com/riipandi/gogon/meta.Version={{ .Version }}
-      - -X github.com/riipandi/gogon/meta.BuildDate={{ .Date }}
+      - -X github.com/riipandi/gogon/pkg.Version={{ .Version }}
+      - -X github.com/riipandi/gogon/pkg.BuildDate={{ .Date }}
     env:
       - CGO_ENABLED=0
     goos:

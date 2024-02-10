@@ -13,16 +13,16 @@ WORKDIR /app
 ENV CGO_ENABLED 0
 ENV BUILD_VERSION $BUILD_VERSION
 ENV BUILD_DATE $BUILD_DATE
-ENV LDFLAG_PREFIX "github.com/riipandi/gogon/meta"
+ENV LDFLAG_PREFIX "github.com/riipandi/gogon/pkg"
 
 COPY . .
 RUN --mount=type=cache,id=go,target=/go/pkg/mod --mount=type=cache,id=go,target=/root/.cache/go-build \
-    go mod download && go mod tidy
+  go mod download && go mod tidy
 
 # BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
 RUN --mount=type=cache,id=go,target=/go/pkg/mod --mount=type=cache,id=go,target=/root/.cache/go-build go build \
-    --ldflags="-w -s -extldflags '-static' -X ${LDFLAG_PREFIX}.Version=${BUILD_VERSION} -X ${LDFLAG_PREFIX}.BuildDate=${BUILD_DATE}" \
-    -trimpath -a -o gogon cmd/app/main.go
+  --ldflags="-w -s -extldflags '-static' -X ${LDFLAG_PREFIX}.Version=${BUILD_VERSION} -X ${LDFLAG_PREFIX}.BuildDate=${BUILD_DATE}" \
+  -trimpath -a -o gogon cmd/app/main.go
 
 # -----------------------------------------------------------------------------
 # Use the slim image for a lean production container.

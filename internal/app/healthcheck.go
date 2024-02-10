@@ -8,7 +8,7 @@ import (
 
 	"github.com/alexliesenfeld/health"
 	"github.com/go-chi/render"
-	"github.com/riipandi/gogon/meta"
+	"github.com/riipandi/gogon/pkg"
 	// "github.com/riipandi/gogon/pkg/db"
 )
 
@@ -71,9 +71,9 @@ func sysInfoHandler(enable bool) http.HandlerFunc {
 		}
 
 		render.JSON(w, r, sysInfoResponse{
-			Version:   meta.Version,
-			Platform:  meta.Platform,
-			BuildDate: meta.BuildDate,
+			Version:   pkg.Version,
+			Platform:  pkg.Platform,
+			BuildDate: pkg.BuildDate,
 		})
 	}
 }

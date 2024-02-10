@@ -3,7 +3,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/riipandi/gogon/meta"
+	"github.com/riipandi/gogon/pkg"
 	"github.com/spf13/cobra"
 )
 
@@ -13,12 +13,12 @@ var versionCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, _ []string) {
 		fshort, _ := cmd.Flags().GetBool("short")
 		if fshort {
-			fmt.Print(meta.Version)
+			fmt.Print(pkg.Version)
 		} else {
 			fmt.Printf("Gogon version: %s %s BuildDate: %s\n",
-				meta.Version,
-				meta.Platform,
-				meta.BuildDate,
+				pkg.Version,
+				pkg.Platform,
+				pkg.BuildDate,
 			)
 		}
 	},

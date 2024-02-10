@@ -1,4 +1,4 @@
-package meta
+package pkg
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 )
 
 var (
-	Version   = "0.0.0-dev"
+	Version   = "development"
 	BuildDate = "0000-00-00T00:00:00Z"
 	Platform  = fmt.Sprintf("%s/%s", runtime.GOOS, runtime.GOARCH)
 )

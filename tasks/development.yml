@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+silent: true
+
+tasks:
+  default:
+    desc: Start development mode
+    deps: ["prepare"]
+    cmd: air -c air.toml
+
+  install:
+    desc: Install required dependencies
+    cmds:
+      - mkdir -p {{.ROOT_DIR}}/build
+      - go mod download
+      - go mod tidy
+      - go mod vendor
+      - pnpm install
+
+  prepare:
+    desc: Start the database and local mail server
+    cmd: docker-compose -f docker-compose.yml up -d
+
+  cleanup:
+    desc: Stop dev server and cleanup generated files
+    cmds:
+     - docker-compose -f docker-compose.yml down --remove-orphans
+     - find . -name *_gen.go -type f -delete

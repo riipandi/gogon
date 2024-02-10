@@ -1,8 +1,6 @@
-##
-# Created by Aris Ripandi (10 Dec 2022)
-# See https://fly.io/docs/reference/configuration/ for information about
-# how to use this file.
-##
+# ----------------------------------------------------------------------
+# @ref: https://fly.io/docs/reference/configuration
+# ----------------------------------------------------------------------
 
 app = "gogon"
 primary_region = "sjc"
@@ -12,20 +10,19 @@ swap_size_mb = 256
 console_command = "/bin/sh"
 
 [build]
-  # image = "riipandi/gogon:latest"
-  dockerfile = "core/Dockerfile"
+  # image = "ghcr.io/riipandi/gogon:latest"
+  dockerfile = "Dockerfile"
 
 [build.args]
   NODE_VERSION = "20"
   GO_VERSION = "1.21"
-  BUILD_VERSION = "0.0.0"
   BUILD_DATE = "2022-12-10T20:29:41Z"
   BUILD_VERSION = "0.0.1-fly"
 
 [deploy]
   strategy = "immediate"
   # release_command = "/usr/bin/gogon migrate"
-d
+
 [env]
   PORT = "3080"
 

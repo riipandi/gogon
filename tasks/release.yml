@@ -1,0 +1,28 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: "3"
+silent: true
+
+tasks:
+  default:
+    desc: Build the application binary
+    vars:
+      FLAG_BUILD_VERSION: "{{.PKG_FLAGS_PREFIX}}.Version={{.BUILD_VERSION}}"
+      FLAG_BUILD_DATE: "{{.PKG_FLAGS_PREFIX}}.BuildDate={{.BUILD_DATE}}"
+    env:
+      CGO_ENABLED: 0
+      LD_FLAGS: "-w -s -extldflags '-static' -X {{.FLAG_BUILD_VERSION}} -X {{.FLAG_BUILD_DATE}}"
+    cmds:
+      - go build --ldflags="$LD_FLAGS" -a -o build/gogon cmd/app/main.go
+      - ls -lh {{.ROOT_DIR}}/build && {{.ROOT_DIR}}/build/gogon version
+
+  single:
+    desc: GoReleaser build single target
+    cmd: goreleaser build --single-target --snapshot --rm-dist
+
+  snapshot:
+    desc: GoReleaser relese snapshot
+    cmd: goreleaser release --snapshot --rm-dist --skip-publish
+
+  publih:
+    desc: GoReleaser build and release
+    cmd: goreleaser release --rm-dist
