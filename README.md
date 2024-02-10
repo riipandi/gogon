@@ -104,4 +104,4 @@ See the [LICENSE-APACHE](./LICENSE-APACHE) and [LICENSE-MIT](./LICENSE-MIT) file
 [taskfile]: https://taskfile.dev/installation
 [license-mit]: https://choosealicense.com/licenses/mit/
 [license-apache]: https://choosealicense.com/licenses/apache-2.0/
-[riipandi-twitter]: https://twitter.com/intent/follow?original_referer=https://ripandis.com&screen_name=riipandi
+[riipandi-twitter]: https://twitter.com/intent/follow?screen_name=riipandi
