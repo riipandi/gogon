@@ -36,7 +36,9 @@ jobs:
 
       - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
         name: Build frontend
-        run: pnpm install
+        run: |
+          pnpm install
+          NODE_ENV=production node esbuild.config.js
 
       - name: Check code quality
         run: |

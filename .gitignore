@@ -72,3 +72,4 @@ fly.*.toml*
 
 # projects
 web/dist/
+static/assets/

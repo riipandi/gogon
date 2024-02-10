@@ -32,7 +32,9 @@ jobs:
 
       - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
         name: Build frontend
-        run: pnpm install
+        run: |
+          pnpm install
+          NODE_ENV=production node esbuild.config.js
 
       # The prebuilt golangci-lint doesn't support go 1.18+ yet
       # @ref: https://github.com/golangci/golangci-lint/issues/2649

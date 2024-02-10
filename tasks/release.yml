@@ -11,7 +11,9 @@ tasks:
     env:
       CGO_ENABLED: 0
       LD_FLAGS: "-w -s -extldflags '-static' -X {{.FLAG_BUILD_VERSION}} -X {{.FLAG_BUILD_DATE}}"
+      NODE_ENV: production
     cmds:
+      - node esbuild.config.js
       - go build --ldflags="$LD_FLAGS" -a -o build/gogon cmd/app/main.go
       - ls -lh {{.ROOT_DIR}}/build && {{.ROOT_DIR}}/build/gogon version
 

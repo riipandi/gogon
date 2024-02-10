@@ -18,6 +18,7 @@ export default {
       },
     },
   },
+  // safelist: process.env.NODE_ENV !== "production" ? [{ pattern: /.*/ }] : "",
   plugins: [
     require("@tailwindcss/forms"),
     require("@tailwindcss/aspect-ratio"),
