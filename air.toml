@@ -6,6 +6,7 @@ tmp_dir = "tmp"
   full_bin = "godotenv -f .env build/gogon"
   cmd = "go build -o build/gogon cmd/app/main.go"
   args_bin = ["--address 127.0.0.1:3080"]
+  pre_cmd = ["pnpm exec tailwind --help"]
   exclude_dir = ["static"]
   exclude_file = []
   exclude_regex = ["_test.go"]
@@ -34,3 +35,4 @@ tmp_dir = "tmp"
 
 [screen]
   clear_on_rebuild = false
+  keep_scroll = true

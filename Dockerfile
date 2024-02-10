@@ -1,8 +1,7 @@
 # syntax=docker/dockerfile:1.4
 
 # Arguments with default value (for build).
-ARG GO_VERSION=1.21
-ARG BUILD_VERSION 0.0.0
+ARG GO_VERSION=1.22
 
 # -----------------------------------------------------------------------------
 # Build the application binaries
@@ -10,18 +9,18 @@ ARG BUILD_VERSION 0.0.0
 FROM golang:${GO_VERSION}-alpine as builder
 WORKDIR /app
 
-ENV CGO_ENABLED 0
+ARG BUILD_VERSION 0.0.0
 ENV BUILD_VERSION $BUILD_VERSION
-ENV BUILD_DATE $BUILD_DATE
-ENV LDFLAG_PREFIX "github.com/riipandi/gogon/pkg"
+ENV CGO_ENABLED 0
 
 COPY . .
-RUN --mount=type=cache,id=go,target=/go/pkg/mod --mount=type=cache,id=go,target=/root/.cache/go-build \
-  go mod download && go mod tidy
 
-# BUILD_DATE="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
-RUN --mount=type=cache,id=go,target=/go/pkg/mod --mount=type=cache,id=go,target=/root/.cache/go-build go build \
-  --ldflags="-w -s -extldflags '-static' -X ${LDFLAG_PREFIX}.Version=${BUILD_VERSION} -X ${LDFLAG_PREFIX}.BuildDate=${BUILD_DATE}" \
+RUN --mount=type=cache,id=go,target=/go/pkg/mod \
+  --mount=type=cache,id=go,target=/root/.cache/go-build \
+  go mod download && go mod tidy && go build \
+  --ldflags="-w -s -extldflags '-static' \
+    -X github.com/riipandi/gogon/pkg.Version=${BUILD_VERSION} \
+    -X github.com/riipandi/gogon/pkg.BuildDate=$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
   -trimpath -a -o gogon cmd/app/main.go
 
 # -----------------------------------------------------------------------------

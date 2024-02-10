@@ -15,7 +15,7 @@ console_command = "/bin/sh"
 
 [build.args]
   NODE_VERSION = "20"
-  GO_VERSION = "1.21"
+  GO_VERSION = "1.22"
   BUILD_DATE = "2022-12-10T20:29:41Z"
   BUILD_VERSION = "0.0.1-fly"
 

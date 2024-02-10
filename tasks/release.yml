@@ -1,9 +1,9 @@
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
-silent: true
 
 tasks:
   default:
+    silent: true
     desc: Build the application binary
     vars:
       FLAG_BUILD_VERSION: "{{.PKG_FLAGS_PREFIX}}.Version={{.BUILD_VERSION}}"
@@ -16,13 +16,16 @@ tasks:
       - ls -lh {{.ROOT_DIR}}/build && {{.ROOT_DIR}}/build/gogon version
 
   single:
+    silent: true
     desc: GoReleaser build single target
     cmd: goreleaser build --single-target --snapshot --rm-dist
 
   snapshot:
+    silent: true
     desc: GoReleaser relese snapshot
     cmd: goreleaser release --snapshot --rm-dist --skip-publish
 
   publih:
+    silent: true
     desc: GoReleaser build and release
     cmd: goreleaser release --rm-dist
