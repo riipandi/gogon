@@ -4,7 +4,7 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: ["./web/**/*!(*.test|*.spec).{js,html}"],
+  content: ["web/**/*!(*.test|*.spec).{js,html}", "internal/**/*.templ"],
   darkMode: "class",
   theme: {
     extend: {

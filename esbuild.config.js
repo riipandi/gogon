@@ -16,7 +16,6 @@ import tailwindcss from "tailwindcss";
 await build({
   entryPoints: ["assets/js/app.js", "assets/css/styles.css"],
   outdir: "static/assets",
-  treeShaking: true,
   bundle: true,
   sourcemap: false,
   allowOverwrite: true,

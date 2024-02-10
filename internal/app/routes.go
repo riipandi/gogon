@@ -13,7 +13,10 @@ import (
 
 	jwx "github.com/lestrrat-go/jwx/v2/jwt"
 	"github.com/riipandi/gogon/internal/app/handler"
+	"github.com/riipandi/gogon/internal/app/view"
 	"github.com/riipandi/gogon/pkg/jwt"
+
+	"github.com/a-h/templ"
 )
 
 // We can use subdomain mapping to split between API and web app:
@@ -36,6 +39,7 @@ func httpHandler() http.Handler {
 		// content types to a data format based on Accept-Encoding request
 		// header. It uses a given compression level.
 		r.Use(middleware.Compress(5, "text/html", "text/css"))
+		r.Get("/home", templ.Handler(view.Home()).ServeHTTP)
 		r.Get("/*", handler.SPAHandler("sample"))
 	})
 

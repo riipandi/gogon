@@ -19,11 +19,12 @@ In this repo I'm using [go-chi][go-chi], but you can change it with whatever lib
 
 ## 🏁 Quick Start
 
-You will need `Go >=1.22`, `Docker >= 20.10`, and `Taskfile` installed on your machine.
+You will need [`Go >=1.22`][golang], [`Docker >= 20.10`][docker], [`air >= 1.49.0`][air],
+and [`Taskfile >= 3.34`][taskfile] installed on your machine.
 
 ### Up and Running
 
-1. Install the required toolchain & SDK: [Go](https://go.dev/doc/install), [Docker][docker], and [Taskfile][taskfile].
+1. Install the required toolchain & SDK: [Go][golang], [Docker][docker], [air][air], and [Taskfile][taskfile].
 2. Install the required dependencies: `task dev:install`
 3. Geneate application secret key: `task generate-key`
 3. Create `.env` file or copy from `.env.example`, then configure required variables.
@@ -102,6 +103,8 @@ See the [LICENSE-APACHE](./LICENSE-APACHE) and [LICENSE-MIT](./LICENSE-MIT) file
 [cobra]: https://cobra.dev/
 [viper]: https://github.com/spf13/viper
 [go-chi]: https://github.com/go-chi/chi
+[golang]: https://go.dev/doc/install
+[air]: https://github.com/cosmtrek/air?tab=readme-ov-file#installation
 [docker]: https://docs.docker.com/engine/install/
 [taskfile]: https://taskfile.dev/installation
 [license-mit]: https://choosealicense.com/licenses/mit/
