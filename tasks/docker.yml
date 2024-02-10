@@ -20,7 +20,7 @@ tasks:
     silent: true
     desc: Push Docker image to container registry
     cmds:
-      - goreleaser release --rm-distdocker push {{.IMAGE_NAME}}:latest
+      - docker push {{.IMAGE_NAME}}:latest
       - docker push {{.IMAGE_NAME}}:{{.BUILD_VERSION}}
 
   run:

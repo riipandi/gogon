@@ -39,7 +39,7 @@ Type `task --list-all` on your terminal and see the available commands.
 | `generate-key`     | Generate a random secret key                    |
 | `update-deps`      | Update NPM dependencies                         |
 | `build`            | Build the application binary                    |
-| `build:publih`     | GoReleaser build and release                    |
+| `build:release`    | GoReleaser build and release                    |
 | `build:single`     | GoReleaser build single target                  |
 | `build:snapshot`   | GoReleaser relese snapshot                      |
 | `code:check`       | Check code quality                              |

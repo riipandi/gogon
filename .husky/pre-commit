@@ -4,3 +4,5 @@
 pnpm exec biome check --apply .
 pnpm exec biome format . --write
 pnpm exec biome lint --apply .
+
+go test -v ./...

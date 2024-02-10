@@ -43,6 +43,9 @@ jobs:
           pnpm exec biome format . --write
           pnpm exec biome lint --apply .
 
+      - name: Run unit tests
+        run: go test -v ./...
+
       - name: Build application executable
         run: |
           go mod download && go mod tidy && go build \

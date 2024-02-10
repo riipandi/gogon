@@ -18,14 +18,14 @@ tasks:
   single:
     silent: true
     desc: GoReleaser build single target
-    cmd: goreleaser build --single-target --snapshot --rm-dist
+    cmd: goreleaser build --single-target --snapshot --clean
 
   snapshot:
     silent: true
     desc: GoReleaser relese snapshot
-    cmd: goreleaser release --snapshot --rm-dist --skip-publish
+    cmd: goreleaser release --snapshot --clean --skip-publish
 
-  publih:
+  release:
     silent: true
     desc: GoReleaser build and release
-    cmd: goreleaser release --rm-dist
+    cmd: goreleaser release --clean
