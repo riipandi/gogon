@@ -1,17 +1,23 @@
-name: Create Release
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+# git tag --delete v0.0.1
+# git tag v0.0.1 -m "version bump"
+# git push origin --tags
+
+name: Release
 
 on:
-  # push:
-  #   branches: ["main"]
-  pull_request:
-    types: [opened, synchronize]
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+  packages: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
   cancel-in-progress: true
-
-permissions:
-  contents: write
 
 jobs:
   create-release:

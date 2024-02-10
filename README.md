@@ -6,9 +6,10 @@ initial setup.
 
 This repository contains a **Go** starter project template.
 
-[![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?color=gray)](https://github.com/riipandi/gogon/graphs/contributors)
+[![CI Test](https://github.com/riipandi/gogon/actions/workflows/release.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/release.yml)
+[![CI Release](https://github.com/riipandi/gogon/actions/workflows/test.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/test.yml)
 [![Go Report Card](https://goreportcard.com/badge/github.com/riipandi/gogon)](https://goreportcard.com/report/github.com/riipandi/gogon)
-[![Twitter Badge](https://img.shields.io/badge/-%40riipandi-1ca0f1?style=flat&labelColor=0890f0&logo=twitter&logoColor=white)][riipandi-twitter]
+[![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?color=gray)](https://github.com/riipandi/gogon/graphs/contributors)
 
 ```bash
 npx degit riipandi/gogon myapp-name
@@ -96,7 +97,7 @@ See the [LICENSE-APACHE](./LICENSE-APACHE) and [LICENSE-MIT](./LICENSE-MIT) file
 
 <sub>🤫 Psst! If you like my work you can support me via [GitHub sponsors](https://github.com/sponsors/riipandi).</sub>
 
-[![Made by](https://badgen.net/badge/icon/Made%20by%20Aris%20Ripandi?icon=bitcoin-lightning&label&color=black&labelColor=black)][riipandi-twitter]
+[![Twitter Badge](https://img.shields.io/badge/-%40riipandi-1ca0f1?style=flat&labelColor=0890f0&logo=twitter&logoColor=white)][riipandi-twitter]
 
 [cobra]: https://cobra.dev/
 [viper]: https://github.com/spf13/viper
