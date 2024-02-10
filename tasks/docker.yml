@@ -39,7 +39,7 @@ tasks:
     # cmd: docker run --rm -it --env-file .env.docker --entrypoint /usr/bin/gogon {{.CONTAINER_NAME}} migrate
     cmd: docker run --rm -it --env-file .env.docker --entrypoint /usr/bin/gogon {{.IMAGE_NAME}}:latest migrate
 
-  check-version:
+  validate:
     silent: true
     desc: Check compiled application version
     cmd: docker run --rm -it --env-file .env.docker --entrypoint /usr/bin/gogon {{.IMAGE_NAME}}:latest version
