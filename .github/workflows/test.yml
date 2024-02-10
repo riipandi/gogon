@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest] # macOS-latest, windows-2019
-        go-version: ['^1.22']
+        go-version: ['1.22']
       fail-fast: false
 
     runs-on: ${{ matrix.os }}
@@ -39,9 +39,9 @@ jobs:
 
       - name: Check code quality
         run: |
-          - pnpm exec biome check --apply .
-          - pnpm exec biome format . --write
-          - pnpm exec biome lint --apply .
+          pnpm exec biome check --apply .
+          pnpm exec biome format . --write
+          pnpm exec biome lint --apply .
 
       - name: Build application executable
         run: |
