@@ -12,6 +12,10 @@ vars:
   CONTAINER_NAME: gogon
 
 tasks:
+  default:
+    desc: "Print all available tasks"
+    cmd: "task --list-all"
+
   prepare:
     cmd: docker-compose -f docker-compose.yml up -d
 
