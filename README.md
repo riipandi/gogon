@@ -33,28 +33,28 @@ You will need `Go >=1.22`, `Docker >= 20.10`, and `Taskfile` installed on your m
 
 Type `task --list-all` on your terminal and see the available commands.
 
-| Command            | Description                                     |
-| ------------------ | ----------------------------------------------- |
-| `start`            | Run the compiled application                    |
-| `generate-key`     | Generate a random secret key                    |
-| `update-deps`      | Update NPM dependencies                         |
-| `build`            | Build the application binary                    |
-| `build:release`    | GoReleaser build and release                    |
-| `build:single`     | GoReleaser build single target                  |
-| `build:snapshot`   | GoReleaser relese snapshot                      |
-| `code:check`       | Check code quality                              |
-| `code:format`      | Format code                                     |
-| `code:lint`        | Lint code                                       |
-| `dev:cleanup`      | Stop dev server and cleanup generated files     |
-| `dev`              | Start development mode                          |
-| `dev:install`      | Install required dependencies                   |
-| `dev:prepare`      | Start the database and local mail server        |
-| `docker:build`     | Build Docker image                              |
-| `docker:migrate`   | Run database migrations inside Docker container |
-| `docker:push`      | Push Docker image to container registry         |
-| `docker:run`       | Run Docker container                            |
-| `docker:shell`     | Run Docker container shell                      |
-| `docker:validate`  | Validate docker compile application version     |
+| Command                 | Description                                     |
+| ----------------------- | ----------------------------------------------- |
+| `task start`            | Run the compiled application                    |
+| `task generate-key`     | Generate a random secret key                    |
+| `task update-deps`      | Update NPM dependencies                         |
+| `task build`            | Build the application binary                    |
+| `task build:release`    | GoReleaser build and release                    |
+| `task build:single`     | GoReleaser build single target                  |
+| `task build:snapshot`   | GoReleaser relese snapshot                      |
+| `task code:check`       | Check code quality                              |
+| `task code:format`      | Format code                                     |
+| `task code:lint`        | Lint code                                       |
+| `task dev:cleanup`      | Stop dev server and cleanup generated files     |
+| `task dev`              | Start development mode                          |
+| `task dev:install`      | Install required dependencies                   |
+| `task dev:prepare`      | Start the database and local mail server        |
+| `task docker:build`     | Build Docker image                              |
+| `task docker:migrate`   | Run database migrations inside Docker container |
+| `task docker:push`      | Push Docker image to container registry         |
+| `task docker:run`       | Run Docker container                            |
+| `task docker:shell`     | Run Docker container shell                      |
+| `task docker:validate`  | Validate docker compile application version     |
 
 ## 🐳 Publishing Docker Image
 
