@@ -1,7 +1,3 @@
-import "htmx.org";
-// import Alpine from "alpinejs";
-// import "preline";
+import * as htmx from "htmx.org";
 
-// Instantiate Alpine.js
-window.Alpine = Alpine;
-Alpine.start();
+window.htmx = htmx;
