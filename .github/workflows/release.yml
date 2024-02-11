@@ -36,6 +36,11 @@ jobs:
           pnpm install
           NODE_ENV=production node esbuild.config.js
 
+      - name: Install and generate templates
+        run: |
+          go install github.com/a-h/templ/cmd/templ@latest
+          templ generate
+
       # The prebuilt golangci-lint doesn't support go 1.18+ yet
       # @ref: https://github.com/golangci/golangci-lint/issues/2649
       # - name: Run linter

@@ -29,3 +29,4 @@ tasks:
     cmds:
      - docker-compose -f docker-compose.yml down --remove-orphans
      - find . -name *_gen.go -type f -delete
+     - find . -name *_templ.go -type f -delete

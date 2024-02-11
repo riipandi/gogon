@@ -24,3 +24,4 @@ vendor/
 web/*
 !web/embed.go
 !web/sample/
+static/assets/

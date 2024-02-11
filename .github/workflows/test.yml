@@ -46,8 +46,16 @@ jobs:
           pnpm exec biome format . --write
           pnpm exec biome lint --apply .
 
+      - name: Install and generate templates
+        run: |
+          go install github.com/a-h/templ/cmd/templ@latest
+          templ generate
+
       - name: Run unit tests
-        run: go test -v ./...
+        run: |
+          go install github.com/a-h/templ/cmd/templ@latest
+          templ generate
+          go test -v ./...
 
       - name: Build application executable
         run: |

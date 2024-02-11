@@ -4,6 +4,8 @@ dist: build/releases
 
 before:
   hooks:
+    - go install github.com/a-h/templ/cmd/templ@latest
+    - templ generate
     - go mod tidy
 
 builds:
