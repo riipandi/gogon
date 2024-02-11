@@ -1,0 +1,24 @@
+package view
+
+templ head(title string) {
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<meta name="description" content="Just another Golang project starter template."/>
+		<title>{ title }</title>
+		<link rel="preconnect" href="https://cdn.jsdelivr.net"/>
+		<link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"/>
+		<link rel="stylesheet" crossorigin href="/assets/css/styles.css" nonce={ ctx.Value("CspNonceCss").(string) }/>
+		<script crossorigin src="/assets/js/app.js" nonce={ ctx.Value("CspNonceJs").(string) } defer></script>
+	</head>
+}
+
+templ Layout(contents templ.Component, title string) {
+	<!DOCTYPE html>
+	<html lang="en">
+		@head(title)
+		<body>
+			@contents
+		</body>
+	</html>
+}

@@ -15,7 +15,7 @@ import tailwindcss from "tailwindcss";
 
 await build({
   entryPoints: ["assets/js/app.js", "assets/css/styles.css"],
-  outdir: "static/assets",
+  outdir: "static",
   bundle: true,
   sourcemap: false,
   allowOverwrite: true,
@@ -32,7 +32,7 @@ await build({
 })
   .then(async () => {
     console.log("Frontend assets has been compiled successfully.");
-    await unlink("static/assets/css/styles.js");
+    await unlink("static/css/styles.js");
     process.exit(0);
   })
   .catch(() => {

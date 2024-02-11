@@ -73,4 +73,6 @@ fly.*.toml*
 # projects
 web/dist/
 static/assets/
+static/css/
+static/js/
 *_templ.go

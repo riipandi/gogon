@@ -12,11 +12,11 @@ import (
 	"github.com/go-chi/render"
 
 	jwx "github.com/lestrrat-go/jwx/v2/jwt"
-	"github.com/riipandi/gogon/internal/app/handler"
-	"github.com/riipandi/gogon/internal/app/view"
-	"github.com/riipandi/gogon/pkg/jwt"
 
-	"github.com/a-h/templ"
+	"github.com/riipandi/gogon/internal/app/handler"
+	mw "github.com/riipandi/gogon/internal/app/middleware"
+	"github.com/riipandi/gogon/pkg/jwt"
+	"github.com/riipandi/gogon/static"
 )
 
 // We can use subdomain mapping to split between API and web app:
@@ -38,8 +38,14 @@ func httpHandler() http.Handler {
 		// Compress is a middleware that compresses response body of a given
 		// content types to a data format based on Accept-Encoding request
 		// header. It uses a given compression level.
-		r.Use(middleware.Compress(5, "text/html", "text/css"))
-		r.Get("/home", templ.Handler(view.Home()).ServeHTTP)
+		r.Use(middleware.Compress(5, "text/html", "text/css", "application/javascript"))
+		r.Use(mw.CSPMiddleware)
+
+		// Serve static assets from embedded static
+		fs := http.FileServer(http.FS(static.StaticDir))
+		r.Handle("/assets/*", http.StripPrefix("/assets/", fs))
+
+		r.Get("/home", handler.NewHomeHandler().ServeHTTP)
 		r.Get("/*", handler.SPAHandler("sample"))
 	})
 
@@ -70,10 +76,10 @@ func httpHandler() http.Handler {
 		}))
 
 		r.Route("/api", apiRoutes)
-		r.NotFound(handler.NotFoundHandler)
-		r.MethodNotAllowed(handler.MethodNotAllowedHandler)
 	})
 
+	r.NotFound(handler.NewNotFoundHandler().ServeHTTP)
+	r.MethodNotAllowed(handler.MethodNotAllowedHandler)
 	return r
 }
 
