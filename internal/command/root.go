@@ -1,4 +1,4 @@
-package cli
+package command
 
 import (
 	"fmt"
@@ -8,7 +8,7 @@ import (
 	"github.com/spf13/viper"
 	"github.com/zs5460/art"
 
-	"github.com/riipandi/gogon/internal/app"
+	"github.com/riipandi/gogon/internal"
 )
 
 var (
@@ -20,7 +20,7 @@ var (
 		// Run:   func(cmd *cobra.Command, _ []string) { cmd.Help() },
 		Run: func(cmd *cobra.Command, args []string) {
 			addr, _ := cmd.Flags().GetString("address")
-			app.StartServer(addr)
+			internal.StartServer(addr)
 		},
 	}
 )

@@ -13,6 +13,7 @@ tasks:
     desc: Install required dependencies
     cmds:
       - mkdir -p {{.ROOT_DIR}}/build
+      - templ generate
       - go mod download
       - go mod tidy
       - go mod vendor

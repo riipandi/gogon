@@ -18,20 +18,13 @@ func generateRandomString(length int) string {
 	return hex.EncodeToString(bytes)
 }
 
-type key string
-
-const (
-	KeyCspNonceJs  key = "CspNonceJs"
-	KeyCspNonceCss key = "CspNonceCss"
-)
-
 func CSPMiddleware(next http.Handler) http.Handler {
 	CspNonceJs := generateRandomString(16)
 	CspNonceCss := generateRandomString(16)
 
 	// set then in context
-	ctx := context.WithValue(context.Background(), KeyCspNonceJs, CspNonceJs)
-	ctx = context.WithValue(ctx, KeyCspNonceCss, CspNonceCss)
+	ctx := context.WithValue(context.Background(), "CspNonceJs", CspNonceJs)
+	ctx = context.WithValue(ctx, "CspNonceCss", CspNonceCss)
 
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// Hash for the nonce of the CSS and JS files

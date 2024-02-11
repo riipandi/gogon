@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/riipandi/gogon/internal/app/view"
+	"github.com/riipandi/gogon/internal/view"
 	"net/http"
 )
 

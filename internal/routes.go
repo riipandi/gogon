@@ -1,4 +1,4 @@
-package app
+package internal
 
 import (
 	"net/http"
@@ -13,8 +13,8 @@ import (
 
 	jwx "github.com/lestrrat-go/jwx/v2/jwt"
 
-	"github.com/riipandi/gogon/internal/app/handler"
-	mw "github.com/riipandi/gogon/internal/app/middleware"
+	"github.com/riipandi/gogon/internal/handler"
+	mw "github.com/riipandi/gogon/internal/middleware"
 	"github.com/riipandi/gogon/pkg/jwt"
 	"github.com/riipandi/gogon/static"
 )
@@ -45,8 +45,8 @@ func httpHandler() http.Handler {
 		fs := http.FileServer(http.FS(static.StaticDir))
 		r.Handle("/assets/*", http.StripPrefix("/assets/", fs))
 
-		r.Get("/home", handler.NewHomeHandler().ServeHTTP)
-		r.Get("/*", handler.SPAHandler("sample"))
+		r.Get("/", handler.NewHomeHandler().ServeHTTP)
+		r.Get("/spa/*", handler.SPAHandler("sample"))
 	})
 
 	// Group Routes for API
@@ -78,7 +78,8 @@ func httpHandler() http.Handler {
 		r.Route("/api", apiRoutes)
 	})
 
-	r.NotFound(handler.NewNotFoundHandler().ServeHTTP)
+	// r.NotFound(handler.NewNotFoundHandler().ServeHTTP)
+	r.NotFound(handler.NotFoundHandler)
 	r.MethodNotAllowed(handler.MethodNotAllowedHandler)
 	return r
 }

@@ -1,7 +1,7 @@
 package main
 
-import "github.com/riipandi/gogon/internal/cli"
+import "github.com/riipandi/gogon/internal/command"
 
 func main() {
-	cli.Execute()
+	command.Execute()
 }

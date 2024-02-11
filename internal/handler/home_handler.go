@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/riipandi/gogon/internal/app/view"
+	"github.com/riipandi/gogon/internal/view"
 )
 
 type HomeHandler struct{}
