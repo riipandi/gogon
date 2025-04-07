@@ -13,7 +13,7 @@ import (
 
 	jwx "github.com/lestrrat-go/jwx/v2/jwt"
 
-	"github.com/riipandi/gogon/internal/handler"
+	h "github.com/riipandi/gogon/internal/handlers"
 	mw "github.com/riipandi/gogon/internal/middleware"
 	"github.com/riipandi/gogon/pkg/jwt"
 	"github.com/riipandi/gogon/static"
@@ -45,8 +45,8 @@ func httpHandler() http.Handler {
 		fs := http.FileServer(http.FS(static.StaticDir))
 		r.Handle("/assets/*", http.StripPrefix("/assets/", fs))
 
-		r.Get("/", handler.NewHomeHandler().ServeHTTP)
-		r.Get("/spa/*", handler.SPAHandler("sample"))
+		r.Get("/", h.NewHomeHandler().ServeHTTP)
+		r.Get("/spa/*", h.SPAHandler("sample"))
 	})
 
 	// Group Routes for API
@@ -78,9 +78,9 @@ func httpHandler() http.Handler {
 		r.Route("/api", apiRoutes)
 	})
 
-	// r.NotFound(handler.NewNotFoundHandler().ServeHTTP)
-	r.NotFound(handler.NotFoundHandler)
-	r.MethodNotAllowed(handler.MethodNotAllowedHandler)
+	// r.NotFound(h.NewNotFoundHandler().ServeHTTP)
+	r.NotFound(h.NotFoundHandler)
+	r.MethodNotAllowed(h.MethodNotAllowedHandler)
 	return r
 }
 
@@ -113,7 +113,7 @@ func apiRoutes(r chi.Router) {
 					// http.Error(w, err.Error(), http.StatusUnauthorized)
 					w.Header().Set("Content-type", "application/json")
 					w.WriteHeader(http.StatusUnauthorized)
-					render.Render(w, r, handler.ErrUnauthorized)
+					render.Render(w, r, h.ErrUnauthorized)
 					return
 				}
 
@@ -121,7 +121,7 @@ func apiRoutes(r chi.Router) {
 					// http.Error(w, http.StatusText(http.StatusUnauthorized), http.StatusUnauthorized)
 					w.Header().Set("Content-type", "application/json")
 					w.WriteHeader(http.StatusUnauthorized)
-					render.Render(w, r, handler.ErrUnauthorized)
+					render.Render(w, r, h.ErrUnauthorized)
 					return
 				}
 
@@ -131,9 +131,9 @@ func apiRoutes(r chi.Router) {
 		})
 
 		// Register protected routes here
-		// r.Get("/users", handler.GetAllUsers)
-		// r.Post("/users", handler.CreateUser)
-		// r.Get("/users/{userId}", handler.GetUserById)
+		// r.Get("/users", h.GetAllUsers)
+		// r.Post("/users", h.CreateUser)
+		// r.Get("/users/{userId}", h.GetUserById)
 	})
 
 }
