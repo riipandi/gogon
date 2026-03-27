@@ -9,6 +9,13 @@ require (
 )
 
 require (
+	connectrpc.com/connect v1.19.1 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/spf13/pflag v1.0.9 // indirect
+	google.golang.org/protobuf v1.36.11 // indirect
+)
+
+tool (
+	connectrpc.com/connect/cmd/protoc-gen-connect-go
+	google.golang.org/protobuf/cmd/protoc-gen-go
 )

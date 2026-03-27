@@ -88,6 +88,15 @@ pnpm-exec-summary.json
 slim.report.json
 RELEASE.md
 audit.json
+sbom-*
+
+# Generated files
+/api/docs.go
+/api/swagger.json
+/api/swagger.yaml
+/app/generated/
+/specs/
+*.gen.ts
 
 # TanStack Router
 .tanstack/

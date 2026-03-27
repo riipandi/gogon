@@ -31,7 +31,14 @@ playwright-report/
 tests-results/
 routeTree.gen.ts
 routes.gen.ts
-web/dist/
+sbom-*
+/api/docs.go
+/api/swagger.json
+/api/swagger.yaml
+/app/generated/
+/web/dist/
+/specs/
+*.gen.ts
 .docs/
 .data/
 .nitro/

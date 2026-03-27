@@ -6,6 +6,13 @@ Fullstack Go + React application.
 - **Frontend** — React, TanStack Router, Tailwind CSS
 - **Build** — Vite plugin handles Go build pipeline
 
+## Prerequisites
+```sh
+go install github.com/bufbuild/buf/cmd/buf@latest
+go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
+```
+
 ## Project Structure
 
 ```

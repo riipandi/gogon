@@ -38,6 +38,8 @@
         "**/*.mdx",
         "**/*.go",
         "**/*.toml",
+        "generated/**",
+        "/api/**",
         "/assets/**",
         "/build/**",
         "/public/**",
