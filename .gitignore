@@ -1,21 +1,106 @@
-node_modules
+/.docs
+/.idea
+/.pnp
+/.husky
+.pnp.js
 .DS_Store
-web-ssr
-*.local
-.env
+.DS_Store?
+.memelord/
+/coverage
+/[Tt]emp/
+/[Tt]mp/
+/vendor/
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+node_modules/
+*tsbuildinfo
+npm-debug.log*
+.unikraft
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/mcp.json
+!.vscode/tasks.json
+*.bak
+
+# SQLite
+*.sqlite*
+*.sqlite3*
+*.db
+
+# Output directory
+_data/
+build/
+dist/
+dist-ssr/
+output/
+.build/
+.data
+.cache
 .nitro
-.wrangler
 .output
 .vinxi
-__unconfig*
-todos.json
-build/
+.wrangler
+.netlify
+.wireit
+.temp
+.tmp
+
+# Vite & Vitest config
+vite.config.*
+!vite.config.ts
+vitest.config.*
+!vitest.config.ts
+vitest.workspace.*
+!vitest.workspace.ts
+
+# Envars
+.env.*
+!.env.example
+compose.env*
+!compose.env.example
+.*.vars
+
+# Disable this line in your real app
+/playwright/.cache/
+/playwright-report/
+/tests-results/
+/blob-report/
+.playwright/
+
+# Sentry Config File
+.sentryclirc
+
+# Storybook
+*storybook.log
+storybook-static/
+
+# Application data
+/storage/
+web/dist/*
+!web/dist/.gitkeep
+
+# Miscellaneous
+pnpm-exec-summary.json
+slim.report.json
+RELEASE.md
+audit.json
 
 # TanStack Router
 .tanstack/
 routeTree.gen.ts
 routes.gen.ts
 
-# SPA embed fo Go binary
-web/dist/*
-!web/dist/.gitkeep
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+terraform.tfvars*
+!terraform.tfvars.example
+
+# fly.io
+fly*.toml*
+!fly*.toml.example

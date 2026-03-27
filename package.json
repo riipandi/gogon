@@ -5,24 +5,35 @@
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
+        "cmd": "go run -tags debug .",
         "start": "kill-port 3000 && ./build/release/$npm_package_name serve --port 3000",
         "update-deps": "npm-check-updates --configFileName .ncurc.json",
-        "cmd": "go run -tags debug .",
-        "test": "vitest run"
+        "cleanup": "pnpm --silent cleanup:dist && pnpm --silent cleanup:deps",
+        "cleanup:dist": "pnpm dlx del-cli .{tanstack,wrangler} build web/dist storybook-static",
+        "cleanup:deps": "pnpm dlx del-cli pnpm-lock.yaml node_modules vendor",
+        "test:go": "go test -v ./...",
+        "test:ui": "vitest run",
+        "format": "pnpm --silent format:go && pnpm --silent format:js",
+        "check": "pnpm --silent check:go && pnpm --silent check:js",
+        "format:go": "gofmt -w .",
+        "format:js": "oxfmt --write .",
+        "check:go": "go vet .",
+        "check:js": "oxfmt --check && oxlint --fix .",
+        "typecheck": "tsc -b --noEmit"
     },
     "dependencies": {
-        "@tanstack/react-router": "latest",
+        "@tanstack/react-router": "^1.168.7",
         "lucide-react": "^1.7.0",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
-        "tailwindcss": "^4.2.2"
+        "tailwindcss": "^4.2.2",
+        "tw-animate-css": "^1.4.0"
     },
     "devDependencies": {
-        "@tailwindcss/typography": "^0.5.19",
         "@tailwindcss/vite": "^4.2.2",
-        "@tanstack/devtools-vite": "latest",
-        "@tanstack/react-devtools": "latest",
-        "@tanstack/react-router-devtools": "latest",
+        "@tanstack/devtools-vite": "^0.6.0",
+        "@tanstack/react-devtools": "^0.10.0",
+        "@tanstack/react-router-devtools": "^1.166.11",
         "@tanstack/router-plugin": "^1.167.8",
         "@testing-library/dom": "^10.4.1",
         "@testing-library/react": "^16.3.2",
@@ -33,13 +44,18 @@
         "jsdom": "^29.0.1",
         "kill-port-process-cli": "^1.0.16",
         "npm-check-updates": "^19.6.6",
+        "oxfmt": "^0.36.0",
+        "oxlint": "^1.51.0",
         "typescript": "^6.0.2",
         "vite": "^8.0.3",
         "vitest": "^4.1.2"
     },
+    "engines": {
+        "node": ">=24.12.0"
+    },
+    "packageManager": "pnpm@10.32.1",
     "pnpm": {
         "onlyBuiltDependencies": [
-            "esbuild",
             "lightningcss"
         ]
     }

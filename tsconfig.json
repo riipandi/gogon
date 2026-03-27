@@ -1,35 +1,40 @@
 {
+    "$schema": "https://json.schemastore.org/tsconfig",
     "compilerOptions": {
         "allowImportingTsExtensions": true,
+        "allowSyntheticDefaultImports": true,
+        "composite": false,
+        "erasableSyntaxOnly": false,
+        "exactOptionalPropertyTypes": false,
+        "inlineSourceMap": true,
+        "isolatedModules": true,
         "jsx": "react-jsx",
-        "lib": [
-            "ES2022",
-            "DOM",
-            "DOM.Iterable"
-        ],
-        "module": "ESNext",
+        "lib": ["ESNext", "DOM", "DOM.Iterable"],
+        "module": "preserve",
+        "moduleDetection": "force",
         "moduleResolution": "bundler",
         "noEmit": true,
         "noFallthroughCasesInSwitch": true,
+        "noImplicitOverride": true,
+        "noPropertyAccessFromIndexSignature": false,
+        "noUncheckedIndexedAccess": true,
         "noUncheckedSideEffectImports": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "resolveJsonModule": true,
         "skipLibCheck": true,
         "strict": true,
-        "target": "ES2022",
-        "types": [
-            "vite/client"
-        ],
+        "strictPropertyInitialization": true,
+        "target": "esnext",
+        "tsBuildInfoFile": ".tanstack/tsbuildinfo",
+        "types": ["vite/client"],
+        "useDefineForClassFields": true,
         "verbatimModuleSyntax": true,
-        "baseUrl": ".",
         "paths": {
-            "#/*": [
-                "./app/*"
-            ]
-        },
+            "#/*": ["./app/*"],
+            "~/*": ["./*"]
+        }
     },
-    "include": [
-        "**/*.ts",
-        "**/*.tsx"
-    ],
+    "include": ["**/*.ts", "**/*.tsx"],
+    "exclude": ["node_modules", "build", "web/dist", "tests-results"]
 }

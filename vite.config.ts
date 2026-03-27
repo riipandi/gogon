@@ -1,11 +1,13 @@
-import path from 'node:path'
-import { defineConfig } from 'vite'
+import tailwindcss from '@tailwindcss/vite'
 import { devtools } from '@tanstack/devtools-vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import viteReact from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import { goPlugin } from './vite-plugin-go'
+import path from 'node:path'
+import { defineConfig } from 'vite'
 import pkg from './package.json' with { type: 'json' }
+import { goPlugin } from './vite-plugin-go'
+
+const isProduction = process.env.NODE_ENV === 'production'
 
 export default defineConfig({
   plugins: [
@@ -25,27 +27,28 @@ export default defineConfig({
         embedDir: 'web/dist',
         outputDir: 'build/release',
         buildFlags: ['-trimpath'],
-        buildTags: ['release'],
-      },
-    }),
+        buildTags: ['release']
+      }
+    })
   ],
   resolve: {
-    alias: {'#': path.resolve(__dirname, './app')},
-    tsconfigPaths: true,
+    alias: { '#': path.resolve('./app') },
+    tsconfigPaths: true
   },
   build: {
     emptyOutDir: true,
-    chunkSizeWarningLimit: 1024,
+    chunkSizeWarningLimit: 1024 * 4,
+    minify: isProduction ? 'oxc' : false,
     reportCompressedSize: false,
-    outDir: 'web/dist',
+    outDir: 'web/dist'
   },
   server: {
     port: 3000,
     proxy: {
       '/api': {
         target: 'http://127.0.0.1:3080',
-        changeOrigin: true,
-      },
-    },
-  },
+        changeOrigin: true
+      }
+    }
+  }
 })

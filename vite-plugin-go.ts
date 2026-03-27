@@ -1,6 +1,6 @@
+import { spawn, type ChildProcess } from 'node:child_process'
 import fs from 'node:fs'
 import path from 'node:path'
-import { spawn, type ChildProcess } from 'node:child_process'
 import type { Plugin, ViteDevServer } from 'vite'
 
 export interface GoBuildOptions {
@@ -66,8 +66,8 @@ const defaults: GoPluginDefaults = {
     outputBin: '',
     embedDir: 'web/dist',
     buildFlags: [],
-    buildTags: ['release'],
-  },
+    buildTags: ['release']
+  }
 }
 
 function formatDuration(ms: number): string {
@@ -102,7 +102,7 @@ function formatBuildInfo(buildOpts: ResolvedBuildOptions): string[] {
 
 function resolveBuildOptions(
   userBuild: GoBuildOptions | undefined,
-  packageName: string,
+  packageName: string
 ): ResolvedBuildOptions {
   const isProduction = process.env.NODE_ENV === 'production'
 
@@ -112,9 +112,10 @@ function resolveBuildOptions(
   const buildFlags = userBuild?.buildFlags || []
   const buildTags = userBuild?.buildTags || defaults.build.buildTags
 
-  const buildArgs = userBuild?.args && userBuild.args.length > 0
-    ? [...userBuild.args]
-    : ['build', '-o', `${outputDir}/${outputBin}`, '.']
+  const buildArgs =
+    userBuild?.args && userBuild.args.length > 0
+      ? [...userBuild.args]
+      : ['build', '-o', `${outputDir}/${outputBin}`, '.']
 
   if (buildTags.length > 0) {
     buildArgs.splice(1, 0, '-tags', buildTags.join(','))
@@ -133,19 +134,28 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
   }
 
   const name = userOptions.packageName
-  const defaultArgs = ['build', '-o', `build/debug/${name}`, '.']
+  const defaultBin = `build/debug/${name}`
+  const defaultArgs = ['build', '-o', defaultBin, '.']
 
   const opts = {
     ...defaults,
-    ...userOptions,
+    cmd: userOptions.cmd ?? defaults.cmd,
     args: userOptions.args ?? defaultArgs,
-    bin: userOptions.bin || defaultArgs[2],
-    build: { ...defaults.build, ...userOptions.build },
+    bin: userOptions.bin || defaultBin,
+    binArgs: userOptions.binArgs ?? defaults.binArgs,
+    delay: userOptions.delay ?? defaults.delay,
+    killDelay: userOptions.killDelay ?? defaults.killDelay,
+    stopOnError: userOptions.stopOnError ?? defaults.stopOnError,
+    excludeDir: userOptions.excludeDir ?? defaults.excludeDir,
+    excludeRegex: userOptions.excludeRegex ?? defaults.excludeRegex,
+    extensions: userOptions.extensions ?? defaults.extensions,
+    log: userOptions.log ?? defaults.log,
+    build: { ...defaults.build, ...userOptions.build }
   }
 
   const excludePatterns = [
     ...opts.excludeDir.map((d) => new RegExp(`[\\/]${path.normalize(d)}[\\/]`)),
-    ...opts.excludeRegex.map((r) => new RegExp(r)),
+    ...opts.excludeRegex.map((r) => new RegExp(r))
   ]
 
   let goProcess: ChildProcess | null = null
@@ -162,12 +172,13 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
 
   function killGo() {
     if (!goProcess) return
-    try {
-      process.kill(-goProcess.pid!, 'SIGTERM')
-    } catch {
-      goProcess.kill('SIGTERM')
-    }
+    const proc = goProcess
     goProcess = null
+    try {
+      process.kill(-proc.pid!, 'SIGTERM')
+    } catch {
+      proc.kill('SIGTERM')
+    }
   }
 
   function dispose() {
@@ -179,18 +190,22 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
   }
 
   function startBinary() {
-    goProcess = spawn(opts.bin, opts.binArgs, {
+    const proc = spawn(opts.bin, opts.binArgs, {
       stdio: 'inherit',
-      detached: true,
+      detached: true
     })
+    goProcess = proc
 
-    goProcess.on('error', (err) => {
+    proc.on('error', (err) => {
       log(`failed to start binary: ${err.message}`)
       goProcess = null
     })
   }
 
-  function runBuild(onSuccess: () => void, onFailure: (code: number | null, stderr: string) => void) {
+  function runBuild(
+    onSuccess: () => void,
+    onFailure: (code: number | null, stderr: string) => void
+  ) {
     isBuilding = true
     log('building...')
 
@@ -244,7 +259,7 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
             hasPendingChanges = false
             buildAndStart()
           }
-        },
+        }
       )
     }, opts.delay)
   }
@@ -255,7 +270,7 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
         if (disposed) return
         startBinary()
       },
-      () => {},
+      () => {}
     )
   }
 
@@ -322,7 +337,9 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
             if (code === 0) {
               const binPath = `${buildOpts.outputDir}/${buildOpts.outputBin}`
               const stat = fs.statSync(binPath)
-              log(`binary built → ${binPath} (${formatFileSize(stat.size)}) in ${formatDuration(duration)}`)
+              log(
+                `binary built → ${binPath} (${formatFileSize(stat.size)}) in ${formatDuration(duration)}`
+              )
             } else {
               log(`build failed (exit code ${code}) in ${formatDuration(duration)}`)
               if (stderr) console.error(stderr)
@@ -331,7 +348,7 @@ export function goPlugin(userOptions: GoPluginOptions): Plugin {
             resolve()
           })
         })
-      },
-    },
+      }
+    }
   }
 }

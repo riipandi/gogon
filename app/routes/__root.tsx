@@ -1,13 +1,13 @@
+import { TanStackDevtools } from '@tanstack/react-devtools'
 import { Outlet, createRootRoute } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-import { TanStackDevtools } from '@tanstack/react-devtools'
 import { GlobalNotFound, GlobalError } from './-errors'
 import '../styles/globals.css'
 
 export const Route = createRootRoute({
   notFoundComponent: GlobalNotFound,
   errorComponent: GlobalError,
-  component: RootComponent,
+  component: RootComponent
 })
 
 function RootComponent() {
@@ -19,8 +19,8 @@ function RootComponent() {
         plugins={[
           {
             name: 'TanStack Router',
-            render: <TanStackRouterDevtoolsPanel />,
-          },
+            render: <TanStackRouterDevtoolsPanel />
+          }
         ]}
       />
     </>
