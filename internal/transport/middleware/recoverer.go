@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"myapp/internal/responder"
+	"myapp/internal/transport/responder"
 )
 
 func JSONRecoverer(next http.Handler) http.Handler {

@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"myapp/internal/config"
-	"myapp/internal/responder"
+	"myapp/internal/transport/responder"
 )
 
 func HealthzHandler(w http.ResponseWriter, r *http.Request) {

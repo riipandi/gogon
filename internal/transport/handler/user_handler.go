@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
-	"myapp/internal/responder"
+	"myapp/internal/transport/responder"
 )
 
 func ListUsersHandler(w http.ResponseWriter, r *http.Request) {

@@ -8,7 +8,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"myapp/internal/responder"
+	"myapp/internal/transport/responder"
 )
 
 func SetupStatic(r chi.Router) {

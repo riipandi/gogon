@@ -1,4 +1,4 @@
-package internal
+package transport
 
 import (
 	"context"
@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"myapp/internal/middleware"
-	"myapp/internal/routes"
+	"myapp/internal/transport/middleware"
+	"myapp/internal/transport/routes"
 	"myapp/web"
 )
 

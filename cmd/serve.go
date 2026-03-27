@@ -12,7 +12,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"myapp/internal"
+	"myapp/internal/transport"
 )
 
 var serveHost string
@@ -22,7 +22,7 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Start the application server",
 	Run: func(cmd *cobra.Command, args []string) {
-		srv := internal.NewServer()
+		srv := transport.NewServer()
 		addr := strings.TrimPrefix(serveHost, ":") + ":" + strings.TrimPrefix(servePort, ":")
 
 		go func() {
