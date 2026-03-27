@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 
+	"myapp/internal/config"
 	"myapp/internal/responder"
 )
 
@@ -14,8 +15,7 @@ func HealthzHandler(w http.ResponseWriter, r *http.Request) {
 
 func ApiRootHandler(w http.ResponseWriter, r *http.Request) {
 	responder.WriteJSON(w, http.StatusOK, map[string]string{
-		"name":    "myapp",
-		"version": "1.0.0",
-		"status":  "ok",
+		"name":    config.AppName,
+		"version": config.AppVersion,
 	})
 }

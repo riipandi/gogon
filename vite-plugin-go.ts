@@ -8,8 +8,9 @@ export interface GoBuildOptions {
   outputDir?: string
   outputBin?: string
   embedDir?: string
-  buildFlags?: string[]
   buildTags?: string[]
+  buildFlags?: string[]
+  ldflags?: string[]
 }
 
 export interface GoPluginOptions {
@@ -33,8 +34,9 @@ interface ResolvedBuildOptions {
   outputBin: string
   embedDir: string
   args: string[]
-  buildFlags: string[]
   buildTags: string[]
+  buildFlags: string[]
+  ldflags: string[]
 }
 
 interface GoPluginDefaults {
@@ -65,8 +67,9 @@ const defaults: GoPluginDefaults = {
     outputDir: '',
     outputBin: '',
     embedDir: 'web/dist',
+    buildTags: [],
     buildFlags: [],
-    buildTags: ['release']
+    ldflags: []
   }
 }
 
@@ -94,6 +97,10 @@ function formatBuildInfo(buildOpts: ResolvedBuildOptions): string[] {
     lines.push(`  flags    ${buildOpts.buildFlags.join(' ')}`)
   }
 
+  if (buildOpts.ldflags.length > 0) {
+    lines.push(`  ldflags  ${buildOpts.ldflags.join(' ')}`)
+  }
+
   lines.push(`  embed    ${buildOpts.embedDir}`)
   lines.push(`  output   ${buildOpts.outputDir}/${buildOpts.outputBin}`)
 
@@ -110,6 +117,7 @@ function resolveBuildOptions(
   const outputBin = userBuild?.outputBin || packageName
   const embedDir = userBuild?.embedDir || 'web/dist'
   const buildFlags = userBuild?.buildFlags || []
+  const ldflags = userBuild?.ldflags || []
   const buildTags = userBuild?.buildTags || defaults.build.buildTags
 
   const buildArgs =
@@ -125,10 +133,14 @@ function resolveBuildOptions(
     buildArgs.splice(1, 0, ...buildFlags)
   }
 
-  return { outputDir, outputBin, embedDir, args: buildArgs, buildFlags, buildTags }
+  if (ldflags.length > 0) {
+    buildArgs.splice(1, 0, '-ldflags', ldflags.join(' '))
+  }
+
+  return { outputDir, outputBin, embedDir, args: buildArgs, buildFlags, ldflags, buildTags }
 }
 
-export function goPlugin(userOptions: GoPluginOptions): Plugin {
+export default function goPlugin(userOptions: GoPluginOptions): Plugin {
   if (process.env.VITEST) {
     return { name: 'vite-plugin-go' }
   }

@@ -5,9 +5,11 @@ import viteReact from '@vitejs/plugin-react'
 import path from 'node:path'
 import { defineConfig } from 'vite'
 import pkg from './package.json' with { type: 'json' }
-import { goPlugin } from './vite-plugin-go'
+import goPlugin from './vite-plugin-go'
 
 const isProduction = process.env.NODE_ENV === 'production'
+const BUILD_DATE = process.env.BUILD_DATE || new Date().toISOString()
+const BUILD_HASH = process.env.BUILD_HASH || 'dev'
 
 export default defineConfig({
   plugins: [
@@ -26,8 +28,14 @@ export default defineConfig({
       build: {
         embedDir: 'web/dist',
         outputDir: 'build/release',
+        buildTags: ['release'],
         buildFlags: ['-trimpath', '-a', '-buildmode=pie', '-buildvcs=false'],
-        buildTags: ['release']
+        ldflags: [
+          '-w -s -extldflags -static',
+          `-X ${pkg.name}/internal/config.AppVersion=${pkg.version}`,
+          `-X ${pkg.name}/internal/config.BuildHash=${BUILD_HASH}`,
+          `-X ${pkg.name}/internal/config.BuildDate=${BUILD_DATE}`
+        ]
       }
     })
   ],
