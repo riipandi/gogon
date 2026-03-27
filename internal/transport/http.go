@@ -11,12 +11,12 @@ import (
 	"myapp/web"
 )
 
-type HttpServer struct {
+type HTTPServer struct {
 	Router chi.Router
 	Server *http.Server
 }
 
-func NewHttpServer() *HttpServer {
+func NewHTTPServer() *HTTPServer {
 	r := chi.NewRouter()
 
 	r.Use(middleware.Logger())
@@ -28,10 +28,10 @@ func NewHttpServer() *HttpServer {
 
 	web.SetupStatic(r)
 
-	return &HttpServer{Router: r}
+	return &HTTPServer{Router: r}
 }
 
-func (s *HttpServer) ListenAndServe(addr string) error {
+func (s *HTTPServer) ListenAndServe(addr string) error {
 	protocols := new(http.Protocols)
 	protocols.SetHTTP1(true)
 	protocols.SetUnencryptedHTTP2(true)
@@ -45,6 +45,6 @@ func (s *HttpServer) ListenAndServe(addr string) error {
 	return s.Server.ListenAndServe()
 }
 
-func (s *HttpServer) Shutdown(ctx context.Context) error {
+func (s *HTTPServer) Shutdown(ctx context.Context) error {
 	return s.Server.Shutdown(ctx)
 }
