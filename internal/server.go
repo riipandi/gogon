@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -12,6 +13,7 @@ import (
 
 type Server struct {
 	Router chi.Router
+	server *http.Server
 }
 
 func NewServer() *Server {
@@ -29,5 +31,10 @@ func NewServer() *Server {
 }
 
 func (s *Server) ListenAndServe(addr string) error {
-	return http.ListenAndServe(addr, s.Router)
+	s.server = &http.Server{Addr: addr, Handler: s.Router}
+	return s.server.ListenAndServe()
+}
+
+func (s *Server) Shutdown(ctx context.Context) error {
+	return s.server.Shutdown(ctx)
 }
