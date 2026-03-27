@@ -4,8 +4,6 @@ Golang starter project template with [Cobra][cobra], [Viper][viper], and whateve
 This aims to make you able to quickly create awesome app without having to bother with the
 initial setup.
 
-This repository contains a **Go** starter project template.
-
 [![Go](https://img.shields.io/badge/Go-1.26-blue.svg?logo=Go&logoColor=white)](https://go.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue.svg?logo=typescript&logoColor=blue)](https://www.typescriptlang.org)
 [![React](https://img.shields.io/badge/React-19-blue.svg?logo=react)](https://react.dev)
