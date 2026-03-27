@@ -1,78 +1,115 @@
-# dependencies
-node_modules
-
-# IDEs and editors
+/.docs
 /.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# misc
-logs
-*.log
-/.fleet
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-/typings
-build-errors.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-testem.log
-*.local
-*.tsbuildinfo
-
-# System Files
+/.pnp
+/.husky
+.pnp.js
 .DS_Store
 .DS_Store?
+.memelord/
+/coverage
+/[Tt]emp/
+/[Tt]mp/
+/vendor/
 Thumbs.db
-*.sqlite3
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+node_modules/
+*tsbuildinfo
+npm-debug.log*
+.unikraft
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+!.vscode/mcp.json
+!.vscode/tasks.json
+*.bak
+
+# SQLite
+*.sqlite*
+*.sqlite3*
 *.db
 
-# compiled output
-dist/
-dist-ssr
-/out-tsc
-.dist
-.output
-.build*
-.parcel-cache
-builds
+# Output directory
+_data/
 build/
-tmp/
-temp/
-vendor/
-/gogon
+dist/
+dist-ssr/
+output/
+.build/
+.data
+.cache
+.nitro
+.output
+.vinxi
+.wrangler
+.netlify
+.wireit
+.temp
+.tmp
 
-# tests coverage
-coverage.out
+# Vite & Vitest config
+vite.config.*
+!vite.config.ts
+vitest.config.*
+!vitest.config.ts
+vitest.workspace.*
+!vitest.workspace.ts
 
-# env files
-.env*
+# Envars
+.env.*
 !.env.example
-!.env.docker
+compose.env*
+!compose.env.example
+.*.vars
 
-# fly.toml
-fly.*.toml*
-!fly.*example.toml
+# Disable this line in your real app
+/playwright/.cache/
+/playwright-report/
+/tests-results/
+/blob-report/
+.playwright/
 
-# projects
-web/dist/
-static/assets/
-static/css/
-static/js/
-*_templ.go
+# Sentry Config File
+.sentryclirc
+
+# Storybook
+*storybook.log
+storybook-static/
+
+# Application data
+/storage/
+web/dist/*
+!web/dist/.gitkeep
+
+# Miscellaneous
+pnpm-exec-summary.json
+slim.report.json
+RELEASE.md
+audit.json
+sbom-*
+
+# Generated files
+/api/docs.go
+/api/swagger.json
+/api/swagger.yaml
+/app/generated/
+/specs/
+*.gen.ts
+
+# TanStack Router
+.tanstack/
+routeTree.gen.ts
+routes.gen.ts
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+terraform.tfstate*
+terraform.tfvars*
+!terraform.tfvars.example
+
+# fly.io
+fly*.toml*
+!fly*.toml.example

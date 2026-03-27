@@ -1,3 +1,12 @@
 {
-    "recommendations": ["golang.go"]
+    "recommendations": [
+        "bradlc.vscode-tailwindcss",
+        "darkriszty.markdown-table-prettify",
+        "EditorConfig.EditorConfig",
+        "foxundermoon.shell-format",
+        "golang.go",
+        "ms-playwright.playwright",
+        "oxc.oxc-vscode",
+        "redhat.vscode-yaml"
+    ]
 }

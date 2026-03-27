@@ -1,0 +1,14 @@
+[
+    {
+        "action": "remove",
+        "files": [
+            ".agent",
+            ".docs",
+            "docs",
+            "LICENSE-APACHE",
+            "LICENSE-MIT",
+            "README.md",
+            "AGENTS.md"
+        ]
+    }
+]

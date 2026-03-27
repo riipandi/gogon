@@ -1,9 +1,8 @@
 # Contributing Guide
 
-When contributing to this repository, please first discuss the change you wish
-to make via issue, email, or any other method with the owners of this repository
-before making any changes. This way we can guide you through the process and
-give feedback.
+When contributing to this repository, please first discuss the change you wish to make via issue, email,
+or any other method with the owners of this repository before making any changes. This way we can guide
+you through the process and give feedback.
 
 ## 🍽️ Pull Request Process
 
@@ -23,6 +22,6 @@ If you need more information on the steps to create a pull request, you can find
 
 ## 🏁 Quick Start
 
-TODO Put the guidelines here.
+**TODO** Put the guidelines here.
 
 [pull-requests-docs]: https://docs.github.com/en/pull-requests/collaborating-with-pull-requests/proposing-changes-to-your-work-with-pull-requests/creating-a-pull-request-from-a-fork

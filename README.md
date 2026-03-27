@@ -6,56 +6,64 @@ initial setup.
 
 This repository contains a **Go** starter project template.
 
-[![CI Test](https://github.com/riipandi/gogon/actions/workflows/release.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/release.yml)
-[![CI Release](https://github.com/riipandi/gogon/actions/workflows/test.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/test.yml)
+[![Go](https://img.shields.io/badge/Go-1.26-blue.svg?logo=Go&logoColor=white)](https://go.dev)
+[![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue.svg?logo=typescript&logoColor=blue)](https://www.typescriptlang.org)
+[![React](https://img.shields.io/badge/React-19-blue.svg?logo=react)](https://react.dev)
 [![Go Report Card](https://goreportcard.com/badge/github.com/riipandi/gogon)](https://goreportcard.com/report/github.com/riipandi/gogon)
 [![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?color=gray)](https://github.com/riipandi/gogon/graphs/contributors)
+<!-- [![Release](https://img.shields.io/github/v/release/riipandi/gogon?logo=docker&logoColor=white)](https://github.com/riipandi/gogon/releases) -->
+<!-- [![CI Test](https://github.com/riipandi/gogon/actions/workflows/test.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/test.yml) -->
+<!-- [![CI Release](https://github.com/riipandi/gogon/actions/workflows/release.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/release.yml) -->
+
+---
 
 ```bash
-npx degit riipandi/gogon myapp-name
+pnpm dlx tiged riipandi/gogon myapp-name
 ```
 
 In this repo I'm using [go-chi][go-chi], but you can change it with whatever library you want.
 
 ## 🏁 Quick Start
 
-You will need [`Go >=1.22`][golang], [`Docker >= 20.10`][docker], [`air >= 1.49.0`][air],
-and [`Taskfile >= 3.34`][taskfile] installed on your machine.
+You will need [`Go >=1.26`][golang], [`Node.js >= 24.14`][nodejs], [`PNPM >= 10.33`][pnpm],
+and [`Docker >= 20.10`][docker] installed on your machine. Also, you need to install the following tools:
+
+```sh
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
+go install github.com/bufbuild/buf/cmd/buf@latest
+go install github.com/swaggo/swag/cmd/swag@latest
+
+go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest
+go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
+```
 
 ### Up and Running
 
-1. Install the required toolchain & SDK: [Go][golang], [Docker][docker], [air][air], and [Taskfile][taskfile].
-2. Install the required dependencies: `task dev:install`
-3. Geneate application secret key: `task generate-key`
+1. Install the required toolchain & SDK.
+2. Install the required dependencies: `pnpm install && go mod tidy`
+3. Geneate application secret key: `pnpm generate:key`
 3. Create `.env` file or copy from `.env.example`, then configure required variables.
-4. Run project in development mode: `task dev`
+4. Run project in development mode: `pnpm dev`
+
+Vite serves the frontend on `:3000` and proxies `/api/*` to Go on `:3080`.
+Go files are watched and auto-rebuilt. Produces a single binary with the frontend embedded.
+No web server needed.
 
 ### Available tasks for this project
 
-Type `task --list-all` on your terminal and see the available commands.
+| Command      | Description                                     |
+|--------------|-------------------------------------------------|
+| `pnpm dev`   | Vite dev server (:3000) + Go API server (:3080) |
+| `pnpm build` | Build frontend + Go binary (single file)        |
+| `pnpm start` | Run the production binary                       |
+| `pnpm cmd`   | Run Go server directly (`go run -tags debug .`) |
+| `pnpm test`  | Run tests (frontend and backend)                |
 
-| Command                 | Description                                     |
-| ----------------------- | ----------------------------------------------- |
-| `task start`            | Run the compiled application                    |
-| `task generate-key`     | Generate a random secret key                    |
-| `task update-deps`      | Update NPM dependencies                         |
-| `task build`            | Build the application binary                    |
-| `task build:release`    | GoReleaser build and release                    |
-| `task build:single`     | GoReleaser build single target                  |
-| `task build:snapshot`   | GoReleaser relese snapshot                      |
-| `task code:check`       | Check code quality                              |
-| `task code:format`      | Format code                                     |
-| `task code:lint`        | Lint code                                       |
-| `task dev:cleanup`      | Stop dev server and cleanup generated files     |
-| `task dev`              | Start development mode                          |
-| `task dev:install`      | Install required dependencies                   |
-| `task dev:prepare`      | Start the database and local mail server        |
-| `task docker:build`     | Build Docker image                              |
-| `task docker:migrate`   | Run database migrations inside Docker container |
-| `task docker:push`      | Push Docker image to container registry         |
-| `task docker:run`       | Run Docker container                            |
-| `task docker:shell`     | Run Docker container shell                      |
-| `task docker:validate`  | Validate docker compile application version     |
+## Test ConnectRPC
+```sh
+curl -sSL http://localhost:3000/rpc/api.myapp.v1.GreetService/Greet \
+  -H "Content-Type: application/json" -d '{"name": "John"}'
+```
 
 ## 🐳 Publishing Docker Image
 
@@ -70,7 +78,7 @@ Replace `REGISTRY_URL` with your container registry, ie: `ghcr.io` or `docker.io
 Push docker image:
 
 ```sh
-task docker:push
+pnpm docker:push
 ```
 
 ## 🚀 Deployment
@@ -98,15 +106,15 @@ See the [LICENSE-APACHE](./LICENSE-APACHE) and [LICENSE-MIT](./LICENSE-MIT) file
 
 <sub>🤫 Psst! If you like my work you can support me via [GitHub sponsors](https://github.com/sponsors/riipandi).</sub>
 
-[![Twitter Badge](https://img.shields.io/badge/-%40riipandi-1ca0f1?style=flat&labelColor=0890f0&logo=twitter&logoColor=white)][riipandi-twitter]
+[![Creator Badge](https://badgen.net/badge/icon/by%20Aris%20Ripandi?label&color=black&labelColor=black)][riipandi-twitter]
 
 [cobra]: https://cobra.dev/
 [viper]: https://github.com/spf13/viper
 [go-chi]: https://github.com/go-chi/chi
 [golang]: https://go.dev/doc/install
-[air]: https://github.com/cosmtrek/air?tab=readme-ov-file#installation
+[nodejs]: https://nodejs.org/en/download
 [docker]: https://docs.docker.com/engine/install/
-[taskfile]: https://taskfile.dev/installation
+[pnpm]: https://pnpm.io/installation
 [license-mit]: https://choosealicense.com/licenses/mit/
 [license-apache]: https://choosealicense.com/licenses/apache-2.0/
 [riipandi-twitter]: https://twitter.com/intent/follow?screen_name=riipandi

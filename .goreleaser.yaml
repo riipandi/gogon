@@ -1,58 +1,156 @@
-project_name: gogon
+# yaml-language-server: $schema=https://goreleaser.com/static/schema.json
+# vim: set ts=2 sw=2 tw=0 fo=cnqoj
 
-dist: build/releases
+version: 2
+
+project_name: myapp
+report_sizes: true
+dist: ./release
+
+metadata:
+  mod_timestamp: '{{ .CommitTimestamp }}'
 
 before:
   hooks:
-    - go install github.com/a-h/templ/cmd/templ@latest
-    - templ generate
     - go mod tidy
+    - pnpm install --ignore-scripts --frozen-lockfile
+    - swag init --output ./api -d cmd,internal,modules,pkg -g myapp/main.go --quiet
+    - swag fmt --dir ./api
+
+env:
+  - CGO_ENABLED=0
+  - GOEXPERIMENT=jsonv2,greenteagc
 
 builds:
-  - main: ./cmd/app
-    binary: gogon
+  - id: build_noncgo
+    main: ./cmd/myapp
+    binary: '{{.Os}}_{{.Arch}}/{{.ProjectName}}'
+    no_main_check: true
+    no_unique_dist_dir: true
+    goos: ['darwin', 'linux', 'windows']
+    goarch: ['amd64', 'arm64']
+    buildmode: pie
+    tags:
+      - prod
+    flags:
+      - -trimpath
+      - -buildvcs=false
     ldflags:
       - -w -s -extldflags '-static'
-      - -X github.com/riipandi/gogon/pkg.Version={{ .Version }}
-      - -X github.com/riipandi/gogon/pkg.BuildDate={{ .Date }}
-    env:
-      - CGO_ENABLED=0
-    goos:
-      # - windows
-      # - darwin
-      - freebsd
-      - linux
-    goarch:
-      - amd64
-      - arm64
-      - arm
-    goarm:
-      - "7"
-    ignore:
-      - goos: windows
-        goarch: arm
-      - goos: freebsd
-        goarch: arm
-      - goos: darwin
-        goarch: arm
-
-release:
-  draft: true
+      - -X 'myapp/internal.Version={{.Tag}}'
+      - -X 'myapp/internal.BuildHash={{.ShortCommit}}'
+      - -X 'myapp/internal.BuildDate={{.Date}}'
 
 archives:
-  - format: zip
+  - formats: [tar.gz]
+    ids: [build_noncgo]
+    name_template: 'build-{{.ShortCommit}}/{{.ProjectName}}_{{.Version}}_{{.Os}}_{{.Arch}}'
+    format_overrides:
+      - goos: windows
+        formats: [zip]
     files:
-      - LICENSE*
-      - CHANGELOG*
+      - README.md
+      - CHANGELOG.md
 
 checksum:
-  name_template: "checksums.txt"
+  name_template: 'checksums.txt'
 
 snapshot:
-  name_template: "{{ incpatch .Version }}-next"
+  version_template: 'v{{ incpatch .Version }}'
 
 changelog:
+  use: github
   sort: asc
   filters:
     exclude:
-      - "^web:"
+      - '^examples:'
+      - '^docs:'
+      - '^test:'
+
+release:
+  prerelease: auto
+  mode: prepend
+  draft: true
+
+# kos:
+#   - repositories:
+#       - ghcr.io/riipandi/myapp-modulith
+#     tags:
+#       - "v{{.Version}}"
+#     bare: true
+#     platforms:
+#       - linux/amd64
+#       - linux/arm64
+
+# dockers_v2:
+#   - id: distroless
+#     dockerfile: ./deploy/Dockerfile.distroless
+#     images: ['ghcr.io/riipandi/myapp-modulith']
+#     tags:
+#       - "v{{ .Version }}"
+#       - "{{ if .IsNightly }}nightly{{ end }}"
+#       - "{{ if not .IsNightly }}latest{{ end }}"
+#     labels:
+#       "org.opencontainers.image.name": "{{.ProjectName}}"
+#       "org.opencontainers.image.version": "{{.Version}}"
+#       "org.opencontainers.image.created": "{{.Date}}"
+#       "org.opencontainers.image.revision": "{{.FullCommit}}"
+#       "org.opencontainers.image.source": "{{.GitURL}}"
+#       "org.opencontainers.image.licenses": "Proprietary"
+#     platforms: ['linux/amd64', 'linux/arm64']
+#     build_args:
+#       DOCKER_IMAGE: 'ghcr.io/riipandi/myapp-modulith'
+#       BUILD_VERSION: '{{.Version}}'
+#       BUILD_HASH: '{{.Commit}}'
+#       GO_VERSION: 1.26.1
+#       PLATFORM: linux/amd64
+#       DISTROLESS_TAG: nonroot
+
+# npms:
+#   - name: "@chronark/myapp-cli"
+#     description: "Application command line"
+#     homepage: "https://example.com"
+#     keywords:
+#       - myapp
+#       - api
+#     license: AGPLv3
+#     author: riipandi <dev@example.com>
+#     bugs: https://github.com/riipandi/myapp-modulith/issues
+#     access: public
+
+# binary_signs:
+#   -
+#     # Name of the signature file.
+#     #
+#     # Default: '${artifact}_{{ .Os }}_{{ .Arch }}{{ with .Arm }}v{{ . }}{{ end }}{{ with .Mips }}_{{ . }}{{ end }}{{ if not (eq .Amd64 "v1") }}{{ .Amd64 }}{{ end }}'.
+#     # Templates: allowed.
+#     signature: "${artifact}_sig"
+#     cmd: gpg
+
+#     # Command line arguments for the command
+#     #
+#     # to sign with a specific key use
+#     # args: ["-u", "<key id, fingerprint, email, ...>", "--output", "${signature}", "--detach-sign", "${artifact}"]
+#     #
+#     # Default: ["--output", "${signature}", "--detach-sign", "${artifact}"].
+#     # Templates: allowed.
+#     args: ["--output", "${signature}", "${artifact}", "{{ .ProjectName }}"]
+#     artifacts: binary
+#     stdin: "{{ .Env.GPG_PASSWORD }}"
+#     stdin_file: ./.password
+
+#     # Sets a certificate that your signing command should write to.
+#     #
+#     # You can later use `${certificate}` or `.Env.certificate` in the `args` section.
+#     #
+#     # This is particularly useful for keyless signing with cosign, and should
+#     # not usually be used otherwise.
+#     #
+#     # Note that this should be a name, not a path.
+#     #
+#     # Templates: allowed.
+#     certificate: '{{ trimsuffix .Env.artifact ".tar.gz" }}.pem'
+#     env:
+#       - FOO=bar
+#       - HONK=honkhonk
+#     output: true

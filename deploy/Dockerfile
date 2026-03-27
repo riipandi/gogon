@@ -1,0 +1,163 @@
+# syntax=docker/dockerfile:1.7
+
+# Arguments with default value (for build).
+# Platform options: linux/amd64 or linux/arm64
+# ARG PLATFORM=linux/amd64
+ARG DISTROLESS_TAG=nonroot
+ARG GO_VERSION=1.26.1
+
+# ------------------------------------------------------------------------------
+# Base image Go + Node.js with pnpm package manager.
+# ------------------------------------------------------------------------------
+FROM golang:${GO_VERSION}-trixie AS base
+ENV COREPACK_ENABLE_DOWNLOAD_PROMPT=0 COREPACK_INTEGRITY_KEYS=0 DO_NOT_TRACK=1
+ENV LEFTHOOK=0 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=true CI=true
+ENV FNM_PATH=/usr/bin PNPM_HOME=/pnpm HOME=/root
+ENV PATH="$HOME/.local/share/fnm:$PNPM_HOME:$PATH"
+ARG NODE_VERSION=24.14
+
+# Install system dependencies (optional tools for building and debugging)
+RUN echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+RUN --mount=target=/var/lib/apt/lists,type=cache,sharing=locked \
+    --mount=target=/var/cache/apt,type=cache,sharing=locked \
+    rm -f /etc/apt/apt.conf.d/docker-clean && apt-get update -y \
+    && apt-get -yqq --no-install-recommends install build-essential curl \
+       inotify-tools pkg-config libssl-dev git unzip ca-certificates jq \
+    && update-ca-certificates
+
+# Install Node.js and PNPM (we need to use bash as the default shell to load fnm function)
+SHELL ["/usr/bin/bash", "-c"]
+RUN echo -e "Installing Node.js $NODE_VERSION" && touch $HOME/.bashrc \
+    && curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell --install-dir $FNM_PATH \
+    && echo 'eval "$(fnm env --use-on-cd --shell bash)"' >> $HOME/.bashrc && . $HOME/.bashrc \
+    && fnm install ${NODE_VERSION} --corepack-enabled \
+    && fnm default ${NODE_VERSION} --corepack-enabled \
+    && corepack prepare pnpm@latest-10 --activate
+
+# Install required SDK and toolchain
+RUN --mount=type=cache,id=go-sdk,target=/root/.cache/go-sdk \
+    go install github.com/swaggo/swag/cmd/swag@latest \
+    && go install github.com/bufbuild/buf/cmd/buf@latest
+
+# Add tini for signal handling and zombie reaping
+RUN set -eux; \
+    TINI_DOWNLOAD_URL="https://github.com/krallin/tini/releases/download/v0.19.0" \
+    ARCH="$(dpkg --print-architecture)"; \
+    case "${ARCH}" in \
+      amd64|x86_64) TINI_BIN_URL="${TINI_DOWNLOAD_URL}/tini" ;; \
+      arm64|aarch64) TINI_BIN_URL="${TINI_DOWNLOAD_URL}/tini-arm64" ;; \
+      *) echo "unsupported architecture: ${ARCH}"; exit 1 ;; \
+    esac; \
+    curl -fsSL "${TINI_BIN_URL}" -o /usr/bin/tini; \
+    chmod +x /usr/bin/tini
+
+WORKDIR /srv
+
+# ------------------------------------------------------------------------------
+# Install dependencies and build the application.
+# ------------------------------------------------------------------------------
+FROM base AS builder
+ENV CGO_ENABLED=0 GOOS=linux GOEXPERIMENT=jsonv2
+
+# Copy the source files
+COPY --link . .
+
+# Bash will load fnm function via .bashrc. Since we're starting non-interactive shell,
+# we wil need to tell bash to load .bashrc manually.
+SHELL ["/usr/bin/bash", "-c"]
+ENV BASH_ENV=$HOME/.bashrc
+
+# Install dependencies and build the application
+RUN --mount=type=cache,id=go-mod,target=/go/pkg/mod \
+    --mount=type=cache,id=go-build,target=/root/.cache/go-build \
+    --mount=type=cache,id=go-sdk,target=/root/.cache/go-sdk \
+    --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install \
+    --ignore-scripts --frozen-lockfile --stream && go mod download && go mod tidy \
+    && go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    && go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest \
+    && pnpm run generate:proto && pnpm exec tsc -b --noEmit --extendedDiagnostics \
+    && GOARCH=$(dpkg --print-architecture) NODE_ENV=production pnpm run build \
+    && strip /srv/build/release/$(jq -r '.name' package.json) \
+    && chmod +x /srv/build/release/$(jq -r '.name' package.json)
+
+# ------------------------------------------------------------------------------
+# Cleanup the builder stage and create necessary directories.
+# ------------------------------------------------------------------------------
+FROM base AS pruner
+
+# Copy only necessary files from builder stage
+COPY --from=builder /srv/build/release /srv
+
+# Create necessary data directories and set permissions
+RUN mkdir -p /srv/storage/{backup,certs,data,logs,uploads} && chmod -R 0775 /srv/storage
+
+# ------------------------------------------------------------------------------
+# Production image, copy build output files and run the application.
+# ------------------------------------------------------------------------------
+FROM gcr.io/distroless/cc-debian13:${DISTROLESS_TAG} AS runner
+
+# Environment variable with default values
+ARG APP_MODE=production
+ARG APP_LOG_LEVEL=info
+ARG APP_LOG_TRANSPORT=console
+
+# Read application environment variables
+ARG APP_SECRET_KEY
+ARG AUTH_PRIVATE_KEY
+ARG AUTH_PUBLIC_KEY
+ARG AUTH_SECRET_KEY
+ARG AUTH_ACCESS_TOKEN_EXPIRY
+ARG AUTH_REFRESH_TOKEN_EXPIRY
+ARG AUTH_GITHUB_CLIENT_ID
+ARG AUTH_GITHUB_CLIENT_SECRET
+ARG AUTH_GOOGLE_CLIENT_ID
+ARG AUTH_GOOGLE_CLIENT_SECRET
+ARG DATABASE_URL
+ARG MAILER_FROM_EMAIL
+ARG MAILER_FROM_NAME
+ARG MAILER_SMTP_HOST
+ARG MAILER_SMTP_PORT
+ARG MAILER_SMTP_USERNAME
+ARG MAILER_SMTP_PASSWORD
+ARG MAILER_SMTP_SECURE
+ARG PUBLIC_BASE_URL
+ARG PUBLIC_S3_ASSETS_URL
+ARG PUBLIC_TRUSTED_ORIGINS
+ARG PUBLIC_RATE_LIMIT_DEFAULT_MAX
+ARG PUBLIC_RATE_LIMIT_DEFAULT_WINDOW
+ARG STORAGE_MAX_UPLOAD_SIZE
+ARG STORAGE_S3_ACCESS_KEY_ID
+ARG STORAGE_S3_BUCKET_DEFAULT
+ARG STORAGE_S3_ENDPOINT_URL
+ARG STORAGE_S3_FORCE_PATH_STYLE
+ARG STORAGE_S3_PATH_PREFIX
+ARG STORAGE_S3_REGION
+ARG STORAGE_S3_SECRET_ACCESS_KEY
+ARG STORAGE_S3_SIGNED_URL_EXPIRES
+
+# Copy the build output files and some necessary system utilities from previous stage.
+# To enhance security, consider avoiding the copying of sysutils.
+COPY --from=base /usr/bin/tini /usr/bin/tini
+COPY --from=pruner --chown=nonroot:nonroot /srv /srv
+
+# Define the host and port to listen on.
+# Prevent load certs from system (/etc/ssl/certs/ca-certificates.crt)
+ENV PATH="/usr/bin:/usr/local/bin:/nodejs/bin:$PATH"
+ARG HOST=0.0.0.0 PORT=3000 TZ=UTC
+ENV HOST=$HOST PORT=$PORT TZ=$TZ
+ENV SSL_CERT_FILE= SSL_CERT_DIR=
+ENV TINI_SUBREAPER=true
+
+WORKDIR /srv
+USER nonroot:nonroot
+EXPOSE $PORT/tcp
+
+# Define volumes for persistent storage and configuration.
+VOLUME /srv/storage/backup /srv/storage/certs /srv/storage/data /srv/storage/logs /srv/storage/uploads
+
+# Healthcheck to monitor application status
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 CMD /srv/myapp hc
+
+# SHELL: /busybox/sh
+ENTRYPOINT ["/usr/bin/tini", "--"]
+CMD ["/srv/myapp", "serve"]
