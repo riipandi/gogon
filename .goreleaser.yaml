@@ -102,7 +102,7 @@ release:
 #       DOCKER_IMAGE: 'ghcr.io/riipandi/myapp-modulith'
 #       BUILD_VERSION: '{{.Version}}'
 #       BUILD_HASH: '{{.Commit}}'
-#       GO_VERSION: 1.25.0
+#       GO_VERSION: 1.26.1
 #       PLATFORM: linux/amd64
 #       DISTROLESS_TAG: nonroot
 

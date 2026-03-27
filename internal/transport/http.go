@@ -3,6 +3,7 @@ package transport
 import (
 	"context"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
 
@@ -37,9 +38,10 @@ func (s *HTTPServer) ListenAndServe(addr string) error {
 	protocols.SetUnencryptedHTTP2(true)
 
 	s.Server = &http.Server{
-		Addr:      addr,
-		Handler:   s.Router,
-		Protocols: protocols,
+		Addr:              addr,
+		Handler:           s.Router,
+		Protocols:         protocols,
+		ReadHeaderTimeout: 10 * time.Second,
 	}
 
 	return s.Server.ListenAndServe()

@@ -29,7 +29,10 @@ You will need [`Go >=1.26`][golang], [`Node.js >= 24.14`][nodejs], [`PNPM >= 10.
 and [`Docker >= 20.10`][docker] installed on your machine. Also, you need to install the following tools:
 
 ```sh
+go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 go install github.com/bufbuild/buf/cmd/buf@latest
+go install github.com/swaggo/swag/cmd/swag@latest
+
 go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 ```

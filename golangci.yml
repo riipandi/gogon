@@ -5,12 +5,12 @@ version: '2'
 linters:
   default: none
   enable:
-    - errcheck # Ensure errors are checked and handled
-    - govet # Go's official vet tool for catching suspicious constructs
-    - staticcheck # Advanced static analysis, catches bugs and code smells
-    - ineffassign # Detects assignments to variables that are never used
-    - unused # Finds unused variables, functions, and imports
-    # - gosec            # Basic security checks (recommended to keep enabled)
+    - errcheck      # Ensure errors are checked and handled
+    - govet         # Go's official vet tool for catching suspicious constructs
+    - staticcheck   # Advanced static analysis, catches bugs and code smells
+    - ineffassign   # Detects assignments to variables that are never used
+    - unused        # Finds unused variables, functions, and imports
+    - gosec         # Basic security checks (recommended to keep enabled)
   settings:
     errcheck:
       check-type-assertions: true
@@ -44,6 +44,11 @@ linters:
         # - ^github.com/urfave/cli/v3.*$
         # - ^github.com/ClickHouse/clickhouse-go/v2.*$
         # - ^github.com/aws/aws-sdk-go-v2/.*$
+    gosec:
+      excludes:
+        - G101
+        - G102
+        - G107
     funlen:
       lines: 100
       statements: 50
@@ -102,7 +107,7 @@ linters:
           - exhaustruct
           - funlen
           - goconst
-          # - gosec
+          - gosec
           - noctx
           - wrapcheck
         path: _test\.go
