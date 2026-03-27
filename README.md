@@ -57,7 +57,7 @@ No web server needed.
 | `pnpm build` | Build frontend + Go binary (single file)        |
 | `pnpm start` | Run the production binary                       |
 | `pnpm cmd`   | Run Go server directly (`go run -tags debug .`) |
-| `pnpm test`  | Run tests (frontend)                            |
+| `pnpm test`  | Run tests (frontend and backend)                |
 
 ## Test ConnectRPC
 ```sh
