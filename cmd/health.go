@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+
+	"myapp/internal/config"
 )
 
 var (
@@ -70,6 +72,7 @@ func formatSize(bytes int64) string {
 }
 
 func init() {
-	healthCmd.Flags().StringVar(&healthAddr, "addr", "http://127.0.0.1:3080/api/healthz", "Server health endpoint")
+	defaultAddr := fmt.Sprintf("http://%s:%d/api/healthz", config.V().GetString("host"), config.V().GetInt("port"))
+	healthCmd.Flags().StringVar(&healthAddr, "addr", defaultAddr, "Server health endpoint")
 	healthCmd.Flags().BoolVar(&healthLive, "live", false, "Check live server via HTTP")
 }

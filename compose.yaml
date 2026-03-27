@@ -21,7 +21,7 @@ services:
   #   hostname: myapp
   #   volumes: ["./storage:/srv/storage:rw"]
   #   ports: ["3000:3000"]
-  #   env_file: "./.env.local"
+  #   env_file: "./.env"
   #   healthcheck:
   #     test: ["CMD", "/srv/myapp", "health"]
   #     interval: 3s

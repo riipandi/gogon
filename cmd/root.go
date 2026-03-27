@@ -44,6 +44,8 @@ func Execute() {
 }
 
 func init() {
+	config.Init()
+
 	// Set `true` to disable the default help subcommand
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: false})
 
