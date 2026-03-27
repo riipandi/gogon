@@ -30,8 +30,8 @@ main.go               Main entrypoint
 | `pnpm dev`   | Vite dev server (:3000) + Go API server (:3080) |
 | `pnpm build` | Build frontend + Go binary (single file)        |
 | `pnpm start` | Run the production binary                       |
-| `pnpm gogon` | Run Go server directly (`go run . serve`)       |
-| `pnpm test`  | Run tests                                       |
+| `pnpm cmd`   | Run Go server directly (`go run -tags debug .`) |
+| `pnpm test`  | Run tests (frontend)                            |
 
 ## Development
 
@@ -46,7 +46,7 @@ Vite serves the frontend on `:3000` and proxies `/api/*` to Go on `:3080`. Go fi
 
 ```bash
 pnpm build
-./build/release/gogon serve --port 8080
+./build/release/myapp serve --port 8080
 ```
 
 Produces a single binary with the frontend embedded. No web server needed.
@@ -54,11 +54,11 @@ Produces a single binary with the frontend embedded. No web server needed.
 ## CLI
 
 ```bash
-gogon                 # Show help
-gogon serve           # Start server (:3080)
-gogon serve -p 8080   # Custom port
-gogon migrate up      # Run migrations
-gogon migrate down    # Rollback migrations
+myapp                 # Show help
+myapp serve           # Start server (:3080)
+myapp serve -p 8080   # Custom port
+myapp migrate up      # Run migrations
+myapp migrate down    # Rollback migrations
 ```
 
 ## Tech Stack

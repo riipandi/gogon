@@ -1,6 +1,6 @@
 package main
 
-import "gogon/cmd"
+import "myapp/cmd"
 
 func main() {
 	cmd.Execute()

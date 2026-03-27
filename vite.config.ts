@@ -5,6 +5,7 @@ import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import viteReact from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 import { goPlugin } from './vite-plugin-go'
+import pkg from './package.json' with { type: 'json' }
 
 export default defineConfig({
   plugins: [
@@ -18,8 +19,10 @@ export default defineConfig({
     }),
     viteReact(),
     goPlugin({
-      args: ['build', '-o', 'build/debug/gogon', '.'],
+      packageName: pkg.name,
+      binArgs: ['serve'],
       build: {
+        embedDir: 'web/dist',
         outputDir: 'build/release',
         buildFlags: ['-trimpath'],
         buildTags: ['release'],
@@ -42,7 +45,6 @@ export default defineConfig({
       '/api': {
         target: 'http://127.0.0.1:3080',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\//, ''),
       },
     },
   },

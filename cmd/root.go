@@ -8,7 +8,7 @@ import (
 )
 
 var rootCmd = &cobra.Command{
-	Use:   "gogon",
+	Use:   "myapp",
 	Short: "Fullstack Go + React application",
 	Long:  "A fullstack web application built with Go, Chi, and React.",
 	Run: func(cmd *cobra.Command, args []string) {

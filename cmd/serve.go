@@ -6,7 +6,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"gogon/internal"
+	"myapp/internal"
 )
 
 var serveHost string

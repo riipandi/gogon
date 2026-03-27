@@ -1,7 +1,7 @@
-import type { Plugin, ViteDevServer } from 'vite'
-import { spawn, type ChildProcess } from 'node:child_process'
-import path from 'node:path'
 import fs from 'node:fs'
+import path from 'node:path'
+import { spawn, type ChildProcess } from 'node:child_process'
+import type { Plugin, ViteDevServer } from 'vite'
 
 export interface GoBuildOptions {
   args?: string[]
@@ -13,6 +13,7 @@ export interface GoBuildOptions {
 }
 
 export interface GoPluginOptions {
+  packageName: string
   cmd?: string
   args?: string[]
   bin?: string
@@ -36,15 +37,26 @@ interface ResolvedBuildOptions {
   buildTags: string[]
 }
 
-const defaults: Required<Omit<GoPluginOptions, 'build'>> & { build: Required<GoBuildOptions> } = {
+interface GoPluginDefaults {
+  cmd: string
+  binArgs: string[]
+  delay: number
+  killDelay: number
+  stopOnError: boolean
+  excludeDir: string[]
+  excludeRegex: string[]
+  extensions: string[]
+  log: boolean
+  build: Required<GoBuildOptions>
+}
+
+const defaults: GoPluginDefaults = {
   cmd: 'go',
-  args: ['build', '-o', 'build/debug/gogon', '.'],
-  bin: '',
-  binArgs: ['serve'],
+  binArgs: [],
   delay: 1000,
   killDelay: 300,
   stopOnError: false,
-  excludeDir: ['vendor', 'node_modules', 'web/dist', 'tmp', '.git', 'build'],
+  excludeDir: ['.git', 'vendor', 'node_modules', 'web/dist', 'temp', 'tmp', 'build', 'dist'],
   excludeRegex: ['_test\\.go$'],
   extensions: ['go'],
   log: true,
@@ -58,16 +70,6 @@ const defaults: Required<Omit<GoPluginOptions, 'build'>> & { build: Required<GoB
   },
 }
 
-function inferBin(args: string[]): string {
-  const oIdx = args.indexOf('-o')
-  if (oIdx !== -1 && oIdx + 1 < args.length) return args[oIdx + 1]
-  return 'build/debug/gogon'
-}
-
-function matchAny(value: string, patterns: string[]): boolean {
-  return patterns.some((p) => new RegExp(p).test(value))
-}
-
 function formatDuration(ms: number): string {
   if (ms < 1000) return `${ms}ms`
   return `${(ms / 1000).toFixed(1)}s`
@@ -75,7 +77,7 @@ function formatDuration(ms: number): string {
 
 function formatFileSize(bytes: number): string {
   const mb = (bytes / (1024 * 1024)).toFixed(2)
-  const kb = (bytes / 1024).toFixed(1)
+  const kb = (bytes / (1024 * 1024)).toFixed(1)
   return bytes >= 1024 * 1024 ? `${mb} MB` : `${kb} KB`
 }
 
@@ -99,29 +101,20 @@ function formatBuildInfo(buildOpts: ResolvedBuildOptions): string[] {
 }
 
 function resolveBuildOptions(
-  devArgs: string[],
   userBuild: GoBuildOptions | undefined,
+  packageName: string,
 ): ResolvedBuildOptions {
   const isProduction = process.env.NODE_ENV === 'production'
 
   const outputDir = userBuild?.outputDir || (isProduction ? 'build/release' : 'build/debug')
-  const outputBin = userBuild?.outputBin || inferBin(devArgs).split('/').pop() || 'gogon'
+  const outputBin = userBuild?.outputBin || packageName
   const embedDir = userBuild?.embedDir || 'web/dist'
   const buildFlags = userBuild?.buildFlags || []
   const buildTags = userBuild?.buildTags || defaults.build.buildTags
 
-  let buildArgs: string[]
-  if (userBuild?.args && userBuild.args.length > 0) {
-    buildArgs = [...userBuild.args]
-  } else {
-    const oIdx = devArgs.indexOf('-o')
-    if (oIdx !== -1 && oIdx + 1 < devArgs.length) {
-      buildArgs = [...devArgs]
-      buildArgs[oIdx + 1] = `${outputDir}/${outputBin}`
-    } else {
-      buildArgs = ['build', '-o', `${outputDir}/${outputBin}`, '.']
-    }
-  }
+  const buildArgs = userBuild?.args && userBuild.args.length > 0
+    ? [...userBuild.args]
+    : ['build', '-o', `${outputDir}/${outputBin}`, '.']
 
   if (buildTags.length > 0) {
     buildArgs.splice(1, 0, '-tags', buildTags.join(','))
@@ -134,28 +127,34 @@ function resolveBuildOptions(
   return { outputDir, outputBin, embedDir, args: buildArgs, buildFlags, buildTags }
 }
 
-export function goPlugin(userOptions: GoPluginOptions = {}): Plugin {
+export function goPlugin(userOptions: GoPluginOptions): Plugin {
   if (process.env.VITEST) {
     return { name: 'vite-plugin-go' }
   }
 
+  const name = userOptions.packageName
+  const defaultArgs = ['build', '-o', `build/debug/${name}`, '.']
+
   const opts = {
     ...defaults,
     ...userOptions,
-    bin: userOptions.bin || inferBin(userOptions.args ?? defaults.args),
+    args: userOptions.args ?? defaultArgs,
+    bin: userOptions.bin || defaultArgs[2],
     build: { ...defaults.build, ...userOptions.build },
   }
 
-  const excludeDirPatterns = opts.excludeDir.map(
-    (d) => `[\\/]${path.normalize(d)}[\\/]`,
-  )
-  const allExcludePatterns = [...excludeDirPatterns, ...opts.excludeRegex]
+  const excludePatterns = [
+    ...opts.excludeDir.map((d) => new RegExp(`[\\/]${path.normalize(d)}[\\/]`)),
+    ...opts.excludeRegex.map((r) => new RegExp(r)),
+  ]
+
   let goProcess: ChildProcess | null = null
   let buildTimer: ReturnType<typeof setTimeout> | null = null
   let isBuilding = false
+  let hasPendingChanges = false
   let disposed = false
 
-  const buildOpts = resolveBuildOptions(opts.args, userOptions.build)
+  const buildOpts = resolveBuildOptions(userOptions.build, name)
 
   function log(msg: string) {
     if (opts.log) console.log(`\x1b[36m[go]\x1b[0m ${msg}`)
@@ -184,46 +183,14 @@ export function goPlugin(userOptions: GoPluginOptions = {}): Plugin {
       stdio: 'inherit',
       detached: true,
     })
+
+    goProcess.on('error', (err) => {
+      log(`failed to start binary: ${err.message}`)
+      goProcess = null
+    })
   }
 
-  function buildAndStart() {
-    if (isBuilding || disposed) return
-    if (buildTimer) clearTimeout(buildTimer)
-
-    buildTimer = setTimeout(() => {
-      isBuilding = true
-      log('building...')
-
-      const buildProcess = spawn(opts.cmd, opts.args, { stdio: 'pipe' })
-      let stderr = ''
-
-      buildProcess.stderr?.on('data', (data: Buffer) => {
-        stderr += data.toString()
-      })
-
-      buildProcess.on('close', (code) => {
-        isBuilding = false
-        buildTimer = null
-
-        if (code === 0) {
-          log('built successfully')
-          setTimeout(() => {
-            if (disposed) return
-            killGo()
-            startBinary()
-          }, opts.killDelay)
-        } else {
-          log(`build failed (exit code ${code})`)
-          if (stderr) console.error(stderr)
-          if (opts.stopOnError) {
-            killGo()
-          }
-        }
-      })
-    }, opts.delay)
-  }
-
-  function initialBuild() {
+  function runBuild(onSuccess: () => void, onFailure: (code: number | null, stderr: string) => void) {
     isBuilding = true
     log('building...')
 
@@ -236,22 +203,66 @@ export function goPlugin(userOptions: GoPluginOptions = {}): Plugin {
 
     buildProcess.on('close', (code) => {
       isBuilding = false
-      if (disposed) return
 
       if (code === 0) {
         log('built successfully')
-        startBinary()
+        onSuccess()
       } else {
         log(`build failed (exit code ${code})`)
         if (stderr) console.error(stderr)
+        onFailure(code, stderr)
       }
     })
+  }
+
+  function buildAndStart() {
+    if (isBuilding || disposed) return
+    if (buildTimer) clearTimeout(buildTimer)
+
+    buildTimer = setTimeout(() => {
+      runBuild(
+        () => {
+          buildTimer = null
+
+          if (hasPendingChanges) {
+            hasPendingChanges = false
+            buildAndStart()
+            return
+          }
+
+          setTimeout(() => {
+            if (disposed) return
+            killGo()
+            startBinary()
+          }, opts.killDelay)
+        },
+        (_code, _stderr) => {
+          buildTimer = null
+          if (opts.stopOnError) killGo()
+
+          if (hasPendingChanges) {
+            hasPendingChanges = false
+            buildAndStart()
+          }
+        },
+      )
+    }, opts.delay)
+  }
+
+  function initialBuild() {
+    runBuild(
+      () => {
+        if (disposed) return
+        startBinary()
+      },
+      () => {},
+    )
   }
 
   function shouldWatch(filePath: string): boolean {
     const ext = path.extname(filePath).slice(1)
     if (!opts.extensions.includes(ext)) return false
-    if (matchAny(filePath, allExcludePatterns)) return false
+    if (excludePatterns.some((re) => re.test(filePath))) return false
     return true
   }
 
@@ -261,8 +272,14 @@ export function goPlugin(userOptions: GoPluginOptions = {}): Plugin {
       initialBuild()
 
       _server.watcher.on('change', (file: string) => {
-        if (isBuilding || disposed) return
+        if (disposed) return
         if (!shouldWatch(file)) return
+
+        if (isBuilding) {
+          hasPendingChanges = true
+          return
+        }
+
         buildAndStart()
       })
 

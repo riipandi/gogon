@@ -1,13 +1,13 @@
 {
-    "name": "gogon",
+    "name": "myapp",
     "private": true,
     "type": "module",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
-        "start": "kill-port 3000 && ./build/release/gogon serve --port 3000",
+        "start": "kill-port 3000 && ./build/release/$npm_package_name serve --port 3000",
         "update-deps": "npm-check-updates --configFileName .ncurc.json",
-        "gogon": "go run -tags debug .",
+        "cmd": "go run -tags debug .",
         "test": "vitest run"
     },
     "dependencies": {
