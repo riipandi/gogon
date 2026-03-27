@@ -123,7 +123,7 @@ EXPOSE $PORT/tcp
 VOLUME /srv/storage/backup /srv/storage/certs /srv/storage/data /srv/storage/logs /srv/storage/uploads
 
 # Healthcheck to monitor application status
-# HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 CMD /srv/myapp hc
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 CMD /srv/myapp hc
 
 # SHELL: /busybox/sh
 ENTRYPOINT ["/usr/bin/tini", "--"]

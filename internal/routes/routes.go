@@ -12,6 +12,7 @@ func RegisterAPI(r chi.Router) {
 	r.MethodNotAllowed(responder.MethodNotAllowedJSON)
 
 	r.Get("/", handler.ApiRootHandler)
+	r.Get("/healthz", handler.HealthzHandler)
 
 	DefineUserRoutes(r)
 }
