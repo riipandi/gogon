@@ -34,8 +34,10 @@ RUN echo -e "Installing Node.js $NODE_VERSION" && touch $HOME/.bashrc \
     && fnm default ${NODE_VERSION} --corepack-enabled \
     && corepack prepare pnpm@latest-10 --activate
 
-# Install required SDK
-RUN --mount=type=cache,id=go-sdk,target=/root/.cache/go-sdk go install github.com/swaggo/swag/cmd/swag@latest
+# Install required SDK and toolchain
+RUN --mount=type=cache,id=go-sdk,target=/root/.cache/go-sdk \
+    go install github.com/swaggo/swag/cmd/swag@latest \
+    && go install github.com/bufbuild/buf/cmd/buf@latest
 
 # Add tini for signal handling and zombie reaping
 RUN set -eux; \
@@ -70,9 +72,11 @@ RUN --mount=type=cache,id=go-mod,target=/go/pkg/mod \
     --mount=type=cache,id=go-build,target=/root/.cache/go-build \
     --mount=type=cache,id=go-sdk,target=/root/.cache/go-sdk \
     --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install \
-    --ignore-scripts --frozen-lockfile --stream && pnpm exec tsc -b --noEmit \
-    && go mod download && go mod tidy && GOARCH=$(dpkg --print-architecture) \
-    NODE_ENV=production pnpm exec vite build \
+    --ignore-scripts --frozen-lockfile --stream && go mod download && go mod tidy \
+    && go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+    && go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest \
+    && pnpm run generate:proto && pnpm exec tsc -b --noEmit --extendedDiagnostics \
+    && GOARCH=$(dpkg --print-architecture) NODE_ENV=production pnpm run build \
     && strip /srv/build/release/$(jq -r '.name' package.json) \
     && chmod +x /srv/build/release/$(jq -r '.name' package.json)
 
