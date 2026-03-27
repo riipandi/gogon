@@ -23,7 +23,7 @@
         "docker:prune": "docker image rm --force $(docker image list --filter reference=$npm_package_config_image:* -q)",
         "docker:images": "docker image list --filter reference=$npm_package_config_image:*",
         "docker-build": "docker build -f ./deploy/Dockerfile . --build-arg DISTROLESS_TAG=debug-nonroot",
-        "docker-run": "docker run --network=host --rm -it --env-file=.env.local -v $(pwd)/storage:/srv/storage",
+        "docker-run": "docker run --network=host --rm -it --env-file=.env -v $(pwd)/storage:/srv/storage",
         "compose:up": "docker compose -f compose.yaml up --detach --remove-orphans",
         "compose:down": "docker compose -f compose.yaml down --remove-orphans",
         "compose:cleanup": "docker compose -f compose.yaml down --remove-orphans --volumes",

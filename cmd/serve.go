@@ -2,16 +2,17 @@ package cmd
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"os/signal"
-	"strings"
 	"syscall"
 	"time"
 
 	"github.com/spf13/cobra"
 
+	"myapp/internal/config"
 	"myapp/internal/transport"
 )
 
@@ -22,8 +23,15 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Start the application server",
 	Run: func(cmd *cobra.Command, args []string) {
+		config.ApplyFlags(serveHost, servePort)
+
+		cfg, err := config.Load()
+		if err != nil {
+			log.Fatalf("failed to load config: %v", err)
+		}
+
 		srv := transport.NewHTTPServer()
-		addr := strings.TrimPrefix(serveHost, ":") + ":" + strings.TrimPrefix(servePort, ":")
+		addr := fmt.Sprintf("%s:%d", cfg.Host, cfg.Port)
 
 		go func() {
 			log.Printf("listening on http://%s\n", addr)
@@ -51,5 +59,5 @@ var serveCmd = &cobra.Command{
 
 func init() {
 	serveCmd.Flags().StringVar(&serveHost, "host", "", "Host to bind to")
-	serveCmd.Flags().StringVar(&servePort, "port", ":3080", "Port to bind to")
+	serveCmd.Flags().StringVar(&servePort, "port", "", "Port to bind to")
 }
