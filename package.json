@@ -1,12 +1,33 @@
 {
     "name": "myapp",
+    "version": "0.0.0",
     "private": true,
+    "homepage": "https://github.com/riipandi/gogon#readme",
+    "bugs": {
+        "url": "https://github.com/riipandi/gogon/issues"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/riipandi/gogon.git"
+    },
     "type": "module",
     "scripts": {
         "dev": "vite dev",
         "build": "vite build",
         "cmd": "go run -tags debug .",
         "start": "kill-port 3000 && ./build/release/$npm_package_name serve --port 3000",
+        "docker:build": "pnpm --silent run docker-build -t $npm_package_config_image:latest-dev -t $npm_package_config_image:$npm_package_version-dev",
+        "docker:push": "docker push $npm_package_config_image:latest-dev && docker push $npm_package_config_image:$npm_package_version-dev",
+        "docker:run": "pnpm --silent run docker-run --name $npm_package_name $npm_package_config_image:$npm_package_version-dev",
+        "docker:shell": "pnpm --silent run docker-run --entrypoint sh $npm_package_config_image:$npm_package_version-dev",
+        "docker:prune": "docker image rm --force $(docker image list --filter reference=$npm_package_config_image:* -q)",
+        "docker:images": "docker image list --filter reference=$npm_package_config_image:*",
+        "docker-build": "docker build -f ./deploy/Dockerfile . --build-arg DISTROLESS_TAG=debug-nonroot",
+        "docker-run": "docker run --network=host --rm -it --env-file=.env.local -v $(pwd)/storage:/srv/storage",
+        "compose:up": "docker compose -f compose.yaml up --detach --remove-orphans",
+        "compose:down": "docker compose -f compose.yaml down --remove-orphans",
+        "compose:cleanup": "docker compose -f compose.yaml down --remove-orphans --volumes",
+        "compose:restart": "pnpm --silent run compose:down && pnpm --silent run compose:up",
         "update-deps": "npm-check-updates --configFileName .ncurc.json",
         "cleanup": "pnpm --silent cleanup:dist && pnpm --silent cleanup:deps",
         "cleanup:dist": "pnpm dlx del-cli .{tanstack,wrangler} build web/dist storybook-static",
@@ -49,6 +70,9 @@
         "typescript": "^6.0.2",
         "vite": "^8.0.3",
         "vitest": "^4.1.2"
+    },
+    "config": {
+        "image": "ghcr.io/riipandi/gogon"
     },
     "engines": {
         "node": ">=24.12.0"

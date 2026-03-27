@@ -26,7 +26,7 @@ export default defineConfig({
       build: {
         embedDir: 'web/dist',
         outputDir: 'build/release',
-        buildFlags: ['-trimpath'],
+        buildFlags: ['-trimpath', '-a', '-buildmode=pie', '-buildvcs=false'],
         buildTags: ['release']
       }
     })
