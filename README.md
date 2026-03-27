@@ -49,6 +49,12 @@ pnpm dev
 
 Vite serves the frontend on `:3000` and proxies `/api/*` to Go on `:3080`. Go files are watched and auto-rebuilt.
 
+## Test ConnectRPC
+```sh
+curl -sSL http://localhost:3000/rpc/api.myapp.v1.GreetService/Greet \
+  -H "Content-Type: application/json" -d '{"name": "John"}'
+```
+
 ## Production
 
 ```bash

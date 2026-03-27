@@ -10,6 +10,8 @@ import (
 	"strings"
 
 	"github.com/go-chi/chi/v5"
+
+	"myapp/internal/transport/responder"
 )
 
 //go:embed all:dist
@@ -24,6 +26,11 @@ func spaHandler() http.HandlerFunc {
 	fileServer := http.FileServer(http.FS(distSub))
 
 	return func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/api") || strings.HasPrefix(r.URL.Path, "/rpc") {
+			responder.NotFoundJSON(w, r)
+			return
+		}
+
 		reqPath := strings.TrimPrefix(r.URL.Path, "/")
 
 		if reqPath != "" {

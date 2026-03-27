@@ -13,7 +13,7 @@ import (
 
 func SetupStatic(r chi.Router) {
 	r.NotFound(func(w http.ResponseWriter, r *http.Request) {
-		if strings.HasPrefix(r.URL.Path, "/api") {
+		if strings.HasPrefix(r.URL.Path, "/api") || strings.HasPrefix(r.URL.Path, "/rpc") {
 			responder.NotFoundJSON(w, r)
 			return
 		}

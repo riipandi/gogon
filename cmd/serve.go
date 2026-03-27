@@ -22,7 +22,7 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Start the application server",
 	Run: func(cmd *cobra.Command, args []string) {
-		srv := transport.NewServer()
+		srv := transport.NewHttpServer()
 		addr := strings.TrimPrefix(serveHost, ":") + ":" + strings.TrimPrefix(servePort, ":")
 
 		go func() {
