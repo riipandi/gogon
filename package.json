@@ -36,10 +36,13 @@
         "test:ui": "vitest run",
         "format": "pnpm --silent format:go && pnpm --silent format:js",
         "check": "pnpm --silent check:go && pnpm --silent check:js",
+        "lint": "pnpm --silent lint:go && pnpm --silent lint:js",
         "format:go": "gofmt -w .",
         "format:js": "oxfmt --write .",
         "check:go": "go vet .",
-        "check:js": "oxfmt --check && oxlint --fix .",
+        "check:js": "oxfmt --check",
+        "lint:go": "golangci-lint run",
+        "lint:js": "oxlint --fix .",
         "typecheck": "tsc -b --noEmit"
     },
     "dependencies": {

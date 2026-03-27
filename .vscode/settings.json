@@ -24,6 +24,16 @@
         "**/routeTree.gen.ts": true,
         "**/routes.gen.ts": true
     },
+    "go.toolsEnvVars": {
+        "GOFLAGS": "-tags=release,debug",
+        "GOEXPERIMENT": "jsonv2"
+    },
+    "gopls": {
+        "buildFlags": ["-tags=release,debug"]
+    },
+    "go.formatTool": "gofmt",
+    "go.lintTool": "golangci-lint",
+    "go.lintOnSave": "package",
     "tailwindCSS.experimental.classRegex": [
         // @ref: https://www.tailwind-variants.org/docs/getting-started
         // @ref: https://github.com/paolotiu/tailwind-intellisense-regex-list
@@ -33,6 +43,15 @@
     "tailwindCSS.files.exclude": ["*.{json,md,mdx,js,ts,yml,yaml}"],
     "[css]": {
         "editor.defaultFormatter": "oxc.oxc-vscode"
+    },
+    "[dockerfile]": {
+        "editor.defaultFormatter": "docker.docker"
+    },
+    "[dockercompose]": {
+        "editor.insertSpaces": true,
+        "editor.defaultFormatter": "redhat.vscode-yaml",
+        "editor.tabSize": 2,
+        "editor.autoIndent": "advanced"
     },
     "[go]": {
         "editor.inlayHints.enabled": "onUnlessPressed",

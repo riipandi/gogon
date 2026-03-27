@@ -16,7 +16,7 @@ var rootCmd = &cobra.Command{
 	Short: "Fullstack Go + React application",
 	Long:  "A fullstack web application built with Go, Chi, and React.",
 	Run: func(cmd *cobra.Command, args []string) {
-		cmd.Help()
+		_ = cmd.Help()
 	},
 }
 

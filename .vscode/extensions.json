@@ -6,6 +6,7 @@
         "foxundermoon.shell-format",
         "golang.go",
         "ms-playwright.playwright",
-        "oxc.oxc-vscode"
+        "oxc.oxc-vscode",
+        "redhat.vscode-yaml"
     ]
 }

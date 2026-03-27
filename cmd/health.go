@@ -50,7 +50,7 @@ func checkLive() {
 		fmt.Printf("unhealthy: %v\n", err)
 		os.Exit(1)
 	}
-	defer resp.Body.Close()
+	defer resp.Body.Close() //nolint:errcheck
 
 	if resp.StatusCode != http.StatusOK {
 		fmt.Printf("unhealthy: status %d\n", resp.StatusCode)
