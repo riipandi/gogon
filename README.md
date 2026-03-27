@@ -78,7 +78,7 @@ Replace `REGISTRY_URL` with your container registry, ie: `ghcr.io` or `docker.io
 Push docker image:
 
 ```sh
-task docker:push
+pnpm docker:push
 ```
 
 ## 🚀 Deployment
