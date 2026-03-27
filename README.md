@@ -24,7 +24,9 @@ In this repo I'm using [go-chi][go-chi], but you can change it with whatever lib
 ## 🏁 Quick Start
 
 You will need [`Go >=1.26`][golang], [`Node.js >= 24.14`][nodejs], [`PNPM >= 10.33`][pnpm],
-and [`Docker >= 20.10`][docker] installed on your machine. Also, you need to install the following tools:
+and [`Docker >= 20.10`][docker] installed on your machine.
+
+Also, you need to install the following tools:
 
 ```sh
 go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
