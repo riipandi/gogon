@@ -41,9 +41,10 @@ go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 
 1. Install the required toolchain & SDK.
 2. Install the required dependencies: `pnpm install && go mod tidy`
-3. Geneate application secret key: `pnpm generate:key`
 3. Create `.env` file or copy from `.env.example`, then configure required variables.
-4. Run project in development mode: `pnpm dev`
+4. Geneate application secret key: `pnpm generate:key`
+5. Geneate Connect RPC proto: `pnpm generate:proto`
+6. Run project in development mode: `pnpm dev`
 
 Vite serves the frontend on `:3000` and proxies `/api/*` to Go on `:3080`.
 Go files are watched and auto-rebuilt. Produces a single binary with the frontend embedded.
