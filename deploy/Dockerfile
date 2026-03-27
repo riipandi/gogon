@@ -69,8 +69,8 @@ ENV BASH_ENV=$HOME/.bashrc
 RUN --mount=type=cache,id=go-mod,target=/go/pkg/mod \
     --mount=type=cache,id=go-build,target=/root/.cache/go-build \
     --mount=type=cache,id=go-sdk,target=/root/.cache/go-sdk \
-    --mount=type=cache,id=pnpm,target=/pnpm/store pnpm exec tsc -b --noEmit \
-    && pnpm install --ignore-scripts --frozen-lockfile --stream \
+    --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install \
+    --ignore-scripts --frozen-lockfile --stream && pnpm exec tsc -b --noEmit \
     && go mod download && go mod tidy && GOARCH=$(dpkg --print-architecture) \
     NODE_ENV=production pnpm exec vite build \
     && strip /srv/build/release/$(jq -r '.name' package.json) \
@@ -99,8 +99,37 @@ ARG APP_LOG_TRANSPORT=console
 
 # Read application environment variables
 ARG APP_SECRET_KEY
-ARG DATABASE_AUTO_MIGRATE
+ARG AUTH_PRIVATE_KEY
+ARG AUTH_PUBLIC_KEY
+ARG AUTH_SECRET_KEY
+ARG AUTH_ACCESS_TOKEN_EXPIRY
+ARG AUTH_REFRESH_TOKEN_EXPIRY
+ARG AUTH_GITHUB_CLIENT_ID
+ARG AUTH_GITHUB_CLIENT_SECRET
+ARG AUTH_GOOGLE_CLIENT_ID
+ARG AUTH_GOOGLE_CLIENT_SECRET
 ARG DATABASE_URL
+ARG MAILER_FROM_EMAIL
+ARG MAILER_FROM_NAME
+ARG MAILER_SMTP_HOST
+ARG MAILER_SMTP_PORT
+ARG MAILER_SMTP_USERNAME
+ARG MAILER_SMTP_PASSWORD
+ARG MAILER_SMTP_SECURE
+ARG PUBLIC_BASE_URL
+ARG PUBLIC_S3_ASSETS_URL
+ARG PUBLIC_TRUSTED_ORIGINS
+ARG PUBLIC_RATE_LIMIT_DEFAULT_MAX
+ARG PUBLIC_RATE_LIMIT_DEFAULT_WINDOW
+ARG STORAGE_MAX_UPLOAD_SIZE
+ARG STORAGE_S3_ACCESS_KEY_ID
+ARG STORAGE_S3_BUCKET_DEFAULT
+ARG STORAGE_S3_ENDPOINT_URL
+ARG STORAGE_S3_FORCE_PATH_STYLE
+ARG STORAGE_S3_PATH_PREFIX
+ARG STORAGE_S3_REGION
+ARG STORAGE_S3_SECRET_ACCESS_KEY
+ARG STORAGE_S3_SIGNED_URL_EXPIRES
 
 # Copy the build output files and some necessary system utilities from previous stage.
 # To enhance security, consider avoiding the copying of sysutils.
