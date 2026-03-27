@@ -1,59 +1,71 @@
 package internal
 
 import (
-	"context"
-	"log"
+	"encoding/json"
 	"net/http"
-	"os"
-	"os/signal"
-	"syscall"
-	"time"
+
+	"github.com/go-chi/chi/v5"
+	"github.com/go-chi/chi/v5/middleware"
+	"github.com/go-chi/cors"
+
+	"gogon/web"
 )
 
-func StartServer(bind string) {
-	// TODO Initialize database connection
+type Server struct {
+	Router chi.Router
+}
 
-	// The HTTP Server
-	server := &http.Server{Addr: bind, Handler: httpHandler()}
+func NewServer() *Server {
+	r := chi.NewRouter()
 
-	// Server run context
-	serverCtx, serverStopCtx := context.WithCancel(context.Background())
+	r.Use(middleware.Logger)
+	r.Use(middleware.Recoverer)
+	r.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Content-Type"},
+		AllowCredentials: false,
+		MaxAge:           300,
+	}))
 
-	// Listen for syscall signals for process to interrupt/quit
-	sig := make(chan os.Signal, 1)
-	signal.Notify(sig, syscall.SIGHUP, syscall.SIGINT, syscall.SIGTERM, syscall.SIGQUIT)
-	go func() {
-		<-sig
+	r.Route("/api", func(r chi.Router) {
+		r.Get("/users/{id}", userHandler)
+		r.Get("/users/current", currentUserHandler)
+		r.Get("/users/*", userPathHandler)
+	})
 
-		// TODO Close database connection
+	web.SetupStatic(r)
 
-		// Shutdown signal with grace period of 30 seconds
-		shutdownCtx, cancel := context.WithTimeout(serverCtx, 30*time.Second)
-		defer cancel()
+	return &Server{Router: r}
+}
 
-		go func() {
-			<-shutdownCtx.Done()
-			if shutdownCtx.Err() == context.DeadlineExceeded {
-				log.Fatal("graceful shutdown timed out.. forcing exit.")
-			}
-		}()
+func (s *Server) ListenAndServe(addr string) error {
+	return http.ListenAndServe(addr, s.Router)
+}
 
-		// Trigger graceful shutdown
-		err := server.Shutdown(shutdownCtx)
-		if err != nil {
-			log.Fatal(err)
-		}
-		serverStopCtx()
-	}()
+func writeJSON(w http.ResponseWriter, status int, v any) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	json.NewEncoder(w).Encode(v)
+}
 
-	// Run the server
-	log.Printf("starting server on http://%v\n", bind)
-	err := server.ListenAndServe()
+func userHandler(w http.ResponseWriter, r *http.Request) {
+	id := chi.URLParam(r, "id")
+	writeJSON(w, http.StatusOK, map[string]string{
+		"id": id,
+	})
+}
 
-	if err != nil && err != http.ErrServerClosed {
-		log.Fatal(err)
-	}
+func currentUserHandler(w http.ResponseWriter, r *http.Request) {
+	writeJSON(w, http.StatusOK, map[string]string{
+		"route": "/api/users/current",
+	})
+}
 
-	// Wait for server context to be stopped
-	<-serverCtx.Done()
+func userPathHandler(w http.ResponseWriter, r *http.Request) {
+	path := chi.URLParam(r, "*")
+	writeJSON(w, http.StatusOK, map[string]string{
+		"route": "/api/users/*",
+		"path":  path,
+	})
 }

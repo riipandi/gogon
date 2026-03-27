@@ -1,78 +1,21 @@
-# dependencies
 node_modules
-
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
-
-# IDE - VSCode
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-
-# misc
-logs
-*.log
-/.fleet
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-/typings
-build-errors.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
-testem.log
-*.local
-*.tsbuildinfo
-
-# System Files
 .DS_Store
-.DS_Store?
-Thumbs.db
-*.sqlite3
-*.db
-
-# compiled output
-dist/
-dist-ssr
-/out-tsc
-.dist
+web-ssr
+*.local
+.env
+.nitro
+.wrangler
 .output
-.build*
-.parcel-cache
-builds
+.vinxi
+__unconfig*
+todos.json
 build/
-tmp/
-temp/
-vendor/
-/gogon
 
-# tests coverage
-coverage.out
+# TanStack Router
+.tanstack/
+routeTree.gen.ts
+routes.gen.ts
 
-# env files
-.env*
-!.env.example
-!.env.docker
-
-# fly.toml
-fly.*.toml*
-!fly.*example.toml
-
-# projects
-web/dist/
-static/assets/
-static/css/
-static/js/
-*_templ.go
+# SPA embed fo Go binary
+web/dist/*
+!web/dist/.gitkeep

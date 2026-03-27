@@ -1,19 +1,14 @@
 {
-    "editor.codeActionsOnSave": {
-        "source.fixAll": "explicit"
-    },
-    "editor.formatOnSave": true,
-    "files.exclude": {
-        "**/*_templ.go": true
+    "files.watcherExclude": {
+        "**/routeTree.gen.ts": true,
+        "**/routes.gen.ts": true,
     },
     "search.exclude": {
-        "**/build/*/**": true,
-        "**/vendor/*/**": true
+        "**/routeTree.gen.ts": true,
+        "**/routes.gen.ts": true,
     },
-    "files.watcherExclude": {
-        "**/*_templ.go": true
-    },
-    "[templ]": {
-        "editor.defaultFormatter": "a-h.templ"
+    "files.readonlyInclude": {
+        "**/routeTree.gen.ts": true,
+        "**/routes.gen.ts": true,
     }
 }
