@@ -5,9 +5,8 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"myapp/internal/handler"
 	"myapp/internal/middleware"
-	"myapp/internal/responder"
+	"myapp/internal/routes"
 	"myapp/web"
 )
 
@@ -22,15 +21,7 @@ func NewServer() *Server {
 	r.Use(middleware.JSONRecoverer)
 	r.Use(middleware.CORS())
 
-	r.Route("/api", func(r chi.Router) {
-		r.NotFound(responder.NotFoundJSON)
-		r.MethodNotAllowed(responder.MethodNotAllowedJSON)
-		r.Get("/", handler.ApiRootHandler)
-		r.Get("/users", handler.ListUsersHandler)
-		r.Get("/users/{id}", handler.UserHandler)
-		r.Get("/users/current", handler.CurrentUserHandler)
-		r.Get("/users/*", handler.UserPathHandler)
-	})
+	r.Route("/api", routes.RegisterAPI)
 
 	web.SetupStatic(r)
 

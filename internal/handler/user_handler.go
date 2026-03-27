@@ -21,12 +21,6 @@ func UserHandler(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func CurrentUserHandler(w http.ResponseWriter, r *http.Request) {
-	responder.WriteJSON(w, http.StatusOK, map[string]string{
-		"route": "/api/users/current",
-	})
-}
-
 func UserPathHandler(w http.ResponseWriter, r *http.Request) {
 	path := chi.URLParam(r, "*")
 	responder.WriteJSON(w, http.StatusOK, map[string]string{
