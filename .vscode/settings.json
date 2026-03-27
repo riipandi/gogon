@@ -34,6 +34,9 @@
     "go.formatTool": "gofmt",
     "go.lintTool": "golangci-lint",
     "go.lintOnSave": "package",
+    "protobuf.externalLinter.enabled": true,
+    "protobuf.externalLinter.linter": "buf",
+    "protobuf.externalLinter.bufPath": "buf",
     "tailwindCSS.experimental.classRegex": [
         // @ref: https://www.tailwind-variants.org/docs/getting-started
         // @ref: https://github.com/paolotiu/tailwind-intellisense-regex-list
