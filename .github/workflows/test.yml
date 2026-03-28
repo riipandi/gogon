@@ -73,10 +73,14 @@ jobs:
           pnpm exec oxfmt --write .
           pnpm exec oxlint --fix .
 
+
       - name: Check code quality (backend)
         run: |
           go vet ./...
           golangci-lint run -c .golangci.yml ./...
+
+      # - name: Run unit tests (frontend)
+      #   run: pnpm exec vitest run
 
       - name: Run unit tests (backend)
         run: go test -v ./...
