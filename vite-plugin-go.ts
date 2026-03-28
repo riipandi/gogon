@@ -5,6 +5,7 @@ import type { Plugin, ViteDevServer } from 'vite'
 
 export interface GoBuildOptions {
   args?: string[]
+  packagePath?: string
   outputDir?: string
   outputBin?: string
   embedDir?: string
@@ -17,6 +18,7 @@ export interface GoPluginOptions {
   packageName: string
   cmd?: string
   args?: string[]
+  packagePath?: string
   bin?: string
   binArgs?: string[]
   delay?: number
@@ -64,6 +66,7 @@ const defaults: GoPluginDefaults = {
   log: true,
   build: {
     args: [],
+    packagePath: '.',
     outputDir: '',
     outputBin: '',
     embedDir: 'web/dist',
@@ -109,6 +112,7 @@ function formatBuildInfo(buildOpts: ResolvedBuildOptions): string[] {
 
 function resolveBuildOptions(
   userBuild: GoBuildOptions | undefined,
+  userPkg: string,
   packageName: string
 ): ResolvedBuildOptions {
   const isProduction = process.env.NODE_ENV === 'production'
@@ -119,11 +123,12 @@ function resolveBuildOptions(
   const buildFlags = userBuild?.buildFlags || []
   const ldflags = userBuild?.ldflags || []
   const buildTags = userBuild?.buildTags || defaults.build.buildTags
+  const pkg = userBuild?.packagePath || userPkg
 
   const buildArgs =
     userBuild?.args && userBuild.args.length > 0
       ? [...userBuild.args]
-      : ['build', '-o', `${outputDir}/${outputBin}`, '.']
+      : ['build', '-o', `${outputDir}/${outputBin}`, pkg]
 
   if (buildTags.length > 0) {
     buildArgs.splice(1, 0, '-tags', buildTags.join(','))
@@ -146,8 +151,9 @@ export default function goPlugin(userOptions: GoPluginOptions): Plugin {
   }
 
   const name = userOptions.packageName
+  const pkgPath = userOptions.packagePath || defaults.build.packagePath
   const defaultBin = `build/debug/${name}`
-  const defaultArgs = ['build', '-o', defaultBin, '.']
+  const defaultArgs = ['build', '-o', defaultBin, pkgPath]
 
   const opts = {
     ...defaults,
@@ -176,7 +182,7 @@ export default function goPlugin(userOptions: GoPluginOptions): Plugin {
   let hasPendingChanges = false
   let disposed = false
 
-  const buildOpts = resolveBuildOptions(userOptions.build, name)
+  const buildOpts = resolveBuildOptions(userOptions.build, pkgPath, name)
 
   function log(msg: string) {
     if (opts.log) console.log(`\x1b[36m[go]\x1b[0m ${msg}`)

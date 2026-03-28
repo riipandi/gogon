@@ -24,6 +24,7 @@ export default defineConfig({
     viteReact(),
     goPlugin({
       packageName: pkg.name,
+      packagePath: './cmd',
       binArgs: ['serve'],
       build: {
         embedDir: 'web/dist',
