@@ -27,8 +27,3 @@ require (
 	golang.org/x/sys v0.29.0 // indirect
 	golang.org/x/text v0.28.0 // indirect
 )
-
-tool (
-	connectrpc.com/connect/cmd/protoc-gen-connect-go
-	google.golang.org/protobuf/cmd/protoc-gen-go
-)
