@@ -18,6 +18,7 @@ func RegisterAPI(r chi.Router) {
 }
 
 func DefineUserRoutes(r chi.Router) {
+	r.Post("/users", handler.CreateUserHandler)
 	r.Get("/users", handler.ListUsersHandler)
 	r.Get("/users/{id}", handler.UserHandler)
 	r.Get("/users/*", handler.UserPathHandler)

@@ -37,11 +37,11 @@ type DatabaseConfig struct {
 type MailerConfig struct {
 	FromEmail    string `mapstructure:"from_email"`
 	FromName     string `mapstructure:"from_name"`
-	SmtpHost     string `mapstructure:"smtp_host"`
-	SmtpPort     int    `mapstructure:"smtp_port"`
-	SmtpUsername string `mapstructure:"smtp_username"`
-	SmtpPassword string `mapstructure:"smtp_password"`
-	SmtpSecure   bool   `mapstructure:"smtp_secure"`
+	SMTPHost     string `mapstructure:"smtp_host"`
+	SMTPPort     int    `mapstructure:"smtp_port"`
+	SMTPUsername string `mapstructure:"smtp_username"`
+	SMTPPassword string `mapstructure:"smtp_password"`
+	SMTPSecure   bool   `mapstructure:"smtp_secure"`
 }
 
 type PublicConfig struct {

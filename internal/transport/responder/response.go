@@ -26,3 +26,9 @@ func MethodNotAllowedJSON(w http.ResponseWriter, r *http.Request) {
 		"method": r.Method,
 	})
 }
+
+func BadRequestJSON(w http.ResponseWriter, msg string) {
+	WriteJSON(w, http.StatusBadRequest, map[string]string{
+		"error": msg,
+	})
+}
