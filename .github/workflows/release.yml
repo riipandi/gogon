@@ -25,7 +25,6 @@ env:
   LEFTHOOK: 0
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
   CGO_ENABLED: 0
-  GOEXPERIMENT: jsonv2
   NODE_ENV: production
 
 jobs:
