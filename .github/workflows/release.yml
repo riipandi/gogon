@@ -1,9 +1,8 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 
-# git tag --delete v0.0.1
-# git push origin --delete tag v0.0.1
-# git tag v0.0.1 -m "version bump"
-# git push origin v0.0.1
+# Create a new release with tag:
+# git tag --delete v0.0.2 && git push origin --delete tag v0.0.2
+# git tag v0.0.2 -m "version bump" && git push origin v0.0.2
 
 name: Release
 
@@ -30,6 +29,7 @@ env:
 
 jobs:
   create-release:
+    name: Create Release
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
