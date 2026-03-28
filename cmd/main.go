@@ -1,6 +1,6 @@
 package main
 
-import "myapp/cmd/launcher"
+import "gogon/cmd/launcher"
 
 func main() {
 	launcher.Execute()

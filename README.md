@@ -16,7 +16,7 @@ initial setup.
 ---
 
 ```bash
-pnpm dlx tiged riipandi/gogon myapp-name
+pnpm dlx tiged riipandi/gogon gogon-name
 ```
 
 In this repo I'm using [go-chi][go-chi], but you can change it with whatever library you want.
@@ -43,7 +43,7 @@ go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 ### Up and Running
 
 1. Install the required toolchain & SDK.
-2. Find and replace `myapp`, `gogon` and `MyApplication` strings in the source files.
+2. Find and replace `gogon` and `MyApplication` strings in the source files.
 3. Install the required dependencies: `pnpm install && go mod download && go mod tidy`
 4. Create `.env` file or copy from `.env.example`, then configure required variables.
 5. Geneate application secret key: `pnpm generate:key`
@@ -66,7 +66,7 @@ No web server needed.
 
 ## Test ConnectRPC
 ```sh
-curl -sSL http://localhost:3000/rpc/api.myapp.v1.GreetService/Greet \
+curl -sSL http://localhost:3000/rpc/api.gogon.v1.GreetService/Greet \
   -H "Content-Type: application/json" -d '{"name": "John"}'
 ```
 

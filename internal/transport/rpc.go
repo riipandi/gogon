@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"myapp/internal/services"
-	"myapp/internal/transport/responder"
-	myappv1connect "myapp/specs/api/myapp/v1/myappv1connect"
+	"gogon/internal/services"
+	"gogon/internal/transport/responder"
+	gogonv1connect "gogon/specs/api/gogon/v1/gogonv1connect"
 )
 
 func NewRPCMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.Handle(myappv1connect.NewGreetServiceHandler(&services.GreetService{}))
+	mux.Handle(gogonv1connect.NewGreetServiceHandler(&services.GreetService{}))
 
 	return mux
 }

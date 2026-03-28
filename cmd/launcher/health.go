@@ -9,7 +9,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"myapp/internal/config"
+	"gogon/internal/config"
 )
 
 var (

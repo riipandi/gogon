@@ -10,7 +10,7 @@ clean: true
 inputs:
   - directory: .
     paths:
-      - api/myapp
+      - api/gogon
 
 plugins:
   - local: [go, tool, protoc-gen-go]

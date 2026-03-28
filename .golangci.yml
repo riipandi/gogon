@@ -32,8 +32,8 @@ linters:
         - ^net/url.URL$
         - ^os/exec.Cmd$
         - ^reflect.StructField$
-        - ^myapp/pkg/.*$
-        - ^myapp/modules/.*$
+        - ^gogon/pkg/.*$
+        - ^gogon/modules/.*$
         # - ^github.com/prometheus/client_golang/.+Opts$
         # - ^github.com/testcontainers/testcontainers-go.+Request$
         # - ^github.com/testcontainers/testcontainers-go.FromDockerfile$

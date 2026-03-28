@@ -1,4 +1,4 @@
-module myapp
+module gogon
 
 go 1.26.1
 

@@ -12,8 +12,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"myapp/internal/config"
-	"myapp/internal/transport"
+	"gogon/internal/config"
+	"gogon/internal/transport"
 )
 
 var serveHost string

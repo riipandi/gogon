@@ -3,7 +3,7 @@
 
 version: 2
 
-project_name: myapp
+project_name: gogon
 report_sizes: true
 dist: ./release
 
@@ -22,7 +22,7 @@ before:
     - go mod tidy
     - pnpm install --ignore-scripts --frozen-lockfile
     - pnpm run build
-    # - swag init --output ./api -d cmd,internal,modules,pkg -g myapp/main.go --quiet
+    # - swag init --output ./api -d cmd,internal,modules,pkg -g gogon/main.go --quiet
     # - swag fmt --dir ./api
 
 builds:
@@ -38,14 +38,14 @@ builds:
     flags: ['-trimpath', '-buildvcs=false']
     ldflags:
       - -w -s -extldflags '-static'
-      - -X 'myapp/internal/config.AppVersion={{.Tag}}'
-      - -X 'myapp/internal/config.BuildHash={{.ShortCommit}}'
-      - -X 'myapp/internal/config.BuildDate={{.Date}}'
+      - -X 'gogon/internal/config.AppVersion={{.Tag}}'
+      - -X 'gogon/internal/config.BuildHash={{.ShortCommit}}'
+      - -X 'gogon/internal/config.BuildDate={{.Date}}'
 
 archives:
   - formats: [tar.gz]
     ids: [build_noncgo]
-    name_template: 'build-{{.ShortCommit}}/{{.ProjectName}}_{{.Version}}_{{.Os}}_{{.Arch}}'
+    name_template: '{{.ProjectName}}_{{.Version}}_{{.Os}}_{{.Arch}}'
     format_overrides:
       - goos: windows
         formats: [zip]

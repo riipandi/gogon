@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"myapp/internal/transport/middleware"
-	"myapp/internal/transport/routes"
-	"myapp/web"
+	"gogon/internal/transport/middleware"
+	"gogon/internal/transport/routes"
+	"gogon/web"
 )
 
 type HTTPServer struct {
