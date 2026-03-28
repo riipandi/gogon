@@ -25,11 +25,10 @@ env:
   LEFTHOOK: 0
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
   CGO_ENABLED: 0
-  NODE_ENV: production
 
 jobs:
-  create-release:
-    name: Create Release
+  build-artifacts:
+    name: Build artifacts
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
