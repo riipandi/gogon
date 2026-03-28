@@ -13,16 +13,28 @@
     },
     "files.readonlyInclude": {
         "**/routeTree.gen.ts": true,
-        "**/routes.gen.ts": true
+        "**/routes.gen.ts": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/generated/**": true,
+        "**/specs/**": true
     },
     "files.watcherExclude": {
         "**/routeTree.gen.ts": true,
-        "**/routes.gen.ts": true
+        "**/routes.gen.ts": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/generated/**": true,
+        "**/specs/**": true
     },
     "search.exclude": {
         "**/.output": true,
         "**/routeTree.gen.ts": true,
-        "**/routes.gen.ts": true
+        "**/routes.gen.ts": true,
+        "**/build/**": true,
+        "**/dist/**": true,
+        "**/generated/**": true,
+        "**/specs/**": true
     },
     "go.toolsEnvVars": {
         "GOFLAGS": "-tags=release,debug",
