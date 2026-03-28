@@ -36,6 +36,7 @@ _data/
 build/
 dist/
 dist-ssr/
+release/
 output/
 .build/
 .data

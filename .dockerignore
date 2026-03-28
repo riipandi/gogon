@@ -1,6 +1,7 @@
 /output
 /dist
 /build
+/release
 /storage
 /temp
 .data

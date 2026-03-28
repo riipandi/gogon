@@ -14,32 +14,29 @@ before:
   hooks:
     - go mod tidy
     - pnpm install --ignore-scripts --frozen-lockfile
-    - swag init --output ./api -d cmd,internal,modules,pkg -g myapp/main.go --quiet
-    - swag fmt --dir ./api
+    # - swag init --output ./api -d cmd,internal,modules,pkg -g myapp/main.go --quiet
+    # - swag fmt --dir ./api
 
 env:
   - CGO_ENABLED=0
-  - GOEXPERIMENT=jsonv2,greenteagc
+  - GOEXPERIMENT=jsonv2
 
 builds:
   - id: build_noncgo
-    main: ./cmd/myapp
+    main: ./cmd
     binary: '{{.Os}}_{{.Arch}}/{{.ProjectName}}'
     no_main_check: true
     no_unique_dist_dir: true
     goos: ['darwin', 'linux', 'windows']
     goarch: ['amd64', 'arm64']
     buildmode: pie
-    tags:
-      - prod
-    flags:
-      - -trimpath
-      - -buildvcs=false
+    tags: ['release']
+    flags: ['-trimpath', '-buildvcs=false']
     ldflags:
       - -w -s -extldflags '-static'
-      - -X 'myapp/internal.Version={{.Tag}}'
-      - -X 'myapp/internal.BuildHash={{.ShortCommit}}'
-      - -X 'myapp/internal.BuildDate={{.Date}}'
+      - -X 'myapp/internal/config.AppVersion={{.Tag}}'
+      - -X 'myapp/internal/config.BuildHash={{.ShortCommit}}'
+      - -X 'myapp/internal/config.BuildDate={{.Date}}'
 
 archives:
   - formats: [tar.gz]
@@ -74,7 +71,7 @@ release:
 
 # kos:
 #   - repositories:
-#       - ghcr.io/riipandi/myapp-modulith
+#       - ghcr.io/riipandi/gogon
 #     tags:
 #       - "v{{.Version}}"
 #     bare: true
@@ -84,8 +81,8 @@ release:
 
 # dockers_v2:
 #   - id: distroless
-#     dockerfile: ./deploy/Dockerfile.distroless
-#     images: ['ghcr.io/riipandi/myapp-modulith']
+#     dockerfile: ./deploy/Dockerfile
+#     images: ['ghcr.io/riipandi/gogon']
 #     tags:
 #       - "v{{ .Version }}"
 #       - "{{ if .IsNightly }}nightly{{ end }}"
@@ -99,24 +96,12 @@ release:
 #       "org.opencontainers.image.licenses": "Proprietary"
 #     platforms: ['linux/amd64', 'linux/arm64']
 #     build_args:
-#       DOCKER_IMAGE: 'ghcr.io/riipandi/myapp-modulith'
+#       DOCKER_IMAGE: 'ghcr.io/riipandi/gogon'
 #       BUILD_VERSION: '{{.Version}}'
 #       BUILD_HASH: '{{.Commit}}'
 #       GO_VERSION: 1.26.1
 #       PLATFORM: linux/amd64
 #       DISTROLESS_TAG: nonroot
-
-# npms:
-#   - name: "@chronark/myapp-cli"
-#     description: "Application command line"
-#     homepage: "https://example.com"
-#     keywords:
-#       - myapp
-#       - api
-#     license: AGPLv3
-#     author: riipandi <dev@example.com>
-#     bugs: https://github.com/riipandi/myapp-modulith/issues
-#     access: public
 
 # binary_signs:
 #   -
@@ -137,7 +122,7 @@ release:
 #     args: ["--output", "${signature}", "${artifact}", "{{ .ProjectName }}"]
 #     artifacts: binary
 #     stdin: "{{ .Env.GPG_PASSWORD }}"
-#     stdin_file: ./.password
+#     stdin_file: ./.env.password
 
 #     # Sets a certificate that your signing command should write to.
 #     #

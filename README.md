@@ -32,6 +32,9 @@ Also, you need to install the following tools:
 go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 go install github.com/bufbuild/buf/cmd/buf@latest
 go install github.com/swaggo/swag/cmd/swag@latest
+go install github.com/pressly/goose/v3/cmd/goose@latest
+go install github.com/goreleaser/goreleaser/v2@latest
+go install github.com/anchore/grype/cmd/grype@latest
 
 go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest
 go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
