@@ -76,12 +76,18 @@ jobs:
           pnpm exec oxlint --fix .
           go vet ./...
           golangci-lint run -c .golangci.yml ./...
+        env:
+          GOEXPERIMENT: jsonv2
+          NODE_ENV: production
 
       # - name: Run unit tests (frontend)
       #   run: pnpm exec vitest run
 
       - name: Run unit tests (backend)
         run: go test -v ./...
+        env:
+          GOEXPERIMENT: jsonv2
+          NODE_ENV: production
 
       # Code signing:
       # @ref: https://github.com/goreleaser/goreleaser-action?tab=readme-ov-file#signing

@@ -15,8 +15,6 @@ env:
   LEFTHOOK: 0
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
   CGO_ENABLED: 0
-  GOEXPERIMENT: jsonv2
-  NODE_ENV: production
 
 jobs:
   test:
@@ -73,17 +71,25 @@ jobs:
           pnpm exec oxfmt --write .
           pnpm exec oxlint --fix .
 
-
       - name: Check code quality (backend)
         run: |
           go vet ./...
           golangci-lint run -c .golangci.yml ./...
+        env:
+          GOEXPERIMENT: jsonv2
+          NODE_ENV: production
 
       # - name: Run unit tests (frontend)
       #   run: pnpm exec vitest run
 
       - name: Run unit tests (backend)
         run: go test -v ./...
+        env:
+          GOEXPERIMENT: jsonv2
+          NODE_ENV: production
 
       - name: Build application binaries
         run: pnpm run build
+        env:
+          GOEXPERIMENT: jsonv2
+          NODE_ENV: production
