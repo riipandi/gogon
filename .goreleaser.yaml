@@ -10,17 +10,18 @@ dist: ./release
 metadata:
   mod_timestamp: '{{ .CommitTimestamp }}'
 
+env:
+  - CGO_ENABLED=0
+  - GOEXPERIMENT=jsonv2
+  - VITEST=true
+
 before:
   hooks:
     - go mod tidy
     - pnpm install --ignore-scripts --frozen-lockfile
-    - VITEST=true pnpm run build
+    - pnpm run build
     # - swag init --output ./api -d cmd,internal,modules,pkg -g myapp/main.go --quiet
     # - swag fmt --dir ./api
-
-env:
-  - CGO_ENABLED=0
-  - GOEXPERIMENT=jsonv2
 
 builds:
   - id: build_noncgo

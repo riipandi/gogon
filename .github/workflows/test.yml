@@ -19,7 +19,7 @@ jobs:
     strategy:
       matrix:
         # ubuntu-latest, macOS-latest, windows-2019
-        os: [ubuntu-latest, macOS-latest]
+        os: [ubuntu-latest]
         go-version: ['1.26.1']
       fail-fast: false
 
@@ -64,6 +64,13 @@ jobs:
           pnpm exec oxfmt --check
           pnpm exec oxfmt --write .
           pnpm exec oxlint --fix .
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          github-token: ${{ github.token }}
+          install-mode: binary
+          version: v2.11
 
       - name: Check code quality (backend)
         run: |

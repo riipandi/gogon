@@ -47,10 +47,3 @@ runs:
         go-version: ${{ inputs.goVersion }}
         cache-dependency-path: 'go.sum'
         cache: true
-
-    - name: golangci-lint
-      uses: golangci/golangci-lint-action@v9
-      with:
-        github-token: ${{ github.token }}
-        install-mode: binary
-        version: v2.11
