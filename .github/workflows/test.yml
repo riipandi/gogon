@@ -1,0 +1,65 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: Test
+
+on:
+  push:
+    branches: ['**']
+    tags-ignore: ['*']
+  pull_request:
+
+permissions: read-all
+
+env:
+  CGO_ENABLED: 0
+
+jobs:
+  test:
+    name: Test
+    strategy:
+      matrix:
+        # ubuntu-latest, macOS-latest, windows-2019
+        os: [ubuntu-latest, macOS-latest]
+        go-version: ['1.26.1']
+      fail-fast: false
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Run actions/setup-sdk@local
+        uses: ./.github/setup-sdk
+        with:
+          goVersion: ${{ matrix.go-version }}
+
+      - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
+        name: Install dependencies
+        run: |
+          pnpm install --ignore-scripts --frozen-lockfile
+          go mod download && go mod tidy
+
+      - name: Check code quality (frontend)
+        run: |
+          pnpm exec oxfmt --check
+          pnpm exec oxfmt --write .
+          pnpm exec oxlint --fix .
+
+      - name: Check code quality (backend)
+        run: |
+          go vet .
+          gofmt -w .
+          golangci-lint run -c golangci.yml ./...
+
+      # - name: Install and generate templates
+      #   run: |
+      #     go install github.com/a-h/templ/cmd/templ@latest
+      #     templ generate
+
+      - name: Run unit tests (backend)
+        run: go test -v ./...
+
+      - name: Build the application
+        run: pnpm run build
