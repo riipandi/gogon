@@ -26,6 +26,7 @@ env:
   PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD: true
   CGO_ENABLED: 0
   GOEXPERIMENT: jsonv2
+  NODE_ENV: production
 
 jobs:
   create-release:
@@ -74,7 +75,7 @@ jobs:
           pnpm exec oxfmt --write .
           pnpm exec oxlint --fix .
           go vet ./...
-          golangci-lint run -c golangci.yml ./...
+          golangci-lint run -c .golangci.yml ./...
 
       - name: Run unit tests (backend)
         run: go test -v ./...

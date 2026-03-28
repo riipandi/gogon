@@ -13,10 +13,12 @@ metadata:
 env:
   - CGO_ENABLED=0
   - GOEXPERIMENT=jsonv2
+  - NODE_ENV=production
   - VITEST=true
 
 before:
   hooks:
+    - go mod download
     - go mod tidy
     - pnpm install --ignore-scripts --frozen-lockfile
     - pnpm run build

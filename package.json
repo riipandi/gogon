@@ -47,7 +47,7 @@
         "format:js": "oxfmt --write .",
         "check:go": "go vet .",
         "check:js": "oxfmt --check",
-        "lint:go": "golangci-lint run -c golangci.yml ./...",
+        "lint:go": "golangci-lint run -c .golangci.yml ./...",
         "lint:js": "oxlint --fix .",
         "typecheck": "tsc -b --noEmit"
     },
