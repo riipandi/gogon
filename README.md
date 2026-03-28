@@ -16,7 +16,7 @@ initial setup.
 ---
 
 ```bash
-pnpm dlx tiged riipandi/gogon gogon-name
+pnpm dlx tiged riipandi/gogon myapp-name
 ```
 
 In this repo I'm using [go-chi][go-chi], but you can change it with whatever library you want.
