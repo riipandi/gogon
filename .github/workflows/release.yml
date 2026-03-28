@@ -29,7 +29,7 @@ env:
 
 jobs:
   create-release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v6
@@ -53,13 +53,6 @@ jobs:
           github_token: ${{ github.token }}
           setup_only: true
 
-      - name: Setup golangci-lint toolchain
-        uses: golangci/golangci-lint-action@v9
-        with:
-          github-token: ${{ github.token }}
-          install-mode: binary
-          version: v2.11
-
       - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
         name: Install dependencies
         run: |
@@ -67,6 +60,13 @@ jobs:
           go mod download && go mod tidy
           pnpm run generate:proto
           # templ generate
+
+      - name: Setup golangci-lint toolchain
+        uses: golangci/golangci-lint-action@v9
+        with:
+          github-token: ${{ github.token }}
+          install-mode: binary
+          version: v2.11
 
       - name: Check code quality
         run: |

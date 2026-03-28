@@ -22,8 +22,8 @@ jobs:
     name: Test
     strategy:
       matrix:
-        # ubuntu-latest, macOS-latest, windows-2019
-        os: [ubuntu-latest, macOS-latest]
+        # @ref: https://github.com/actions/runner-images
+        os: [ubuntu-24.04, macos-14]
         go-version: ['1.26.1']
       fail-fast: false
 
@@ -51,13 +51,6 @@ jobs:
           github_token: ${{ github.token }}
           setup_only: true
 
-      - name: Setup golangci-lint toolchain
-        uses: golangci/golangci-lint-action@v9
-        with:
-          github-token: ${{ github.token }}
-          install-mode: binary
-          version: v2.11
-
       - if: ${{ steps.pnpm-cache.outputs.cache-hit != 'true' }}
         name: Install dependencies
         run: |
@@ -65,6 +58,13 @@ jobs:
           go mod download && go mod tidy
           pnpm run generate:proto
           # templ generate
+
+      - name: Setup golangci-lint toolchain
+        uses: golangci/golangci-lint-action@v9
+        with:
+          github-token: ${{ github.token }}
+          install-mode: binary
+          version: v2.11
 
       - name: Check code quality (frontend)
         run: |
