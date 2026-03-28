@@ -49,8 +49,7 @@ jobs:
 
       - name: Check code quality (backend)
         run: |
-          go vet .
-          gofmt -w .
+          go vet ./...
           golangci-lint run -c golangci.yml ./...
 
       # - name: Install and generate templates
