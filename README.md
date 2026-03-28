@@ -66,7 +66,7 @@ No web server needed.
 
 ## Test ConnectRPC
 ```sh
-curl -sSL http://localhost:3000/rpc/api.v1.GreetService/Greet \
+curl -sSLi http://localhost:3000/rpc/api.v1.GreetService/Greet \
   -H "Content-Type: application/json" -d '{"name": "John"}'
 ```
 
