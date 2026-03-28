@@ -45,7 +45,7 @@
         "lint": "pnpm --silent lint:go && pnpm --silent lint:js",
         "format:go": "gofmt -w .",
         "format:js": "oxfmt --write .",
-        "check:go": "go vet .",
+        "check:go": "go vet ./...",
         "check:js": "oxfmt --check",
         "lint:go": "golangci-lint run -c .golangci.yml ./...",
         "lint:js": "oxlint --fix .",

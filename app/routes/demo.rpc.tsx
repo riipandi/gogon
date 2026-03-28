@@ -1,7 +1,7 @@
 import { useMutation } from '@connectrpc/connect-query'
 import { Link, createFileRoute } from '@tanstack/react-router'
 import { useState, Activity } from 'react'
-import { GreetService } from '#/generated/api/gogon/v1/greet_pb'
+import { GreetService } from '#/generated/api/v1/greet_pb'
 
 export const Route = createFileRoute('/demo/rpc')({
   component: RouteComponent,

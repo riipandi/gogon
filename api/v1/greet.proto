@@ -1,8 +1,8 @@
 syntax = "proto3";
 
-package api.gogon.v1;
+package api.v1;
 
-option go_package = "gogon/specs/api/gogon/v1;gogonv1";
+option go_package = "gogon/specs/api/v1;gogonv1";
 
 // GreetRequest represents a request to greet someone by name.
 message GreetRequest {

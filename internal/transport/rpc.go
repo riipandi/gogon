@@ -6,7 +6,7 @@ import (
 
 	"gogon/internal/services"
 	"gogon/internal/transport/responder"
-	gogonv1connect "gogon/specs/api/gogon/v1/gogonv1connect"
+	gogonv1connect "gogon/specs/api/v1/gogonv1connect"
 )
 
 func NewRPCMux() *http.ServeMux {
