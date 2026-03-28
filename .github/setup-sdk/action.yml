@@ -45,6 +45,5 @@ runs:
       with:
         token: ${{ github.token }}
         go-version: ${{ inputs.goVersion }}
-        go-version-file: 'go.mod'
         cache-dependency-path: 'go.sum'
         cache: true
