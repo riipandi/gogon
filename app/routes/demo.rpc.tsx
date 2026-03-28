@@ -4,7 +4,8 @@ import { useState, Activity } from 'react'
 import { GreetService } from '#/generated/api/myapp/v1/greet_pb'
 
 export const Route = createFileRoute('/demo/rpc')({
-  component: RouteComponent
+  component: RouteComponent,
+  staticData: { breadcrumb: 'Demo RPC Call' }
 })
 
 function RouteComponent() {

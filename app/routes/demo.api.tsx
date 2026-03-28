@@ -14,7 +14,8 @@ export const Route = createFileRoute('/demo/api')({
   component: RouteComponent,
   loader: ({ context }) => {
     context.queryClient.ensureQueryData(usersQueryOpts)
-  }
+  },
+  staticData: { breadcrumb: 'Demo API Call' }
 })
 
 function RouteComponent() {

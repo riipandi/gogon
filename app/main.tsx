@@ -1,10 +1,11 @@
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 import ReactDOM from 'react-dom/client'
 import { queryClient } from '#/libraries/api-client'
+import type { BreadcrumbValue } from '#/routes/-breadcrumb'
 import { routeTree } from './routes.gen'
 
 // Create the application router instance.
-const router = createRouter({
+const appRoutes = createRouter({
   routeTree,
   defaultPreload: 'intent',
   scrollRestoration: true,
@@ -16,7 +17,10 @@ const router = createRouter({
 // Register the router instance for type safety.
 declare module '@tanstack/react-router' {
   interface Register {
-    router: typeof router
+    router: typeof appRoutes
+  }
+  interface StaticDataRouteOption {
+    breadcrumb?: BreadcrumbValue
   }
 }
 
@@ -28,5 +32,5 @@ if (!rootElement) {
 
 if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
-  root.render(<RouterProvider router={router} context={{ queryClient }} />)
+  root.render(<RouterProvider router={appRoutes} context={{ queryClient }} />)
 }
