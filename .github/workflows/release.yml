@@ -40,7 +40,7 @@ jobs:
       - name: Run actions/setup-sdk@local
         uses: ./.github/setup-sdk
         with:
-          goVersion: ${{ matrix.go-version }}
+          goVersion: 1.26.1
 
       - name: Install required toolchain
         run: |
