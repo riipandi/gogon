@@ -11,10 +11,6 @@ inputs:
     description: 'Nodejs version'
     required: false
     default: '24'
-  pnpmVersion:
-    description: 'PNPM version'
-    required: false
-    default: '10'
   goVersion:
     description: 'Golang version'
     required: false
@@ -29,7 +25,6 @@ runs:
 
     - uses: pnpm/action-setup@v5
       with:
-        version: ${{ inputs.pnpmVersion }}
         run_install: false
         standalone: true
         cache: true
