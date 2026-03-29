@@ -49,6 +49,7 @@ go install github.com/anchore/grype/cmd/grype@latest
 7. Run project in development mode: `pnpm dev`
 
 Vite serves the frontend on `:3000` and proxies `/api/*` and `/rpc/*` to Go on `:3080`.
+
 Go files are watched and auto-rebuilt.
 
 ### Available tasks for this project
