@@ -62,7 +62,7 @@ Go files are watched and auto-rebuilt.
 | `pnpm cmd`   | Run Go server directly (`go run -tags debug .`) |
 | `pnpm test`  | Run tests (frontend and backend)                |
 
-## Test ConnectRPC
+### Test ConnectRPC
 ```sh
 curl -sSLi http://localhost:3000/rpc/api.v1.GreetService/Greet \
   -H "Content-Type: application/json" -d '{"name": "John"}'
