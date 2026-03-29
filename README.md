@@ -43,14 +43,13 @@ go install github.com/anchore/grype/cmd/grype@latest
 1. Install the required toolchain & SDK.
 2. Find and replace `tango`, `Tango`, and `MyApplication` strings in the source files.
 3. Install the required dependencies: `pnpm install`
-4. Create `.env.local` file or copy from `.env.example`, then configure required variables.
-5. Geneate application secret key: `pnpm generate:key`
+4. Create env file for development: `cp .env.example .env.local`
+5. Geneate application secret key: `pnpm generate:key --apply`
 6. Geneate Connect RPC proto: `pnpm generate:proto`
 7. Run project in development mode: `pnpm dev`
 
-Vite serves the frontend on `:3000` and proxies `/api/*` to Go on `:3080`.
-Go files are watched and auto-rebuilt. Produces a single binary with the frontend embedded.
-No web server needed.
+Vite serves the frontend on `:3000` and proxies `/api/*` and `/rpc/*` to Go on `:3080`.
+Go files are watched and auto-rebuilt.
 
 ### Available tasks for this project
 
