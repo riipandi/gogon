@@ -7,9 +7,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"gogon/internal/transport/middleware"
-	"gogon/internal/transport/routes"
-	"gogon/web"
+	"tango/internal/transport/middleware"
+	"tango/internal/transport/routes"
+	"tango/web"
 )
 
 type HTTPServer struct {

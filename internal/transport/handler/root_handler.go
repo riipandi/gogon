@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"gogon/internal/config"
-	"gogon/internal/transport/responder"
+	"tango/internal/config"
+	"tango/internal/transport/responder"
 )
 
 func HealthzHandler(w http.ResponseWriter, r *http.Request) {

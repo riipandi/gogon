@@ -1,6 +1,6 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/compose-spec/compose-spec/master/schema/compose-spec.json
 
-name: gogon
+name: tango
 
 x-common: &common
   networks: ['intranet']
@@ -8,7 +8,7 @@ x-common: &common
   restart: unless-stopped
 
 services:
-  # gogon:
+  # tango:
   #   <<: *common
   #   build:
   #     context: .
@@ -18,12 +18,12 @@ services:
   #       NODE_VERSION: ${NODE_VERSION:-24.14}
   #       GO_VERSION: ${GO_VERSION:-1.26.1}
   #   # platform: linux/amd64
-  #   hostname: gogon
+  #   hostname: tango
   #   volumes: ["./storage:/srv/storage:rw"]
   #   ports: ["3000:3000"]
   #   env_file: "./.env.local"
   #   healthcheck:
-  #     test: ["CMD", "/srv/gogon", "health"]
+  #     test: ["CMD", "/srv/tango", "health"]
   #     interval: 3s
   #     timeout: 5s
   #     retries: 3

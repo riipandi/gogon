@@ -1,4 +1,4 @@
-module gogon
+module tango
 
 go 1.26.0
 

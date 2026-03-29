@@ -1,6 +1,6 @@
 package main
 
-import "gogon/cmd/launcher"
+import "tango/cmd/launcher"
 
 func main() {
 	launcher.Execute()

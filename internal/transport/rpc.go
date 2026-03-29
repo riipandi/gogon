@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"gogon/internal/services"
-	"gogon/internal/transport/responder"
-	"gogon/specs/api/v1/gogonv1connect"
+	"tango/internal/services"
+	"tango/internal/transport/responder"
+	"tango/specs/api/v1/tangov1connect"
 )
 
 func NewRPCMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.Handle(gogonv1connect.NewGreetServiceHandler(&services.GreetService{}))
+	mux.Handle(tangov1connect.NewGreetServiceHandler(&services.GreetService{}))
 
 	return mux
 }

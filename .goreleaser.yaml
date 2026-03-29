@@ -3,7 +3,7 @@
 
 version: 2
 
-project_name: gogon
+project_name: tango
 report_sizes: true
 dist: ./release
 
@@ -22,7 +22,7 @@ before:
     - go mod tidy
     - pnpm install --ignore-scripts --frozen-lockfile
     - pnpm run build
-    # - swag init --output ./api -d cmd,internal,modules,pkg -g gogon/main.go --quiet
+    # - swag init --output ./api -d cmd,internal,modules,pkg -g tango/main.go --quiet
     # - swag fmt --dir ./api
 
 builds:
@@ -38,9 +38,9 @@ builds:
     flags: ['-trimpath', '-buildvcs=false']
     ldflags:
       - -w -s -extldflags '-static'
-      - -X 'gogon/internal/config.AppVersion={{.Tag}}'
-      - -X 'gogon/internal/config.BuildHash={{.ShortCommit}}'
-      - -X 'gogon/internal/config.BuildDate={{.Date}}'
+      - -X 'tango/internal/config.AppVersion={{.Tag}}'
+      - -X 'tango/internal/config.BuildHash={{.ShortCommit}}'
+      - -X 'tango/internal/config.BuildDate={{.Date}}'
 
 archives:
   - formats: [tar.gz]
@@ -75,7 +75,7 @@ release:
 
 # kos:
 #   - repositories:
-#       - ghcr.io/riipandi/gogon
+#       - ghcr.io/riipandi/tango
 #     tags:
 #       - "v{{.Version}}"
 #     bare: true
@@ -86,7 +86,7 @@ release:
 # dockers_v2:
 #   - id: distroless
 #     dockerfile: ./deploy/Dockerfile
-#     images: ['ghcr.io/riipandi/gogon']
+#     images: ['ghcr.io/riipandi/tango']
 #     tags:
 #       - "v{{ .Version }}"
 #       - "{{ if .IsNightly }}nightly{{ end }}"
@@ -100,7 +100,7 @@ release:
 #       "org.opencontainers.image.licenses": "Proprietary"
 #     platforms: ['linux/amd64', 'linux/arm64']
 #     build_args:
-#       DOCKER_IMAGE: 'ghcr.io/riipandi/gogon'
+#       DOCKER_IMAGE: 'ghcr.io/riipandi/tango'
 #       BUILD_VERSION: '{{.Version}}'
 #       BUILD_HASH: '{{.Commit}}'
 #       GO_VERSION: 1.26.1

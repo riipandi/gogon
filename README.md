@@ -1,25 +1,26 @@
 <img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="220" />
 
-Golang starter project template with [Cobra][cobra], [Viper][viper], and whatever router library you want to use.
-This aims to make you able to quickly create awesome app without having to bother with the
-initial setup.
+Starter project template with [Go][golang], [Cobra][cobra], [Viper][viper], [React][react], [TanStack][tanstack]
+(Router, Query, Store), and whatever router library you want to use. This aims to make you able to quickly
+create awesome app without having to bother with the initial setup.
 
 [![Go](https://img.shields.io/badge/Go-1.26-blue.svg?logo=Go&logoColor=white)](https://go.dev)
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0-blue.svg?logo=typescript&logoColor=blue)](https://www.typescriptlang.org)
 [![React](https://img.shields.io/badge/React-19-blue.svg?logo=react)](https://react.dev)
-[![Go Report Card](https://goreportcard.com/badge/github.com/riipandi/gogon)](https://goreportcard.com/report/github.com/riipandi/gogon)
-[![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?color=gray)](https://github.com/riipandi/gogon/graphs/contributors)
-<!-- [![Release](https://img.shields.io/github/v/release/riipandi/gogon?logo=docker&logoColor=white)](https://github.com/riipandi/gogon/releases) -->
-<!-- [![CI Test](https://github.com/riipandi/gogon/actions/workflows/test.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/test.yml) -->
-<!-- [![CI Release](https://github.com/riipandi/gogon/actions/workflows/release.yml/badge.svg)](https://github.com/riipandi/gogon/actions/workflows/release.yml) -->
+[![Go Report Card](https://goreportcard.com/badge/github.com/riipandi/tango)](https://goreportcard.com/report/github.com/riipandi/tango)
+[![Contributions](https://img.shields.io/badge/Contributions-welcome-blue.svg?color=gray)](https://github.com/riipandi/tango/graphs/contributors)
+<!-- [![Release](https://img.shields.io/github/v/release/riipandi/tango?logo=docker&logoColor=white)](https://github.com/riipandi/tango/releases) -->
+<!-- [![CI Test](https://github.com/riipandi/tango/actions/workflows/test.yml/badge.svg)](https://github.com/riipandi/tango/actions/workflows/test.yml) -->
+<!-- [![CI Release](https://github.com/riipandi/tango/actions/workflows/release.yml/badge.svg)](https://github.com/riipandi/tango/actions/workflows/release.yml) -->
 
 ---
 
 ```bash
-pnpm dlx tiged riipandi/gogon myapp-name
+pnpm dlx tiged riipandi/tango myapp-name
 ```
 
-In this repo I'm using [go-chi][go-chi], but you can change it with whatever library you want.
+In this repo I'm using [go-chi][go-chi] and [Connect RPC][connect-rpc], but you can change it with whatever
+library you want.
 
 ## 🏁 Quick Start
 
@@ -35,16 +36,13 @@ go install github.com/swaggo/swag/cmd/swag@latest
 go install github.com/pressly/goose/v3/cmd/goose@latest
 go install github.com/goreleaser/goreleaser/v2@latest
 go install github.com/anchore/grype/cmd/grype@latest
-
-go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest
-go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 ```
 
 ### Up and Running
 
 1. Install the required toolchain & SDK.
-2. Find and replace `gogon` and `MyApplication` strings in the source files.
-3. Install the required dependencies: `pnpm install && go mod download && go mod tidy`
+2. Find and replace `tango`, `Tango`, and `MyApplication` strings in the source files.
+3. Install the required dependencies: `pnpm install`
 4. Create `.env.local` file or copy from `.env.example`, then configure required variables.
 5. Geneate application secret key: `pnpm generate:key`
 6. Geneate Connect RPC proto: `pnpm generate:proto`
@@ -88,7 +86,7 @@ pnpm docker:push
 
 ## 🚀 Deployment
 
-Read [DEPLOY.md](./DEPLOY.md) for detailed documentation.
+Read the [Deployment Guidelines](./docs/deployment.md) for detailed documentation.
 
 ## 📚 References
 
@@ -111,15 +109,18 @@ See the [LICENSE-APACHE](./LICENSE-APACHE) and [LICENSE-MIT](./LICENSE-MIT) file
 
 <sub>🤫 Psst! If you like my work you can support me via [GitHub sponsors](https://github.com/sponsors/riipandi).</sub>
 
-[![Creator Badge](https://badgen.net/badge/icon/by%20Aris%20Ripandi?label&color=black&labelColor=black)][riipandi-twitter]
+[![Creator Badge](https://badgen.net/badge/icon/by%20Aris%20Ripandi?label&color=black&labelColor=black)][riipandi-x]
 
 [cobra]: https://cobra.dev/
-[viper]: https://github.com/spf13/viper
+[connect-rpc]: https://connectrpc.com/docs/introduction
+[docker]: https://docs.docker.com/engine/install/
 [go-chi]: https://github.com/go-chi/chi
 [golang]: https://go.dev/doc/install
-[nodejs]: https://nodejs.org/en/download
-[docker]: https://docs.docker.com/engine/install/
-[pnpm]: https://pnpm.io/installation
-[license-mit]: https://choosealicense.com/licenses/mit/
 [license-apache]: https://choosealicense.com/licenses/apache-2.0/
-[riipandi-twitter]: https://twitter.com/intent/follow?screen_name=riipandi
+[license-mit]: https://choosealicense.com/licenses/mit/
+[nodejs]: https://nodejs.org/en/download
+[pnpm]: https://pnpm.io/installation
+[react]: https://react.dev/
+[riipandi-x]: https://twitter.com/intent/follow?screen_name=riipandi
+[tanstack]: https://tanstack.com/
+[viper]: https://github.com/spf13/viper

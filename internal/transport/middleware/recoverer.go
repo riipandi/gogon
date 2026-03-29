@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"gogon/internal/transport/responder"
+	"tango/internal/transport/responder"
 )
 
 func JSONRecoverer(next http.Handler) http.Handler {

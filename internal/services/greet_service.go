@@ -4,12 +4,12 @@ import (
 	"context"
 	"fmt"
 
-	v1 "gogon/specs/api/v1"
-	"gogon/specs/api/v1/gogonv1connect"
+	v1 "tango/specs/api/v1"
+	"tango/specs/api/v1/tangov1connect"
 )
 
 type GreetService struct {
-	gogonv1connect.UnimplementedGreetServiceHandler
+	tangov1connect.UnimplementedGreetServiceHandler
 }
 
 func (s *GreetService) Greet(ctx context.Context, req *v1.GreetRequest) (*v1.GreetResponse, error) {

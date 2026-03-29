@@ -1,14 +1,14 @@
 {
-    "name": "gogon",
+    "name": "tango",
     "version": "0.0.0",
     "private": true,
-    "homepage": "https://github.com/riipandi/gogon#readme",
+    "homepage": "https://github.com/riipandi/tango#readme",
     "bugs": {
-        "url": "https://github.com/riipandi/gogon/issues"
+        "url": "https://github.com/riipandi/tango/issues"
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/riipandi/gogon.git"
+        "url": "git+https://github.com/riipandi/tango.git"
     },
     "type": "module",
     "scripts": {
@@ -97,7 +97,7 @@
         "vitest": "^4.1.2"
     },
     "config": {
-        "image": "ghcr.io/riipandi/gogon"
+        "image": "ghcr.io/riipandi/tango"
     },
     "engines": {
         "node": ">=24.12.0"

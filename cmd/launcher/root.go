@@ -5,14 +5,14 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
-	"gogon/internal/config"
+	"tango/internal/config"
 )
 
 var argVersionShort bool
 var argVersionSemantic bool
 
 var rootCmd = &cobra.Command{
-	Use:   "gogon",
+	Use:   "tango",
 	Short: "Fullstack Go + React application",
 	Long:  "A fullstack web application built with Go, Chi, and React.",
 	Run: func(cmd *cobra.Command, args []string) {

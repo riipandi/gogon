@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	AppName    = "gogon"
+	AppName    = "tango"
 	AppVersion = "0.0.0"
 	BuildHash  = "unknown"
 	BuildDate  = "0000-00-00T00:00:00Z"

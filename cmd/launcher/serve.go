@@ -12,8 +12,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"gogon/internal/config"
-	"gogon/internal/transport"
+	"tango/internal/config"
+	"tango/internal/transport"
 )
 
 var serveHost string

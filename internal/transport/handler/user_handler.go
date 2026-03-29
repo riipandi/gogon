@@ -7,7 +7,7 @@ import (
 	"sync"
 
 	"github.com/go-chi/chi/v5"
-	"gogon/internal/transport/responder"
+	"tango/internal/transport/responder"
 )
 
 type createUserRequest struct {
