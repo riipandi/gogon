@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="230" />
+<img src="https://i.imgur.com/vJfIiId.png" alt="banner" align="left" height="240" />
 
 Starter project template with [Go][golang], [Cobra][cobra], [Viper][viper], [React][react], [TanStack][tanstack]
 (Router, Query, Store), and whatever router library you want to use. This aims to make you able to quickly
