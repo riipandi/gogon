@@ -2,12 +2,15 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(app)/about')({
   component: RouteComponent,
-  staticData: { breadcrumb: 'About' }
+  staticData: {
+    pageTitle: 'About',
+    breadcrumb: 'About'
+  }
 })
 
 function RouteComponent() {
   return (
-    <main className='mx-auto max-w-5xl px-4 py-12'>
+    <div className='mx-auto max-w-5xl p-4'>
       <section className='bg-background-elevation-base border border-border-neutral rounded-2xl p-6 sm:p-8'>
         <p className='text-foreground-primary text-xs font-semibold uppercase tracking-widest mb-2'>
           About
@@ -29,6 +32,6 @@ function RouteComponent() {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   )
 }

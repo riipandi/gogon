@@ -2,12 +2,15 @@ import { Link, createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/(app)/')({
   component: RouteComponent,
-  staticData: { breadcrumb: 'Home' }
+  staticData: {
+    pageTitle: 'Overview',
+    breadcrumb: 'Overview'
+  }
 })
 
 function RouteComponent() {
   return (
-    <main className='mx-auto max-w-5xl px-4 pt-14 pb-8'>
+    <div className='mx-auto max-w-5xl p-4'>
       <section className='bg-background-elevation-base border border-border-neutral animate-in fade-in slide-in-from-bottom-3 duration-500 relative overflow-hidden rounded-xl px-6 py-10 sm:px-10 sm:py-14'>
         <div className='pointer-events-none absolute -top-24 -left-20 h-56 w-56 rounded-full bg-background-primary/20 blur-3xl' />
         <div className='pointer-events-none absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-background-primary-faded/15 blur-3xl' />
@@ -83,6 +86,6 @@ function RouteComponent() {
           </li>
         </ul>
       </section>
-    </main>
+    </div>
   )
 }

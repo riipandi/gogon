@@ -45,7 +45,7 @@ go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest
 1. Install the required toolchain & SDK.
 2. Find and replace `gogon` and `MyApplication` strings in the source files.
 3. Install the required dependencies: `pnpm install && go mod download && go mod tidy`
-4. Create `.env` file or copy from `.env.example`, then configure required variables.
+4. Create `.env.local` file or copy from `.env.example`, then configure required variables.
 5. Geneate application secret key: `pnpm generate:key`
 6. Geneate Connect RPC proto: `pnpm generate:proto`
 7. Run project in development mode: `pnpm dev`

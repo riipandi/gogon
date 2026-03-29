@@ -17,7 +17,7 @@ fly postgres create --name gogon-db --region sjc --password $(openssl rand -hex 
 fly postgres attach gogon-db -a gogon
 
 # Load secrets from dotenv file then initialize deployment
-fly secrets set $(cat .env | xargs -I %s echo %s)
+fly secrets set $(cat .env.production | xargs -I %s echo %s)
 fly secrets list
 
 # Deploy the app

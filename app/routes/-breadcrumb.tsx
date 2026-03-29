@@ -1,8 +1,5 @@
-import type { AnyRouteMatch } from '@tanstack/react-router'
 import { Link, useMatches } from '@tanstack/react-router'
 import { Activity, Fragment } from 'react'
-
-export type BreadcrumbValue = string | string[] | ((match: AnyRouteMatch) => string | string[])
 
 type ResolvedBreadcrumbItem = {
   path: string

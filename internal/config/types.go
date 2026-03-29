@@ -48,6 +48,8 @@ type PublicConfig struct {
 	BaseURL                string   `mapstructure:"base_url"`
 	S3AssetsURL            string   `mapstructure:"s3_assets_url"`
 	TrustedOrigins         []string `mapstructure:"trusted_origins"`
+	JwtAccessTokenExpiry   int      `mapstructure:"jwt_access_token_expiry"`
+	JwtRefreshTokenExpiry  int      `mapstructure:"jwt_refresh_token_expiry"`
 	RateLimitDefaultMax    int      `mapstructure:"rate_limit_default_max"`
 	RateLimitDefaultWindow int      `mapstructure:"rate_limit_default_window"`
 }

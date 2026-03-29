@@ -21,7 +21,7 @@ services:
   #   hostname: gogon
   #   volumes: ["./storage:/srv/storage:rw"]
   #   ports: ["3000:3000"]
-  #   env_file: "./.env"
+  #   env_file: "./.env.local"
   #   healthcheck:
   #     test: ["CMD", "/srv/gogon", "health"]
   #     interval: 3s
@@ -38,7 +38,9 @@ services:
     image: postgres:${PGSQL_VERSION:-18-alpine}
     hostname: postgres
     ports: ['5432:5432']
-    volumes: ['pgsql_data:/var/lib/postgresql/18/docker:rw']
+    volumes:
+      - 'pgsql_data:/var/lib/postgresql/18/docker:rw'
+      - ./scripts/extradb.sh:/docker-entrypoint-initdb.d/extradb.sh
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres

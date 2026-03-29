@@ -86,9 +86,10 @@ function RouteComponent() {
           >
             Refresh
           </button>
-          {isFetching && !isPending && (
+
+          <Activity mode={isFetching && !isPending ? 'visible' : 'hidden'}>
             <span className='text-sm text-foreground-neutral-faded'>Updating...</span>
-          )}
+          </Activity>
         </div>
 
         <Activity mode={isPending ? 'visible' : 'hidden'}>
@@ -99,7 +100,7 @@ function RouteComponent() {
           <p className='mt-2 text-sm text-foreground-critical'>Error: {error?.message}</p>
         </Activity>
 
-        {users && (
+        <Activity mode={users ? 'visible' : 'hidden'}>
           <div className='grid gap-3 sm:grid-cols-2'>
             {users.map((user) => (
               <div
@@ -111,7 +112,7 @@ function RouteComponent() {
               </div>
             ))}
           </div>
-        )}
+        </Activity>
 
         <div className='mt-8'>
           <Link

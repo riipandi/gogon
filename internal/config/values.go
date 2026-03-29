@@ -16,6 +16,8 @@ func setDefaults() {
 	v.SetDefault("mailer.smtp_secure", false)
 	v.SetDefault("public.base_url", "http://localhost:3000")
 	v.SetDefault("public.s3_assets_url", "http://localhost:9180")
+	v.SetDefault("public.jwt_access_token_expiry", 900)
+	v.SetDefault("public.jwt_refresh_token_expiry", 7200)
 	v.SetDefault("public.rate_limit_default_max", 100)
 	v.SetDefault("public.rate_limit_default_window", 900)
 	v.SetDefault("storage.max_upload_size", 5242880)
@@ -54,6 +56,8 @@ func bindEnvVars() {
 		"public.base_url":                  "PUBLIC_BASE_URL",
 		"public.s3_assets_url":             "PUBLIC_S3_ASSETS_URL",
 		"public.trusted_origins":           "PUBLIC_TRUSTED_ORIGINS",
+		"public.jwt_access_token_expiry":   "PUBLIC_JWT_ACCESS_TOKEN_EXPIRY",
+		"public.jwt_refresh_token_expiry":  "PUBLIC_JWT_REFRESH_TOKEN_EXPIRY",
 		"public.rate_limit_default_max":    "PUBLIC_RATE_LIMIT_DEFAULT_MAX",
 		"public.rate_limit_default_window": "PUBLIC_RATE_LIMIT_DEFAULT_WINDOW",
 		"storage.max_upload_size":          "STORAGE_MAX_UPLOAD_SIZE",

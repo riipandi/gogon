@@ -1,3 +1,8 @@
+/* Common props for component: color, variant, size */
+/* Colors (neutral by default): primary|neutral|positive|warning|critical */
+/* Variants by color: solid|faded|outline|ghost */
+/* Size: x|sm|md|lg|xl */
+
 :root {
   /* Both light mode and dark mode */
   --ui-color-black: oklch(0 0 0);
