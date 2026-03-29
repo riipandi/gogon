@@ -76,7 +76,7 @@ RUN --mount=type=cache,id=go-mod,target=/go/pkg/mod \
     && go get -tool google.golang.org/protobuf/cmd/protoc-gen-go@latest \
     && go get -tool connectrpc.com/connect/cmd/protoc-gen-connect-go@latest \
     && pnpm run generate:proto && pnpm exec tsc -b --noEmit --extendedDiagnostics \
-    && GOARCH=$(dpkg --print-architecture) NODE_ENV=production pnpm run build \
+    && GOARCH=$(dpkg --print-architecture) NODE_ENV=production pnpm exec vite build \
     && strip /srv/build/release/$(jq -r '.name' package.json) \
     && chmod +x /srv/build/release/$(jq -r '.name' package.json)
 
