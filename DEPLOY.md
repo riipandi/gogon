@@ -1,27 +1,41 @@
-# Deployment to Fly.io
+# Deployment Guidelines
 
 ## Create app instances
 
 ```sh
 # Create Fly.io app
-fly apps create gogon
+fly apps create gogon --org personal
+```
 
+## Attach Postgres database
+```sh
 # Create volume for the data.
 fly postgres create --name gogon-db --region sjc --password $(openssl rand -hex 8)
+
+# Attach Postgres database
+fly postgres attach gogon-db -a gogon
 ```
 
 ## Launch and deploy
 
 ```sh
-# Attach Postgres database
-fly postgres attach gogon-db -a gogon
+# Prepare deploy configuration file
+cp deploy/fly.toml.example fly.toml
+sed -i '' 's/CHANGEME_APP_NAME/gogon/g' fly.toml
+
+# Prepare environment variables
+cp .env.example .env.production
+pnpm --silent generate:key
 
 # Load secrets from dotenv file then initialize deployment
-fly secrets set $(cat .env.production | xargs -I %s echo %s)
+sed -e '/^[[:space:]]*#/d' -e '/^$/d' .env.production | fly secrets import
 fly secrets list
 
-# Deploy the app
-fly deploy --remote-only
+# Initialize deployment
+fly deploy --remote-only --no-public-ips --now --skip-release-command
+
+# Update deployment
+fly deploy --remote-only --now
 ```
 
 ## Setup custom domain
@@ -30,8 +44,16 @@ Point DNS A Record to the assigned IP address.
 Or, if using subdomain you can point `gogon.fly.dev` CNAME record.
 
 ```sh
-# Allocate IPs and setup custom domain (optional)
-fly ips allocate-v4 -a gogon
+# Allocate IPv4 (required)
+fly ips allocate-v4 -a gogon --shared
+fly ips allocate-v4 -a gogon # dedicated
+
+# Allocate IPv6 (optional)
 fly ips allocate-v6 -a gogon
-fly certs create api.example.com -a gogon
+
+# List allocated IPs
+fly ips list -a gogon
+
+# Assign custom domain
+fly certs create app.example.com -a gogon
 ```
