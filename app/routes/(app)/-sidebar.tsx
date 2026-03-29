@@ -117,7 +117,7 @@ function NavContent({ collapsed, mobile }: { collapsed: boolean; mobile?: boolea
                     <item.icon
                       className={clx(
                         'shrink-0',
-                        collapsed ? 'h-4.5 w-4.5' : mobile ? 'h-5 w-5' : 'h-4 w-4'
+                        collapsed ? 'h-4.5 w-4.5' : mobile ? 'size-5' : 'size-4'
                       )}
                     />
                     {!collapsed && <span className='whitespace-nowrap'>{item.label}</span>}

@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import type { AnyRouteMatch } from '@tanstack/react-router'
 import { Outlet, createRootRouteWithContext, useMatches } from '@tanstack/react-router'
 import { rpcTransport } from '#/libraries/api-client'
+import { ThemeProvider } from '#/routes/-theme'
 import { GlobalNotFound, GlobalError } from './-boundaries'
 import DevTools from './-devtools'
 import '../styles/globals.css'
@@ -32,7 +33,9 @@ function RootComponent() {
     <TransportProvider transport={rpcTransport}>
       <title>{pageTitle ? `${pageTitle} - MyApplication` : 'MyApplication'}</title>
       <QueryClientProvider client={queryClient}>
-        <Outlet />
+        <ThemeProvider>
+          <Outlet />
+        </ThemeProvider>
         <DevTools queryClient={queryClient} />
       </QueryClientProvider>
     </TransportProvider>

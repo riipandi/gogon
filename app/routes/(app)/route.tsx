@@ -1,11 +1,20 @@
 import { createFileRoute, Outlet } from '@tanstack/react-router'
+import { z } from 'zod'
 import { GlobalNotFound } from '#/routes/-boundaries'
 import { Sidebar } from './-sidebar'
 import { TopBar } from './-topbar'
 
+const searchSchema = z.object({
+  redirect: z.string().optional()
+})
+
 export const Route = createFileRoute('/(app)')({
   notFoundComponent: GlobalNotFound,
-  component: RouteComponent
+  component: RouteComponent,
+  beforeLoad: async (_ctx) => {
+    return null // TODO: add auth check
+  },
+  validateSearch: searchSchema
 })
 
 function RouteComponent() {

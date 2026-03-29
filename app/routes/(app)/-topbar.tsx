@@ -2,6 +2,7 @@ import { useMatches } from '@tanstack/react-router'
 import { useStore } from '@tanstack/react-store'
 import * as Lucide from 'lucide-react'
 import { Activity } from 'react'
+import { ThemeSwitcher } from '#/routes/-theme'
 import { uiStore, sidebarActions } from '#/stores/ui.store'
 import { clx } from '#/utils/variant'
 
@@ -20,11 +21,11 @@ export function TopBar() {
           aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           <Activity mode={collapsed ? 'visible' : 'hidden'}>
-            <Lucide.PanelLeftOpen className='h-4 w-4' />
+            <Lucide.PanelLeftOpen className='size-4' />
           </Activity>
 
           <Activity mode={!collapsed ? 'visible' : 'hidden'}>
-            <Lucide.PanelLeftClose className='h-4 w-4' />
+            <Lucide.PanelLeftClose className='size-4' />
           </Activity>
         </button>
 
@@ -34,7 +35,7 @@ export function TopBar() {
           className='rounded-lg p-2 text-foreground-neutral-faded transition hover:bg-background-neutral-faded hover:text-foreground-neutral lg:hidden'
           aria-label='Toggle menu'
         >
-          <Lucide.Menu className='h-4 w-4' />
+          <Lucide.Menu className='size-4' />
         </button>
 
         <span className='text-foreground-neutral text-sm font-semibold lg:hidden'>
@@ -48,13 +49,16 @@ export function TopBar() {
         </span>
       </Activity>
 
-      <div
-        className={clx(
-          'flex items-center justify-center rounded-full bg-background-neutral',
-          'h-8 w-8 text-foreground-neutral-faded'
-        )}
-      >
-        <Lucide.User className='h-4 w-4' />
+      <div className='flex gap-4 items-center justify-between'>
+        <ThemeSwitcher />
+        <div
+          className={clx(
+            'flex items-center justify-center rounded-full bg-background-neutral',
+            'size-8 text-foreground-neutral-faded'
+          )}
+        >
+          <Lucide.User className='size-4' />
+        </div>
       </div>
     </header>
   )

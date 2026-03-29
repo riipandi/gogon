@@ -59,7 +59,7 @@ export function GlobalError({ error, reset }: ErrorComponentProps) {
           Something went wrong
         </h1>
 
-        <p className='mx-auto mb-6 max-w-md text-sm text-foreground-neutral-faded sm:text-base'>
+        <p className='mx-auto mb-6 max-w-full text-sm text-foreground-neutral-faded sm:text-base'>
           An unexpected error occurred. You can try again or go back to the home page.
         </p>
 

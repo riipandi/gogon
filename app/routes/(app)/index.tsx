@@ -10,7 +10,7 @@ export const Route = createFileRoute('/(app)/')({
 
 function RouteComponent() {
   return (
-    <div className='mx-auto max-w-5xl p-4'>
+    <div className='mx-auto max-w-6xl p-4'>
       <section className='bg-background-elevation-base border border-border-neutral animate-in fade-in slide-in-from-bottom-3 duration-500 relative overflow-hidden rounded-xl px-6 py-10 sm:px-10 sm:py-14'>
         <div className='pointer-events-none absolute -top-24 -left-20 h-56 w-56 rounded-full bg-background-primary/20 blur-3xl' />
         <div className='pointer-events-none absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-background-primary-faded/15 blur-3xl' />
@@ -21,21 +21,21 @@ function RouteComponent() {
           Go + React, one binary.
         </h1>
         <p className='mb-8 max-w-2xl text-base text-foreground-neutral-faded sm:text-lg'>
-          A single Go binary serves your React SPA and API. No separate web server, no deployment
-          headaches.
+          A single Go binary serves your React SPA and API. <br />
+          No separate web server, no deployment headaches.
         </p>
         <div className='flex flex-wrap gap-3'>
-          <a
-            href='/about'
+          <Link
+            to='/about'
             className='rounded-full border border-border-primary bg-background-primary-faded px-5 py-2.5 text-sm font-semibold text-foreground-primary no-underline transition hover:-translate-y-0.5 hover:bg-background-primary-faded/60'
           >
             About
-          </a>
+          </Link>
           <a
             href='https://go-chi.io/'
-            target='_blank'
-            rel='noopener noreferrer'
             className='rounded-full border border-border-neutral bg-background-elevation-base/50 px-5 py-2.5 text-sm font-semibold text-foreground-neutral no-underline transition hover:-translate-y-0.5 hover:border-foreground-neutral-faded'
+            rel='noopener noreferrer'
+            target='_blank'
           >
             Chi Router
           </a>
@@ -82,6 +82,15 @@ function RouteComponent() {
               className='text-foreground-primary underline-offset-2 hover:underline'
             >
               Demo for Connect RPC call
+            </Link>
+          </li>
+          <li>
+            <Link
+              to='/demo/users/$userId'
+              className='text-foreground-primary underline-offset-2 hover:underline'
+              params={{ userId: 'dummy-user-id' }}
+            >
+              Demo route with path parameter
             </Link>
           </li>
         </ul>

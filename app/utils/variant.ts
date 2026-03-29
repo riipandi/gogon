@@ -9,12 +9,12 @@
 import type { TV, TWMergeConfig } from 'tailwind-variants'
 import { tv as tvbase } from 'tailwind-variants'
 
-// const COMMON_UNITS = ['xs', 'sm', 'md', 'lg', 'xl']
+const COMMON_UNITS = ['xs', 'sm', 'md', 'lg', 'xl']
 
 const twMergeConfig: TWMergeConfig = {
   theme: {
     // spacing: ['divider'],
-    // radius: COMMON_UNITS,
+    radius: COMMON_UNITS
   },
   classGroups: {
     // TODO: Enable these as needed

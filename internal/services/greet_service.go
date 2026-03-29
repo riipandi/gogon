@@ -5,7 +5,7 @@ import (
 	"fmt"
 
 	v1 "gogon/specs/api/v1"
-	gogonv1connect "gogon/specs/api/v1/gogonv1connect"
+	"gogon/specs/api/v1/gogonv1connect"
 )
 
 type GreetService struct {
