@@ -42,7 +42,7 @@ go install github.com/anchore/grype/cmd/grype@latest
 
 1. Install the required toolchain & SDK.
 2. Find and replace `tango`, `Tango`, and `MyApplication` strings in the source files.
-3. Install the required dependencies: `pnpm install`
+3. Install the required application dependencies: `pnpm install`
 4. Create env file for development: `cp .env.example .env.local`
 5. Geneate application secret key: `pnpm generate:key --apply`
 6. Geneate Connect RPC proto: `pnpm generate:proto`
