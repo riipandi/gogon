@@ -19,7 +19,7 @@ func NotImplementedHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func HealthzHandler(w http.ResponseWriter, r *http.Request) {
-	uaString := fmt.Sprintf("Mozilla/5.0 (compatible; MyApplication/1.0; +%s)", config.C.Public.BaseURL)
+	uaString := fmt.Sprintf("Mozilla/5.0 (compatible; %s/%s; +%s)", config.AppName, config.AppVersion, config.C.Public.BaseURL)
 	httpClient := resty.New().SetHeader("User-Agent", uaString)
 	defer httpClient.Close()
 
