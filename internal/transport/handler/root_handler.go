@@ -1,9 +1,12 @@
 package handler
 
 import (
+	"fmt"
 	"net/http"
+	"time"
 
 	"github.com/go-chi/chi/v5"
+	"resty.dev/v3"
 
 	"tango/internal/config"
 	"tango/internal/transport/responder"
@@ -16,8 +19,37 @@ func NotImplementedHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func HealthzHandler(w http.ResponseWriter, r *http.Request) {
+	uaString := fmt.Sprintf("Mozilla/5.0 (compatible; MyApplication/1.0; +%s)", config.C.Public.BaseURL)
+	httpClient := resty.New().SetHeader("User-Agent", uaString)
+	defer httpClient.Close()
+
+	resp, err := httpClient.R().
+		SetContext(r.Context()).
+		SetTimeout(5 * time.Second).
+		Get("https://api.ipify.org")
+
+	if err != nil {
+		responder.WriteJSON(w, http.StatusServiceUnavailable, map[string]string{
+			"status": "unhealthy",
+			"error":  err.Error(),
+		})
+		return
+	}
+
+	if !resp.IsSuccess() {
+		responder.WriteJSON(w, http.StatusServiceUnavailable, map[string]string{
+			"status":          "unhealthy",
+			"error":           "upstream returned non-success status",
+			"upstream_status": fmt.Sprintf("%d", resp.StatusCode()),
+		})
+		return
+	}
+
+	ipAddress := resp.String()
+
 	responder.WriteJSON(w, http.StatusOK, map[string]string{
-		"status": "healthy",
+		"status":     "healthy",
+		"ip_address": ipAddress,
 	})
 }
 
