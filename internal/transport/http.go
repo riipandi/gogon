@@ -30,7 +30,7 @@ func NewHTTPServer() *HTTPServer {
 	r.Get("/.well-known/version", handler.NotImplementedHandler)   // Get current application version
 
 	r.Route("/api", routes.RegisterAPI)
-	r.Mount("/rpc", http.StripPrefix("/rpc", newRPCHandler()))
+	r.Mount("/rpc", http.StripPrefix("/rpc", DefineRPCHandler()))
 	r.Get("/static/*", handler.StaticAssetsHandler)
 
 	// Render frontend SPA (must be last)

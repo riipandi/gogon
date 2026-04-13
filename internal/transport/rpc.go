@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 
-	"tango/internal/services"
+	"tango/internal/transport/connect"
 	"tango/internal/transport/responder"
 	"tango/specs/api/v1/tangov1connect"
 )
@@ -12,12 +12,12 @@ import (
 func NewRPCMux() *http.ServeMux {
 	mux := http.NewServeMux()
 
-	mux.Handle(tangov1connect.NewGreetServiceHandler(&services.GreetService{}))
+	mux.Handle(tangov1connect.NewGreetServiceHandler(&connect.GreetService{}))
 
 	return mux
 }
 
-func newRPCHandler() http.Handler {
+func DefineRPCHandler() http.Handler {
 	mux := NewRPCMux()
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		rec := httptest.NewRecorder()
