@@ -38,6 +38,8 @@ dist/
 dist-ssr/
 release/
 output/
+/out/
+.react-email/
 .build/
 .data
 .cache
@@ -82,7 +84,9 @@ storybook-static/
 # Application data
 /storage/
 web/dist/*
+web/email/*
 !web/dist/.gitkeep
+!web/email/.gitkeep
 
 # Miscellaneous
 pnpm-exec-summary.json

@@ -7,6 +7,7 @@ import (
 	"sync"
 
 	"github.com/go-chi/chi/v5"
+
 	"tango/internal/transport/responder"
 )
 
@@ -52,17 +53,9 @@ func CreateUserHandler(w http.ResponseWriter, r *http.Request) {
 	responder.WriteJSON(w, http.StatusCreated, user)
 }
 
-func UserHandler(w http.ResponseWriter, r *http.Request) {
+func GetUserHandler(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 	responder.WriteJSON(w, http.StatusOK, map[string]string{
 		"id": id,
-	})
-}
-
-func UserPathHandler(w http.ResponseWriter, r *http.Request) {
-	path := chi.URLParam(r, "*")
-	responder.WriteJSON(w, http.StatusOK, map[string]string{
-		"route": "/api/users/*",
-		"path":  path,
 	})
 }

@@ -44,22 +44,16 @@ function NavContent({ collapsed, mobile }: { collapsed: boolean; mobile?: boolea
           collapsed ? 'justify-center px-0' : 'px-4'
         )}
       >
-        <Link
-          to='/'
-          className='flex items-center no-underline'
-          onClick={() => sidebarActions.close()}
-          title='MyApplication'
-        >
+        <div className='flex items-center no-underline'>
           <Activity mode={collapsed ? 'visible' : 'hidden'}>
-            <Lucide.Globe className='size-6 text-foreground-primary' />
+            <Lucide.Shell className='size-6 text-foreground-neutral' />
           </Activity>
-
           <Activity mode={!collapsed ? 'visible' : 'hidden'}>
             <span className='text-foreground-neutral text-lg font-bold tracking-tight'>
               MyApplication
             </span>
           </Activity>
-        </Link>
+        </div>
 
         <Activity mode={!collapsed ? 'visible' : 'hidden'}>
           <div className='flex-1' />

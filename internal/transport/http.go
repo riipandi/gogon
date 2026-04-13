@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"tango/internal/transport/handler"
 	"tango/internal/transport/middleware"
 	"tango/internal/transport/routes"
 	"tango/web"
@@ -24,9 +25,15 @@ func NewHTTPServer() *HTTPServer {
 	r.Use(middleware.JSONRecoverer)
 	r.Use(middleware.CORS())
 
+	// Well Known: Discovery endpoints for OpenID Connect, etc.
+	r.Get("/.well-known/jwks.json", handler.NotImplementedHandler) // Get JSON Web Key Set (JWKS)
+	r.Get("/.well-known/version", handler.NotImplementedHandler)   // Get current application version
+
 	r.Route("/api", routes.RegisterAPI)
 	r.Mount("/rpc", http.StripPrefix("/rpc", newRPCHandler()))
+	r.Get("/static/*", handler.StaticAssetsHandler)
 
+	// Render frontend SPA (must be last)
 	web.SetupStatic(r)
 
 	return &HTTPServer{Router: r}
