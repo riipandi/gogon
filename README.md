@@ -64,8 +64,8 @@ Go files are watched and auto-rebuilt.
 
 ### Test ConnectRPC
 ```sh
-curl -sSLi http://localhost:3000/rpc/api.v1.GreetService/Greet \
-  -H "Content-Type: application/json" -d '{"name": "John"}'
+alias fetch-rpc='curl -SLi -H "Content-Type: application/json" -X POST'
+fetch-rpc -s http://localhost:3000/rpc/api.v1.GreetService/Greet -d '{"name": "John"}'
 ```
 
 ## 🐳 Publishing Docker Image
