@@ -1,4 +1,4 @@
-import { Column, Heading, Row, Text } from '@react-email/components'
+import { Column, Heading, Row, Text } from 'react-email'
 
 export function CardHeader({ title, warning }: { title: string; warning?: boolean }) {
   return (

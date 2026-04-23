@@ -1,7 +1,7 @@
-import { render, pretty } from '@react-email/components'
 import * as fs from 'node:fs'
 import * as path from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { render, pretty } from 'react-email'
 
 // Get the directory of this script file
 const __filename = fileURLToPath(import.meta.url)
@@ -54,7 +54,7 @@ async function buildTemplateFile(Component: any, templateName: string, isPlainTe
 async function discoverAndBuildTemplates() {
   console.log('Discovering and building email templates...')
   console.log('Templates directory:', templatesDir)
-  console.log('Output directory:', outputDir)
+  console.log('Output directory:', outputDir, '\n')
 
   if (!fs.existsSync(templatesDir)) {
     console.error(`✗ Templates directory not found: ${templatesDir}`)
@@ -62,7 +62,6 @@ async function discoverAndBuildTemplates() {
   }
 
   const files = fs.readdirSync(templatesDir)
-  console.log('\nFound files:', files, '\n')
 
   for (const file of files) {
     if (!file.endsWith('.tsx')) continue

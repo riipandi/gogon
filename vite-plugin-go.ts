@@ -146,7 +146,7 @@ function resolveBuildOptions(
 }
 
 export default function goPlugin(userOptions: GoPluginOptions): Plugin {
-  if (process.env.VITEST) {
+  if (process.env.VITEST || process.env.STORYBOOK) {
     return { name: 'vite-plugin-go' }
   }
 
